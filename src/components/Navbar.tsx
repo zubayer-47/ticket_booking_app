@@ -2,7 +2,7 @@ import Button from "./common/Button";
 
 export default function Navbar() {
     return (
-        <div className="grid grid-cols-12 gap-2 px-12 py-4">
+        <div className="grid grid-cols-12 gap-2 px-12 py-4 border-b mb-10">
             <div className="col-span-6">BD Ticket</div>
             <div className="col-span-6">
                 <ul className="flex justify-end items-center gap-5">

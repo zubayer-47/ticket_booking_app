@@ -1,11 +1,13 @@
-import { ChangeEvent, ReactNode, useState } from 'react'
+import { ReactNode, useState } from 'react'
+import { InputType } from '../../types/custom'
+import Select from './Select'
 
-type InputProps = { id: string, type?: string, svg?: ReactNode }
+type InputProps = { type?: string, svg?: ReactNode }
 
-export default function Input({ id, type, svg }: InputProps) {
+export default function Input({ type, svg }: InputProps) {
     const [text, setText] = useState('')
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: InputType) => {
         setText(e.target.value)
     }
 
@@ -14,9 +16,18 @@ export default function Input({ id, type, svg }: InputProps) {
             ?
             <div className='relative flex justify-start items-center'>
                 {svg}
-                <input type="text" name={id} className='w-full outline-none rounded-md p-2 border' id={id} value={text} onChange={handleChange} />
+
+                <Select />
             </div>
             :
-            <input type="date" className='w-full border outline-none rounded-md p-2' name="date" id="date" />
+            <div className='flex justify-center items-center gap-2'>
+                <input type="date" className='w-full border outline-none rounded-md p-2' name="date" id="date" />
+
+                <select className='w-full bg-white p-2 rounded-md outline-none border-2' name="" id="">
+                    <option>---</option>
+                    <option value="AC">AC</option>
+                    <option value="NON-AC">NON-AC</option>
+                </select>
+            </div>
     )
 }

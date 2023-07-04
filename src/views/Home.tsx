@@ -1,11 +1,16 @@
+import { Outlet } from "react-router-dom";
+import Booking from "../components/Booking";
 import Navbar from "../components/Navbar";
-import Slider from "../components/Slider";
 
 export default function Home() {
     return (
-        <div>
+        <>
             <Navbar />
-            <Slider />
-        </div>
+            <div className="mx-5 lg:max-w-4xl lg:mx-auto xl:max-w-5xl border p-2 rounded-md">
+                <Booking />
+
+                <Outlet />
+            </div>
+        </>
     )
 }
