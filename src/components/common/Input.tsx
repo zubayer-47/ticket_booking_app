@@ -1,15 +1,15 @@
-import { ReactNode, useState } from 'react'
-import { InputType } from '../../types/custom'
+import { ReactNode } from 'react'
+// import { InputType } from '../../types/custom'
 import Select from './Select'
 
 type InputProps = { type?: string, svg?: ReactNode }
 
 export default function Input({ type, svg }: InputProps) {
-    const [text, setText] = useState('')
+    // const [text, setText] = useState('')
 
-    const handleChange = (e: InputType) => {
-        setText(e.target.value)
-    }
+    // const handleChange = (e: InputType) => {
+    //     setText(e.target.value)
+    // }
 
     return (
         type !== 'date'
