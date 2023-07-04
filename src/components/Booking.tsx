@@ -1,6 +1,6 @@
 import { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Input from './common/Input';
+import Input from './Inputs/BookingInput';
 
 export default function Booking() {
     const navigate = useNavigate();

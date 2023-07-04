@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
+import Select from '../common/Select'
 // import { InputType } from '../../types/custom'
-import Select from './Select'
 
 type InputProps = { type?: string, svg?: ReactNode }
 
