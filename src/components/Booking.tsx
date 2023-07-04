@@ -33,7 +33,7 @@ export default function Booking() {
                     <Input type='date' />
                 </div>
 
-                <button type='submit' className='py-2 px-4 border-2 rounded-md bg-blue-600 text-white hover:bg-blue-500'>Search</button>
+                <button type='submit' className='py-2 px-4 rounded-md bg-emerald-500 text-white hover:bg-emerald-600'>Search</button>
             </form>
 
             <div className='col-span-6 flex items-center'>
