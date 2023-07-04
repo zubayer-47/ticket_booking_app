@@ -1,5 +1,5 @@
 import { useState } from "react";
-import TicketModal from "./TicketModal";
+import TicketModal from "./ViewModal/TicketModal";
 
 type BUS_LIST_TYPE = {
     id: string;
