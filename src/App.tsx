@@ -8,6 +8,7 @@ function App() {
     <BrowserRouter basename='/'>
       <Routes>
         <Route path='/' element={<Home />}>
+          {/* <Route index path='/' element={<Booking />} /> */}
           <Route path='/ticket' element={<BusList />} />
         </Route>
       </Routes>
