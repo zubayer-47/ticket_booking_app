@@ -20,23 +20,28 @@ export default function TicketModal({ showModal, setShowModal }: TicketModalProp
                             {/*content*/}
                             <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                                 {/*body*/}
-                                <div className="relative p-6 grid grid-cols-12 gap-2">
-                                    <BusSeats />
+                                <div className="relative p-6 lg:grid lg:grid-cols-12 gap-2">
+
+                                    <div className="lg:col-span-4 w-[300px] lg:w-full mx-auto bg-gray-200 rounded-md">
+                                        <BusSeats />
+                                    </div>
 
                                     {/* seat and personal information */}
-                                    <TicketInfo />
+                                    <div className="lg:col-span-8 p-1 rounded-md">
+                                        <TicketInfo />
+                                    </div>
                                 </div>
                                 {/*footer*/}
-                                <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                                <div className="flex items-center justify-end p-2 border-t border-solid border-slate-200 rounded-b">
                                     <button
-                                        className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                        className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                         type="button"
                                         onClick={() => setShowModal(false)}
                                     >
                                         Close
                                     </button>
                                     <button
-                                        className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                        className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                         type="button"
                                         onClick={() => setShowModal(false)}
                                     >

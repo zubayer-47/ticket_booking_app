@@ -13,7 +13,7 @@ export default function Booking() {
 
     return (
         <div className='grid grid-cols-12 gap-5'>
-            <form className='space-y-3 bg-gray-100 p-3 rounded-lg col-span-6' onSubmit={handleSubmit}>
+            <form className='space-y-3 bg-gray-100 p-3 rounded-lg col-span-12 md:col-span-6' onSubmit={handleSubmit}>
                 <div>
                     <label className='block' htmlFor="from">From</label>
                     <Input svg={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 absolute border-r">
@@ -36,7 +36,7 @@ export default function Booking() {
                 <button type='submit' className='py-2 px-4 rounded-md bg-emerald-500 text-white hover:bg-emerald-600'>Search</button>
             </form>
 
-            <div className='col-span-6 flex items-center'>
+            <div className='col-span-12 md:col-span-6 flex items-center'>
                 <img className='' src='https://static.busbd.com.bd/busbdmedia/for%20salide.1500371408' />
             </div>
         </div>

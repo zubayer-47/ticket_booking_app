@@ -6,7 +6,7 @@ export default function Home() {
     return (
         <>
             <Navbar />
-            <div className="mx-5 lg:max-w-4xl lg:mx-auto xl:max-w-5xl border p-2 rounded-md">
+            <div className="mx-5 max-w-full lg:max-w-4xl lg:mx-auto xl:max-w-5xl border p-2 rounded-md">
                 <Booking />
 
                 <Outlet />
