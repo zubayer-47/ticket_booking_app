@@ -5,16 +5,20 @@ const seats = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 export default function BusSeats() {
     return (<div className='p-2'>
         <table className="border border-collapse w-full">
-            <tr>
-                <th className="w-20 border border-gray-300">Block</th>
-                <th className="w-20 border border-gray-300">Available</th>
-                <th className="w-20 border border-gray-300">Discount</th>
-            </tr>
-            <tr>
-                <td className="bg-gray-600 h-2"></td>
-                <td className="bg-white h-2"></td>
-                <td className="bg-emerald-600 h-2"></td>
-            </tr>
+            <thead>
+                <tr>
+                    <th className="w-20 border border-gray-300">Block</th>
+                    <th className="w-20 border border-gray-300">Available</th>
+                    <th className="w-20 border border-gray-300">Discount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td className="bg-gray-600 h-2"></td>
+                    <td className="bg-white h-2"></td>
+                    <td className="bg-emerald-600 h-2"></td>
+                </tr>
+            </tbody>
         </table>
 
         <div className="flex justify-between items-center mt-2 ">
@@ -30,7 +34,7 @@ export default function BusSeats() {
 
         {/* seats */}
         <div className="grid gap-2 mt-5">
-            {seats.map(() => (<div className="flex justify-between items-center gap-12">
+            {seats.map((v) => (<div className="flex justify-between items-center gap-12" key={v}>
                 <div className="flex gap-2">
                     <button className="bg-gray-100 text-gray-700 border border-gray-500 px-4 py-1 rounded-sm">A1</button>
                     <button className="bg-gray-100 text-gray-700 border border-gray-500 px-4 py-1 rounded-sm">A2</button>

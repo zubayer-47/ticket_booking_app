@@ -1,5 +1,6 @@
 import BusSeats from "./BusSeats";
-import TicketInfo from "./TicketInfo";
+import PersonalInfo from "./PersonalInfo";
+import SeatInfo from "./SeatInfo";
 
 type TicketModalProps = {
     showModal: boolean;
@@ -28,7 +29,8 @@ export default function TicketModal({ showModal, setShowModal }: TicketModalProp
 
                                     {/* seat and personal information */}
                                     <div className="lg:col-span-8 p-1 rounded-md">
-                                        <TicketInfo />
+                                        <SeatInfo />
+                                        <PersonalInfo />
                                     </div>
                                 </div>
                                 {/*footer*/}
@@ -39,13 +41,6 @@ export default function TicketModal({ showModal, setShowModal }: TicketModalProp
                                         onClick={() => setShowModal(false)}
                                     >
                                         Close
-                                    </button>
-                                    <button
-                                        className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                        type="button"
-                                        onClick={() => setShowModal(false)}
-                                    >
-                                        Confirm
                                     </button>
                                 </div>
                             </div>
