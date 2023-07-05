@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../utils/axios";
@@ -27,7 +28,7 @@ const useAxios = () => {
       }) => {
         if (error.message !== "canceled") {
           const prevRequest = error?.config;
-          const { status, data } = error.response;
+          const { status } = error.response;
           if (status === 403 && !prevRequest?.sent) {
             localStorage.clear();
             navigate("/login");
