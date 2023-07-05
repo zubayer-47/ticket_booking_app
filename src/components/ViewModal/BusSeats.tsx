@@ -4,7 +4,7 @@ const seats = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 export default function BusSeats() {
     return (<div className='p-2'>
-        <table className="border border-collapse ">
+        <table className="border border-collapse w-full">
             <tr>
                 <th className="w-20 border border-gray-300">Block</th>
                 <th className="w-20 border border-gray-300">Available</th>
@@ -29,7 +29,7 @@ export default function BusSeats() {
         </div>
 
         {/* seats */}
-        <div className="grid gap-2 mt-5 ">
+        <div className="grid gap-2 mt-5">
             {seats.map(() => (<div className="flex justify-between items-center gap-12">
                 <div className="flex gap-2">
                     <button className="bg-gray-100 text-gray-700 border border-gray-500 px-4 py-1 rounded-sm">A1</button>

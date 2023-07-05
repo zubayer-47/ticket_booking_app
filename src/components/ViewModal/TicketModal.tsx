@@ -14,13 +14,13 @@ export default function TicketModal({ showModal, setShowModal }: TicketModalProp
                 <>
                     <div
                         tabIndex={1}
-                        className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+                        className="flex justify-center items-center overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
                     >
                         <div className="relative my-6 mx-auto">
                             {/*content*/}
                             <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                                 {/*body*/}
-                                <div className="relative p-6 lg:grid lg:grid-cols-12 gap-2">
+                                <div className="relative p-6 lg:grid lg:grid-cols-12 gap-2 h-[550px] lg:h-full overflow-auto">
 
                                     <div className="lg:col-span-4 w-[300px] lg:w-full mx-auto bg-gray-200 rounded-md">
                                         <BusSeats />

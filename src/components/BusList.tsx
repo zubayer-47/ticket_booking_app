@@ -47,7 +47,7 @@ export default function BusList() {
     }
 
     return (
-        <div className="mt-8">
+        <div className="mt-8 w-full overflow-auto">
             <table className="w-full table-auto border-collapse border border-slate-400 text-center overflow-scroll">
                 <thead className="bg-emerald-500 text-white">
                     <tr>
