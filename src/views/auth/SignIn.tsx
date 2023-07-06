@@ -1,19 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { SubmitButton } from "../../components/Buttons/Button";
 import Input, { PasswordInput } from "../../components/Inputs/Inputs";
 import CenterLayout from "../../components/Layouts/CenterLayout";
 import { FormType } from "../../types/custom";
 
-export default function SignUp() {
+export default function SignIn() {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    console.dir(location)
 
     const handleSubmit = (e: FormType) => {
         e.preventDefault();
 
         const formData = new FormData(e.currentTarget);
         const body = {
-            name: formData.get('name'),
             email: formData.get('email'),
-            confirmPassword: formData.get('confirmPassword'),
             password: formData.get('password'),
         }
 
@@ -24,29 +26,20 @@ export default function SignUp() {
         <CenterLayout>
             <form onSubmit={handleSubmit} className="space-y-4 mb-3">
                 <Input
-                    label="Full Name"
-                    name="name"
-                    id="name"
-                    isRequired
-                    placeholder="your full name"
-                    defaultSize
-                />
-                <Input
-                    label="email"
+                    label="Email"
                     name="email"
-                    type="email"
                     id="email"
+                    type="email"
                     isRequired
                     placeholder="example@zubayer.com"
                     defaultSize
                 />
                 <PasswordInput id="password" />
-                <PasswordInput id="confirmPassword" text="Confirm Password" />
 
-                <SubmitButton text="Create Account" />
+                <SubmitButton text="Login Account" />
             </form>
 
-            <Link to={'/sign-in'} className="text-emerald-500 text-lg">Login Account</Link>
+            <Link to={'/sign-up'} className="text-emerald-500">Create Account</Link>
         </CenterLayout>
     )
 }

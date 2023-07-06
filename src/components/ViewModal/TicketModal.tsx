@@ -19,12 +19,14 @@ export default function TicketModal({ showModal, setShowModal }: TicketModalProp
                     >
                         <div className="relative my-6 mx-auto">
                             {/*content*/}
-                            <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                            <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-gray-50 outline-none focus:outline-none">
                                 {/*body*/}
                                 <div className="relative p-6 lg:grid lg:grid-cols-12 gap-2 h-[550px] lg:h-full overflow-auto">
 
-                                    <div className="lg:col-span-4 w-[300px] lg:w-full mx-auto bg-gray-200 rounded-md">
-                                        <BusSeats />
+                                    <div className="lg:col-span-4 w-[300px] lg:w-full mx-auto">
+                                        <div className="bg-gray-200 rounded-md p-2">
+                                            <BusSeats />
+                                        </div>
                                     </div>
 
                                     {/* seat and personal information */}

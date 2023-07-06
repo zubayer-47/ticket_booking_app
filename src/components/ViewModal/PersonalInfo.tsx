@@ -1,7 +1,7 @@
 
 
 import { FormEvent } from 'react';
-import Input, { CheckBox } from '../Inputs/Input';
+import Input, { CheckBox } from '../Inputs/Inputs';
 import Label from '../Inputs/Label';
 
 
@@ -32,8 +32,8 @@ export default function PersonalInfo() {
             <form className="mt-3 lg:mt-5 border p-2 rounded-md space-y-2" onSubmit={handleSubmit}>
                 <p className="text-lg">Personal Information:</p>
                 <div className="grid grid-cols-2 gap-2">
-                    <Input name='name' isRequired label="Name" placeholder="your name" />
-                    <div className="flex justify-center items-center">
+                    <Input id='name' name='name' isRequired label="Name" placeholder="your name" />
+                    <div className="flex justify-center items-center mt-5">
                         <Label text="Gender" isRequired />
                         <select name='gender' className="block w-full p-1 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
                             <option selected>Select Gender</option>
@@ -44,11 +44,11 @@ export default function PersonalInfo() {
                     </div>
                 </div>
 
-                <Input name='email' isRequired label="email" type="email" placeholder="example@zubayer.com" />
+                <Input id='email' name='email' isRequired label="email" type="email" placeholder="example@zubayer.com" />
 
                 <div className="grid grid-cols-2 gap-2">
-                    <Input name='age' isRequired label="Age" placeholder="18" type="number" />
-                    <Input name='mobile' isRequired label="Mobile" placeholder="01600000000" type="tel" />
+                    <Input id='age' name='age' isRequired label="Age" placeholder="18" type="number" />
+                    <Input id='mobile' name='mobile' isRequired label="Mobile" placeholder="01600000000" type="tel" />
                 </div>
 
                 <div className="grid grid-cols-2 gap-2">

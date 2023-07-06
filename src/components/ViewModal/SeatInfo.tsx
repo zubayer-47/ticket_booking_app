@@ -33,13 +33,13 @@ export default function SeatInfo() {
 
             </table>
             <div className='grid grid-cols-3 items-center text-center border mt-4'>
-                <p className='border-r text-red-600'>Total Seat: <span className='text-black'>{ticketList.length}</span></p>
-                <p className='border-r'>
-                    Fare: {ticketList.length * ticketList[0].fare} <br />
-                    <span className='text-red-600'>Charge: <span className='text-black'>130tk</span></span>
+                <p className='border-r text-red-600 font-bold text-sm'>Total Seat: <span className='text-black'>{ticketList.length}</span></p>
+                <p className='border-r text-red-600 font-bold text-sm'>
+                    Fare: <span className='text-black'>{ticketList.length * ticketList[0].fare}</span> <br />
+                    <span className='text-red-600 font-bold text-sm'>Charge: <span className='text-black'>130tk</span></span>
                 </p>
                 <p className='border-r'>
-                    <span>Net Fare: {ticketList.length * ticketList[0].fare + 130}tk</span >
+                    <span className='text-red-600 font-bold text-sm'>Net Fare: <span className='text-black'>{ticketList.length * ticketList[0].fare + 130}tk </span></span >
                 </p>
             </div>
         </>

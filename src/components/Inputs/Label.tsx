@@ -1,11 +1,12 @@
 
 type LabelProps = {
     text: string;
+    id?: string;
     isRequired?: boolean;
 }
 
-export default function Label({ text, isRequired = false }: LabelProps) {
+export default function Label({ text, id, isRequired = false }: LabelProps) {
     return (
-        <label htmlFor={text} className={`block text-sm font-medium text-gray-900 mr-2 ${isRequired ? "after:content-['*'] after:text-red-600" : ""} capitalize`}>{text}:</label>
+        <label htmlFor={id} className={`block text-sm font-medium text-gray-900 mr-2 ${isRequired ? "after:content-['*'] after:text-red-600" : ""} capitalize`}>{text}:</label>
     )
 }

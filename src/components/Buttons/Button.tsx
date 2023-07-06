@@ -1,9 +1,30 @@
+import { Link } from "react-router-dom";
 
-type ButtonProps = {
-    text: string
+type NavButtonProps = {
+    text: string;
+    to: string
 }
 
-export default function Button({ text }: ButtonProps) {
-    return (<button className="hover:text-green-600">{text}</button>
+export function NavButton({ text, to }: NavButtonProps) {
+    return (<Link to={to} className="hover:text-green-600">{text}</Link>
     )
+}
+
+type ButtonProps = {
+    text: string;
+    to?: string;
+    type?: string
+}
+
+export function Button({ text, to = '/', type = '' }: ButtonProps) {
+    return <Link type={type} to={to} className='py-2 px-4 rounded-md bg-emerald-500 text-white hover:bg-emerald-600'>{text}</Link>
+}
+
+type SubmitButtonProps = {
+    text: string;
+}
+
+export function SubmitButton({ text }: SubmitButtonProps) {
+
+    return <button type='submit' className='py-2 px-4 rounded-md bg-emerald-500 text-white hover:bg-emerald-600'>{text}</button>
 }
