@@ -1,11 +1,11 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { SubmitButton } from "../../components/Buttons/Button";
 import Input, { PasswordInput } from "../../components/Inputs/Inputs";
 import CenterLayout from "../../components/Layouts/CenterLayout";
 import { FormType } from "../../types/custom";
 
 export default function SignIn() {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const location = useLocation();
 
     console.dir(location)
