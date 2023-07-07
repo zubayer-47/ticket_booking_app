@@ -6,7 +6,7 @@ type NavButtonProps = {
 }
 
 export function NavButton({ text, to }: NavButtonProps) {
-    return (<Link to={to} className="hover:text-green-600">{text}</Link>
+    return (<Link to={to} className="text-lg border md:border-0 border-gray-400 w-full   hover:text-green-600">{text}</Link>
     )
 }
 
