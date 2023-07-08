@@ -7,7 +7,7 @@ import { FormType } from "../../types/custom";
 import axios from "../../utils/axios";
 
 export default function Admin() {
-    const [error, setError] = useState('');
+    const [, setError] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = (e: FormType) => {
@@ -27,8 +27,6 @@ export default function Admin() {
         }
 
         setError('Something Went Wrong! Please Try Again...')
-
-        console.log(body)
     }
     return (
         <CenterLayout>
