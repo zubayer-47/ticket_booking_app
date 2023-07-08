@@ -1,0 +1,16 @@
+{
+    "client": "Thunder Client",
+    "environmentName": "api-starter-kit",
+    "dateExported": "2023-07-08T15:34:03.015Z",
+    "version": "1.0",
+    "variables": [
+        {
+            "name": "base_uri",
+            "value": "https://bus-booking-api.onrender.com/v1"
+        },
+        {
+            "name": "token",
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJiMmFiNGFiOS1kM2ZmLTQzYjYtYTk4Yy0xOTliY2Y1MWUzNDkiLCJhdXIiOiJhZG1pbiIsImlhdCI6MTY4ODgyNTIyMywiZXhwIjoxNjg4OTExNjIzfQ.JCBc06rduHboF6-_ccVsN8ey1YO0nhJ0RL2HqjnY1L8"
+        }
+    ]
+}

@@ -1,10 +1,11 @@
 import Input, { PasswordInput } from "../../components/Inputs/Inputs";
+import PageLayout from "../../components/Layouts/PageLayout";
 import { Gender } from "../../components/Selects/Selects";
 
 export default function Profile() {
     return (
-        <div>
-            <form>
+        <PageLayout>
+            <form className="space-y-3">
                 <Input
                     id="email"
                     label="Email"
@@ -12,6 +13,7 @@ export default function Profile() {
                     isRequired
                     placeholder="example@zubayer.com"
                     type="email"
+                    defaultSize
                 />
                 <PasswordInput />
                 <Input
@@ -20,6 +22,7 @@ export default function Profile() {
                     name="name"
                     isRequired
                     placeholder="Your Name"
+                    defaultSize
                 />
                 <Input
                     id="address"
@@ -27,6 +30,7 @@ export default function Profile() {
                     name="address"
                     isRequired
                     placeholder="Address"
+                    defaultSize
                 />
                 <Gender />
                 <Input
@@ -35,6 +39,7 @@ export default function Profile() {
                     name="age"
                     isRequired
                     placeholder="Age"
+                    defaultSize
                     type="number"
                 />
                 <Input
@@ -43,6 +48,7 @@ export default function Profile() {
                     isRequired
                     label="Mobile"
                     placeholder="01600000000"
+                    defaultSize
                     type="tel"
                 />
 
@@ -53,6 +59,6 @@ export default function Profile() {
                     Update
                 </button>
             </form>
-        </div>
+        </PageLayout>
     )
 }

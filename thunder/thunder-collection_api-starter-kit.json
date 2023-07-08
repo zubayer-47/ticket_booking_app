@@ -1,0 +1,154 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "api-starter-kit",
+    "dateExported": "2023-07-08T15:33:34.667Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "853c537d-0cc8-413e-9a06-1c5a7ab79068",
+            "name": "User",
+            "containerId": "",
+            "created": "2023-07-07T21:05:08.487Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "233d1893-be4e-4603-bf9e-84391de92cab",
+            "name": "Brand",
+            "containerId": "",
+            "created": "2023-07-08T12:19:08.733Z",
+            "sortNum": 20000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "953a94cc-3919-4f5e-a385-f91449549d5a",
+            "colId": "0453961f-be72-4742-80d9-34e8462370ee",
+            "containerId": "853c537d-0cc8-413e-9a06-1c5a7ab79068",
+            "name": "Create User",
+            "url": "/users/signup",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-07-07T21:05:08.488Z",
+            "modified": "2023-07-08T11:36:34.632Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"fullname\":\"{{#name}}\",\n  \"email\":\"{{#email}}\",\n  \"password\":\"password\",\n  \"role\": \"admin\"\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "set-env-var",
+                    "custom": "cookie._token",
+                    "action": "setto",
+                    "value": "{{token}}"
+                }
+            ]
+        },
+        {
+            "_id": "cb87561f-3379-46b9-b872-dfc696e3ca3e",
+            "colId": "0453961f-be72-4742-80d9-34e8462370ee",
+            "containerId": "853c537d-0cc8-413e-9a06-1c5a7ab79068",
+            "name": "Login",
+            "url": "/users/signin",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-07-07T21:05:08.487Z",
+            "modified": "2023-07-08T14:07:33.886Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"email\":\"Gorczany.84f761f798f2@thunderclient.com\",\n  \"password\":\"password\"\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "set-env-var",
+                    "custom": "cookie._token",
+                    "action": "setto",
+                    "value": "{{token}}"
+                }
+            ]
+        },
+        {
+            "_id": "56c567e5-52d2-4e70-9d9b-ae9f0bc256c4",
+            "colId": "0453961f-be72-4742-80d9-34e8462370ee",
+            "containerId": "233d1893-be4e-4603-bf9e-84391de92cab",
+            "name": "Create new Brand",
+            "url": "/brand/",
+            "method": "POST",
+            "sortNum": 25000,
+            "created": "2023-07-08T12:19:44.820Z",
+            "modified": "2023-07-08T12:58:20.781Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Hanif\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "df85180b-bf2a-4a15-a6c5-d704f381f6ab",
+            "colId": "0453961f-be72-4742-80d9-34e8462370ee",
+            "containerId": "853c537d-0cc8-413e-9a06-1c5a7ab79068",
+            "name": "Profile",
+            "url": "/users/me",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-07-07T21:05:08.489Z",
+            "modified": "2023-07-08T10:19:53.847Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "df9d59ef-d5ca-4b03-9a59-a56ba1a6c381",
+            "colId": "0453961f-be72-4742-80d9-34e8462370ee",
+            "containerId": "233d1893-be4e-4603-bf9e-84391de92cab",
+            "name": "Get All Brand Name",
+            "url": "/brand/",
+            "method": "GET",
+            "sortNum": 50000,
+            "created": "2023-07-08T12:19:26.976Z",
+            "modified": "2023-07-08T12:58:51.307Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "tests": []
+        }
+    ],
+    "settings": {
+        "options": {
+            "baseUrl": "{{base_uri}}"
+        },
+        "envId": "0a3e8246-820d-4db5-99ca-e0abd684c59c"
+    }
+}

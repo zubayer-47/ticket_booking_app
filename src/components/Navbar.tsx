@@ -37,7 +37,7 @@ export default function Navbar() {
                 </div>
                 <div className='absolute top-14 left-0 right-0 bg-gray-200 md:bg-transparent md:relative md:top-0 '>
                     <ul ref={ulRef} className="w-full flex flex-col md:flex-row md:flex justify-end items-center gap-5 p-2 md:p-0">
-                        <li><NavButton to="/admin" text="Admin" /></li>
+                        {/* <li><NavButton to="/admin" text="Admin" /></li> */}
                         {authenticated ? (
                             <>
                                 <li><NavButton to='/profile' text='Profile' /></li>

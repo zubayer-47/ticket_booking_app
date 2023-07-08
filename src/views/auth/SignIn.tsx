@@ -8,7 +8,6 @@ import { FormType } from "../../types/custom";
 import axios from "../../utils/axios";
 
 export default function SignIn() {
-    const [authenticated, setAuthenticated] = useState(true);
     const [error, setError] = useState('');
 
     const navigate = useNavigate();
@@ -16,7 +15,7 @@ export default function SignIn() {
 
     console.dir(location)
 
-    const handleSubmit = (e: FormType) => {
+    const handleSubmit = async (e: FormType) => {
         e.preventDefault();
 
         const formData = new FormData(e.currentTarget);
@@ -25,16 +24,30 @@ export default function SignIn() {
             password: formData.get('password'),
         }
 
-        const response = { status: 200 } || axios.post('url', JSON.stringify(body));
+        try {
+            const response = await axios.post('/users/signin', JSON.stringify({
+                email: body.email,
+                password: body.password
+            }))
 
-        if (response?.status === 200) {
-            setError('')
-            return navigate('/profile', { replace: true })
+            if (response.status === 401) {
+                setError("User Unauthorized! Please Try Again.")
+            }
+
+            if (response.status === 200) {
+
+                console.log(response.data?.role)
+
+                if (response.data?.role === 'user') {
+                    navigate('/profile', { replace: true });
+                } else {
+                    navigate('/dashboard', { replace: true });
+                }
+            }
+        } catch (error) {
+            setError('Something Went Wrong! Please Try Again.')
+            console.log(error)
         }
-
-        setError('Something Went Wrong! Please Try Again...')
-
-        console.log(body)
     }
 
     return (
@@ -57,7 +70,7 @@ export default function SignIn() {
 
             <Link to={'/sign-up'} className="text-emerald-500">Create Account</Link>
             {error && (
-                <Error emptyField={error} />
+                <Error error={error} />
             )}
         </CenterLayout>
     )
