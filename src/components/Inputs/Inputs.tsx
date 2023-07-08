@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { Link } from "react-router-dom";
 import { InputType } from '../../types/custom';
 import Label from "./Label";
@@ -74,8 +75,12 @@ type PasswordInputProps = {
     text?: string;
 }
 
-export function PasswordInput({ text = "Password", id }: PasswordInputProps) {
+export function PasswordInput({ text = "Password", id = "password" }: PasswordInputProps) {
+    const [show, setShow] = useState(false);
     const [value, setValue] = useState('');
+
+
+    const onVisible = () => setShow((prev) => !prev);
 
     const handleChange = (e: InputType) => {
         setValue(e.target.value)
@@ -84,16 +89,27 @@ export function PasswordInput({ text = "Password", id }: PasswordInputProps) {
     return (
         <div>
             <Label id={id} text={text} isRequired />
-            <input
-                type="password"
-                name={id}
-                id={id}
-                onChange={handleChange}
-                value={value}
-                placeholder="*********"
-                className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
-                autoComplete="off"
-            />
+            <div className="relative">
+                <input
+                    type={show ? 'text' : 'password'}
+                    name={id}
+                    id={id}
+                    onChange={handleChange}
+                    value={value || ""}
+                    placeholder="*********"
+                    className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 `}
+                    autoComplete="off"
+                />
+                {!value ? null : (
+                    <button type='button' className='p-2 absolute right-0 top-0' onClick={onVisible}>
+                        {show ? (
+                            <FiEyeOff className='w-5 h-5 stroke-1 text-indigo-300' />
+                        ) : (
+                            <FiEye className='w-5 h-5 stroke-1 text-indigo-300' />
+                        )}
+                    </button>
+                )}
+            </div>
         </div>
     )
 }

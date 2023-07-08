@@ -40,7 +40,7 @@ export default function SignUp() {
                     placeholder="example@zubayer.com"
                     defaultSize
                 />
-                <PasswordInput id="password" />
+                <PasswordInput />
                 <PasswordInput id="confirmPassword" text="Confirm Password" />
 
                 <SubmitButton text="Create Account" />

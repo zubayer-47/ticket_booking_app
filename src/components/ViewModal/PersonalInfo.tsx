@@ -3,6 +3,7 @@
 import { FormEvent } from 'react';
 import Input, { CheckBox } from '../Inputs/Inputs';
 import Label from '../Inputs/Label';
+import { Gender } from '../Selects/Selects';
 
 
 export default function PersonalInfo() {
@@ -34,13 +35,7 @@ export default function PersonalInfo() {
                 <div className="grid grid-cols-2 gap-2">
                     <Input id='name' name='name' isRequired label="Name" placeholder="your name" />
                     <div className="flex justify-center items-center mt-5">
-                        <Label text="Gender" isRequired />
-                        <select name='gender' className="block w-full p-1 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
-                            <option selected>Select Gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                            <option value="others">Others</option>
-                        </select>
+                        <Gender />
                     </div>
                 </div>
 

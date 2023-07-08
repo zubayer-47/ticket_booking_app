@@ -7,7 +7,6 @@ import Home from './views/Home'
 import NotFound from './views/NotFound'
 import SignIn from './views/auth/SignIn'
 import SignUp from './views/auth/SignUp'
-import CancelTicket from './views/cancelTicket/CancelTicket'
 import OrderHistory from './views/orderHistory/OrderHistory'
 import Profile from './views/profile/Profile'
 
@@ -25,7 +24,7 @@ function App() {
         <Route element={<Protected />}>
           <Route path='/profile' element={<Profile />} />
           <Route path='/order-history' element={<OrderHistory />} />
-          <Route path='/cancel-ticket' element={<CancelTicket />} />
+          {/* <Route path='/cancel-ticket' element={<CancelTicket />} /> */}
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
@@ -34,3 +33,6 @@ function App() {
 }
 
 export default App
+
+
+// https://bus-booking-api.onrender.com/
