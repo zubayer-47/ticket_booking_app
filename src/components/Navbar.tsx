@@ -1,13 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { HiMiniBars3BottomRight } from 'react-icons/hi2';
 import { Link, Outlet } from "react-router-dom";
+import { Action } from '../constants/context-constant';
+import { Context } from '../contexts/Context';
 import { NavButton } from "./Buttons/Button";
 import Layout from './Layouts/Layout';
 
 export default function Navbar() {
     const [barOpen, setOpen] = useState(false)
-    const [authenticated, setAuthenticated] = useState(true)
     const ulRef = useRef<HTMLUListElement>(null);
+
+    const { state, dispatch } = useContext(Context);
 
     useEffect(() => {
         const ul = ulRef.current;
@@ -26,7 +29,7 @@ export default function Navbar() {
     }
 
     const logout = () => {
-        setAuthenticated(false)
+        dispatch({ type: Action.REMOVE_USER })
     }
 
     return (
@@ -40,7 +43,7 @@ export default function Navbar() {
                     <div className='absolute top-14 left-0 right-0 bg-gray-200 md:bg-transparent md:relative md:top-0 '>
                         <ul ref={ulRef} className="w-full flex flex-col md:flex-row md:flex justify-end items-center gap-5 p-2 md:p-0">
                             {/* <li><NavButton to="/admin" text="Admin" /></li> */}
-                            {authenticated ? (
+                            {state.user.authenticated ? (
                                 <>
                                     <li><NavButton to='/profile' text='Profile' /></li>
                                     <li><NavButton to='/order-history' text='Order History' /></li>
