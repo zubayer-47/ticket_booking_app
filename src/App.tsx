@@ -1,5 +1,6 @@
-import { Outlet, Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
+import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
 import BusList from './components/BusList'
+import Navbar from './components/Navbar'
 import SignInError from './components/errors/SignInError'
 import signInLoader from './components/loaders/signInLoader'
 import AdminProtected from './utils/AdminProtected'
@@ -17,7 +18,7 @@ function App() {
 
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path='/' element={<Outlet />}>
+      <Route path='/' element={<Navbar />}>
         <Route path='/' element={<Home />}>
           <Route path='/ticket' element={<BusList />} />
         </Route>
