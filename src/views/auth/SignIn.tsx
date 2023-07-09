@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLoaderData, useLocation, useNavigate, useRouteError } from "react-router-dom";
 import { SubmitButton } from "../../components/Buttons/Button";
 import Error from "../../components/Error";
 import Input, { PasswordInput } from "../../components/Inputs/Inputs";
@@ -9,6 +9,10 @@ import axios from "../../utils/axios";
 
 export default function SignIn() {
     const [error, setError] = useState('');
+    const data = useLoaderData();
+    const error2 = useRouteError();
+
+    console.log(data, error2)
 
     const navigate = useNavigate();
     const location = useLocation();

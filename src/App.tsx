@@ -1,7 +1,7 @@
-import { Route, Routes } from 'react-router-dom'
+import { Outlet, Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
 import BusList from './components/BusList'
-import Layout from './components/Layouts/Layout'
-import Navbar from './components/Navbar'
+import SignInError from './components/errors/SignInError'
+import signInLoader from './components/loaders/signInLoader'
 import AdminProtected from './utils/AdminProtected'
 import Protected from './utils/Protected'
 import Admin from './views/Admin/Admin'
@@ -15,14 +15,13 @@ import Profile from './views/profile/Profile'
 
 function App() {
 
-  return (
-    <Layout>
-      <Navbar />
-      <Routes>
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path='/' element={<Outlet />}>
         <Route path='/' element={<Home />}>
           <Route path='/ticket' element={<BusList />} />
         </Route>
-        <Route path='/sign-in' element={<SignIn />} />
+        <Route path='/sign-in' element={<SignIn />} loader={signInLoader} errorElement={<SignInError />} />
         <Route path='/sign-up' element={<SignUp />} />
         <Route path='/admin' element={<Admin />} />
         <Route element={<Protected />}>
@@ -34,9 +33,41 @@ function App() {
           <Route path='/dashboard' element={<Dashboard />} />
         </Route>
         <Route path="*" element={<NotFound />} />
-      </Routes>
-    </Layout>
-  )
+      </Route>
+    )
+  );
+
+  return <RouterProvider router={router} />
+  //  (
+  //   <Layout>
+  //     <Navbar />
+  //     <Routes>
+  //       <Route path='/' element={<Home />}>
+  //         <Route path='/ticket' element={<BusList />} />
+  //       </Route>
+  //       <Route path='/sign-in' element={<SignIn />} loader={signInLoader} errorElement={<SignInError />} />
+  //       <Route path='/sign-up' element={<SignUp />} />
+  //       <Route path='/admin' element={<Admin />} />
+  //       <Route element={<Protected />}>
+  //         <Route path='/profile' element={<Profile />} />
+  //         <Route path='/order-history' element={<OrderHistory />} />
+  //         {/* <Route path='/cancel-ticket' element={<CancelTicket />} /> */}
+  //       </Route>
+  //       <Route element={<AdminProtected />}>
+  //         <Route path='/dashboard' element={<Dashboard />} />
+  //       </Route>
+  //       <Route path="*" element={<NotFound />} />
+  //     </Routes>
+  //   </Layout>
+  // )
 }
 
 export default App
+
+
+// check busy or not 
+// const navigation = useNavigation();
+//   const busy = navigation.state === "submitting";
+
+
+// explore about Outlet component.
