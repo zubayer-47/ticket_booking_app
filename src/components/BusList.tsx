@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FiLayout } from 'react-icons/fi';
-import TicketModal from "./ViewModal/TicketModal";
+import TicketModal from "./ModalViews/TicketModal";
 
 type BUS_LIST_TYPE = {
     id: string;

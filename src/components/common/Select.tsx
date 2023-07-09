@@ -25,6 +25,6 @@ const promiseOptions = (inputValue: string) =>
 export default function Select() {
 
     return <AsyncSelect className='w-full' styles={{
-        menu: provided => ({ ...provided, zIndex: 0 })
+        menu: provided => ({ ...provided, zIndex: 20 })
     }} cacheOptions defaultOptions loadOptions={promiseOptions} />
 }
