@@ -5,7 +5,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      gridTemplateColumns: {
+        'bus_seats': 'repeat(50px, 1fr) repeat(50px, 1fr) repeat(100px, 2fr) repeat(50px, 1fr) repeat(50px, 1fr)',
+      }
+    },
   },
   plugins: [],
 }
