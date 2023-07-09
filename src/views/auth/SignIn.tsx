@@ -1,23 +1,18 @@
-import { useState } from "react";
-import { Link, useLoaderData, useLocation, useNavigate, useRouteError } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { SubmitButton } from "../../components/Buttons/Button";
 import Error from "../../components/Error";
 import Input, { PasswordInput } from "../../components/Inputs/Inputs";
 import CenterLayout from "../../components/Layouts/CenterLayout";
+import { Action } from "../../constants/context-constant";
+import { Context } from "../../contexts/Context";
 import { FormType } from "../../types/custom";
 import axios from "../../utils/axios";
 
 export default function SignIn() {
     const [error, setError] = useState('');
-    const data = useLoaderData();
-    const error2 = useRouteError();
-
-    console.log(data, error2)
-
     const navigate = useNavigate();
-    const location = useLocation();
-
-    console.dir(location)
+    const state = useContext(Context);
 
     const handleSubmit = async (e: FormType) => {
         e.preventDefault();
@@ -40,15 +35,25 @@ export default function SignIn() {
 
             if (response.status === 200) {
 
-                console.log(response.data?.role)
+                state.dispatch({
+                    type: Action.ADD_USER,
+                    payload: {
+                        name: response.data?.name, email: response.data?.email, authenticated: true, role: response.data?.role
+                    }
+                })
 
                 if (response.data?.role === 'user') {
                     navigate('/profile', { replace: true });
                 } else {
                     navigate('/dashboard', { replace: true });
                 }
+
+                return
             }
+
+            state.dispatch({ type: Action.REMOVE_USER })
         } catch (error) {
+            state.dispatch({ type: Action.REMOVE_USER })
             setError('Something Went Wrong! Please Try Again.')
             console.log(error)
         }
