@@ -114,7 +114,7 @@ export default function SignUp() {
 
                 <div>
                     <Label text="Role" isRequired id="role" />
-                    <select className="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-blue-500 focus:border-blue-500" name="role" required>
+                    <select className="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-blue-500 focus:border-blue-500" name="role" required defaultValue=''>
                         <option selected>Select Role</option>
                         <option value='user'>User</option>
                         <option value='admin'>Admin</option>

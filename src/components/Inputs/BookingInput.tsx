@@ -23,7 +23,7 @@ export default function Input({ type, svg }: InputProps) {
             <div className='flex justify-center items-center gap-2'>
                 <input type="date" className='w-full border outline-none rounded-md p-2' name="date" id="date" />
 
-                <select className='w-full bg-white p-2 rounded-md outline-none border-2' name="" id="">
+                <select className='w-full bg-white p-2 rounded-md outline-none border-2' name="" id="" defaultValue=''>
                     <option>---</option>
                     <option value="AC">AC</option>
                     <option value="NON-AC">NON-AC</option>

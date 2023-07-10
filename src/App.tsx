@@ -22,7 +22,9 @@ function App() {
 
   console.log({ cookie });
 
-  console.log(state)
+  // console.log({ _token });
+
+  // console.log(state)
 
   const router = createBrowserRouter(
     createRoutesFromElements(

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { SubmitButton } from "../../components/Buttons/Button";
 import Error from "../../components/Error";
 import Input, { PasswordInput } from "../../components/Inputs/Inputs";
@@ -13,6 +13,11 @@ export default function SignIn() {
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const { login, logout } = useContext(Context);
+    const location = useLocation();
+
+    const from = location.state?.from?.pathname || '/';
+
+    console.log(from)
 
     const handleSubmit = async (e: FormType) => {
         e.preventDefault();
@@ -34,6 +39,7 @@ export default function SignIn() {
             }
 
             if (response.status === 200) {
+                console.log(response)
                 login({
                     name: response.data?.fullname,
                     email: response.data?.email,
