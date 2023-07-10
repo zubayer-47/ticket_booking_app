@@ -1,5 +1,5 @@
-import { ReactNode, useReducer } from "react";
-import { Action, ActionType } from "../constants/context-constant";
+import { ReactNode, useCallback, useMemo, useReducer } from "react";
+import { Action, ActionType, UserType } from "../constants/context-constant";
 import { Context } from "./Context";
 
 const initialState = {
@@ -8,7 +8,8 @@ const initialState = {
             name: "",
             email: '',
             authenticated: false,
-            role: ""
+            role: "",
+            token: ""
         },
     },
 };
@@ -26,7 +27,7 @@ function reducer(state: typeof initialState, action: ActionType) {
             return {
                 state: {
                     ...state.state,
-                    user: { name: "", email: "", authenticated: false, role: "" },
+                    user: { name: "", email: "", authenticated: false, role: "", token: "" },
                 },
             };
 
@@ -35,12 +36,28 @@ function reducer(state: typeof initialState, action: ActionType) {
     }
 }
 
-
 export default function Provider({ children }: { children: ReactNode }) {
     const [state, dispatch] = useReducer(reducer, initialState);
 
+    const login = useCallback((user: UserType) => {
+        dispatch({ type: Action.ADD_USER, payload: user })
+    }, [])
+
+    const logout = useCallback(() => {
+        dispatch({ type: Action.REMOVE_USER })
+    }, [])
+
+    const updateUser = useCallback(() => {
+        dispatch({ type: Action.REMOVE_USER })
+    }, [])
+
+    const value = useMemo(
+        () => ({ ...state, login, logout, updateUser }),
+        [state, login, logout, updateUser]
+    );
+
     return (
-        <Context.Provider value={{ state: state.state, dispatch }}>
+        <Context.Provider value={{ ...value, dispatch }}>
             {children}
         </Context.Provider>
     )
