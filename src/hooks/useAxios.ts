@@ -3,13 +3,13 @@
 
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../utils/axios";
+import { api } from "../utils/axios";
 
 const useAxios = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const requestIntercept = axios.interceptors.request.use(
+    const requestIntercept = api.interceptors.request.use(
       (config: any) => {
         if (!config.headers.Authorization) {
           config.headers.Authorization = `${localStorage.getItem("_token")}`;
@@ -19,7 +19,7 @@ const useAxios = () => {
       (error: any) => Promise.reject(error)
     );
 
-    const responseIntercept = axios.interceptors.response.use(
+    const responseIntercept = api.interceptors.response.use(
       (response: any) => response,
       async (error: {
         message: string;
@@ -63,12 +63,12 @@ const useAxios = () => {
     );
 
     return () => {
-      axios.interceptors.request.eject(requestIntercept);
-      axios.interceptors.response.eject(responseIntercept);
+      api.interceptors.request.eject(requestIntercept);
+      api.interceptors.response.eject(responseIntercept);
     };
   }, []);
 
-  return axios;
+  return api;
 };
 
 export default useAxios;
