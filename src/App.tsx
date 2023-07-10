@@ -1,11 +1,9 @@
-import { useContext } from 'react'
 import { useCookies } from 'react-cookie'
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
 import BusList from './components/BusList'
 import Navbar from './components/Navbar'
 import AdminProtected from './components/protected/AdminProtected'
 import Protected from './components/protected/Protected'
-import { Context } from './contexts/Context'
 import Home from './views/Home'
 import NotFound from './views/NotFound'
 import Admin from './views/admin/Admin'
@@ -18,7 +16,7 @@ import Profile from './views/profile/Profile'
 function App() {
   const cookie = useCookies();
 
-  const { state } = useContext(Context)
+  // const { state } = useContext(Context)
 
   console.log({ cookie });
 
