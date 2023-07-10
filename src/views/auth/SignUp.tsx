@@ -58,6 +58,7 @@ export default function SignUp() {
                     authenticated: true,
                     role: response.data?.role,
                     token: response.data?.token,
+                    ticket: response.data?.ticket
                 })
 
                 if (response.data?.role === 'user') {

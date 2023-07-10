@@ -6,7 +6,5 @@ export default function Protected() {
     const { state } = useContext(Context);
     const location = useLocation();
 
-    return (
-        state.user.authenticated ? <Outlet /> : <Navigate to='/sign-in' state={{ from: location }} />
-    )
+    return state.user.authenticated ? <Outlet /> : <Navigate to='/sign-in' state={{ from: location }} />
 }

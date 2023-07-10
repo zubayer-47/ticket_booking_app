@@ -9,8 +9,10 @@ const initialState = {
             email: '',
             authenticated: false,
             role: "",
-            token: ""
+            token: "",
+            ticket: ""
         },
+        isLoading: false
     },
 };
 
@@ -23,11 +25,25 @@ function reducer(state: typeof initialState, action: ActionType) {
                     user: action.payload,
                 },
             };
+        case Action.UPDATE_USER:
+            return {
+                state: {
+                    ...state.state,
+                    user: action.payload,
+                },
+            };
         case Action.REMOVE_USER:
             return {
                 state: {
                     ...state.state,
-                    user: { name: "", email: "", authenticated: false, role: "", token: "" },
+                    user: { name: "", email: "", authenticated: false, role: "", token: "", ticket: "" },
+                },
+            };
+        case Action.LOADING:
+            return {
+                state: {
+                    ...state.state,
+                    isLoading: action.payload
                 },
             };
 
@@ -47,13 +63,17 @@ export default function Provider({ children }: { children: ReactNode }) {
         dispatch({ type: Action.REMOVE_USER })
     }, [])
 
-    const updateUser = useCallback(() => {
-        dispatch({ type: Action.REMOVE_USER })
+    const updateUser = useCallback((user: UserType) => {
+        dispatch({ type: Action.UPDATE_USER, payload: user })
+    }, [])
+
+    const loading = useCallback((loading: boolean) => {
+        dispatch({ type: Action.LOADING, payload: loading })
     }, [])
 
     const value = useMemo(
-        () => ({ ...state, login, logout, updateUser }),
-        [state, login, logout, updateUser]
+        () => ({ ...state, login, logout, updateUser, loading }),
+        [state, login, logout, updateUser, loading]
     );
 
     return (

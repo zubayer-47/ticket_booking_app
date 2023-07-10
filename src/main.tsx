@@ -1,18 +1,16 @@
 import React from 'react'
-import { CookiesProvider } from 'react-cookie'
 import ReactDOM from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
 import App from './App.tsx'
 import Provider from './contexts/Provider.tsx'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    {/* <BrowserRouter> */}
     <Provider>
-      <CookiesProvider>
+      <BrowserRouter>
         <App />
-      </CookiesProvider>
+      </BrowserRouter>
     </Provider>
-    {/* </BrowserRouter> */}
-  </React.StrictMode>,
+  </React.StrictMode>
 )

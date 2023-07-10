@@ -5,7 +5,5 @@ import { Context } from '../../contexts/Context';
 export default function AdminProtected() {
     const { state } = useContext(Context);
 
-    return (
-        state.user.role === 'admin' ? <Outlet /> : <Navigate to='/profile' />
-    )
+    return state.user.role === 'admin' ? <Outlet /> : <Navigate to='/profile' />
 }

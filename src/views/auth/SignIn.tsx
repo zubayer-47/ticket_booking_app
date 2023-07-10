@@ -1,5 +1,6 @@
 import axios from "axios";
-import { useContext, useState } from "react";
+import Cookies from "js-cookie";
+import { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { SubmitButton } from "../../components/Buttons/Button";
 import Error from "../../components/Error";
@@ -17,7 +18,11 @@ export default function SignIn() {
 
     const from = location.state?.from?.pathname || '/';
 
-    console.log(from)
+    useEffect(() => {
+        const _token = Cookies.get("_token");
+
+        _token && navigate(from);
+    }, [])
 
     const handleSubmit = async (e: FormType) => {
         e.preventDefault();
@@ -46,7 +51,10 @@ export default function SignIn() {
                     authenticated: true,
                     role: response.data?.role,
                     token: response.data?.token,
+                    ticket: response.data?.ticket
                 })
+
+                Cookies.set("_token", response.data?.token);
 
                 if (response.data?.role === 'user') {
                     navigate('/profile', { replace: true });

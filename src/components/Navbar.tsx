@@ -1,16 +1,14 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { HiMiniBars3BottomRight } from 'react-icons/hi2';
-import { Link, Outlet } from "react-router-dom";
-import { Action } from '../constants/context-constant';
+import { Link } from "react-router-dom";
 import { Context } from '../contexts/Context';
 import { NavButton } from "./Buttons/Button";
-import Layout from './Layouts/Layout';
 
 export default function Navbar() {
     const [barOpen, setOpen] = useState(false)
     const ulRef = useRef<HTMLUListElement>(null);
 
-    const { state, dispatch } = useContext(Context);
+    const { state, logout } = useContext(Context);
 
     useEffect(() => {
         const ul = ulRef.current;
@@ -28,10 +26,6 @@ export default function Navbar() {
         setOpen(prev => !prev);
     }
 
-    const logout = () => {
-        dispatch({ type: Action.REMOVE_USER })
-    }
-
     return (
         <div>
             <div className="fixed top-0 left-0 right-0 grid grid-cols-12 gap-2 px-2 md:px-5 py-3 md:py-4 border-b mb-10 select-none bg-gray-50 z-10">
@@ -47,6 +41,7 @@ export default function Navbar() {
                                 <>
                                     <li><NavButton to='/profile' text='Profile' /></li>
                                     <li><NavButton to='/order-history' text='Order History' /></li>
+                                    <li><NavButton to='/change-password' text='Change Password' /></li>
                                     <li><NavButton logout={logout} to='/' text='Sign Out' /></li>
                                 </>
                             ) : (
@@ -59,10 +54,6 @@ export default function Navbar() {
                     </div>
                 </div>
             </div >
-
-            <Layout>
-                <Outlet />
-            </Layout>
         </div>
     )
 }

@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import Cookies from "js-cookie";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../utils/axios";
@@ -12,7 +13,8 @@ const useAxios = () => {
     const requestIntercept = api.interceptors.request.use(
       (config: any) => {
         if (!config.headers.Authorization) {
-          config.headers.Authorization = `${localStorage.getItem("_token")}`;
+          const _token = Cookies.get("_token");
+          config.headers.Authorization = `${_token}`;
         }
         return config;
       },
