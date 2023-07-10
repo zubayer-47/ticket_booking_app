@@ -1,18 +1,18 @@
+import axios from "axios";
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { SubmitButton } from "../../components/Buttons/Button";
 import Error from "../../components/Error";
 import Input, { PasswordInput } from "../../components/Inputs/Inputs";
 import CenterLayout from "../../components/Layouts/CenterLayout";
-import { Action } from "../../constants/context-constant";
 import { Context } from "../../contexts/Context";
 import { FormType } from "../../types/custom";
-import axios from "../../utils/axios";
+import { api } from "../../utils/axios";
 
 export default function SignIn() {
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    const state = useContext(Context);
+    const { login, logout } = useContext(Context);
 
     const handleSubmit = async (e: FormType) => {
         e.preventDefault();
@@ -24,7 +24,7 @@ export default function SignIn() {
         }
 
         try {
-            const response = await axios.post('/users/signin', JSON.stringify({
+            const response = await api.post('/users/signin', JSON.stringify({
                 email: body.email,
                 password: body.password
             }))
@@ -34,12 +34,12 @@ export default function SignIn() {
             }
 
             if (response.status === 200) {
-
-                state.dispatch({
-                    type: Action.ADD_USER,
-                    payload: {
-                        name: response.data?.name, email: response.data?.email, authenticated: true, role: response.data?.role
-                    }
+                login({
+                    name: response.data?.fullname,
+                    email: response.data?.email,
+                    authenticated: true,
+                    role: response.data?.role,
+                    token: response.data?.token,
                 })
 
                 if (response.data?.role === 'user') {
@@ -51,11 +51,15 @@ export default function SignIn() {
                 return
             }
 
-            state.dispatch({ type: Action.REMOVE_USER })
+            logout()
         } catch (error) {
-            state.dispatch({ type: Action.REMOVE_USER })
-            setError('Something Went Wrong! Please Try Again.')
-            console.log(error)
+
+            if (axios.isAxiosError(error)) {
+                logout()
+                const message = error?.response?.data?.message || 'Something Went Wrong! Please Try Again.';
+
+                setError(message)
+            }
         }
     }
 

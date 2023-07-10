@@ -4,7 +4,7 @@ import { SubmitButton } from "../../components/Buttons/Button";
 import Input, { PasswordInput } from "../../components/Inputs/Inputs";
 import CenterLayout from "../../components/Layouts/CenterLayout";
 import { FormType } from "../../types/custom";
-import axios from "../../utils/axios";
+import { api } from "../../utils/axios";
 
 export default function Admin() {
     const [, setError] = useState('');
@@ -19,7 +19,7 @@ export default function Admin() {
             password: formData.get('password'),
         }
 
-        const response = { status: 200 } || axios.post('url', JSON.stringify(body));
+        const response = { status: 200 } || api.post('url', JSON.stringify(body));
 
         if (response?.status === 200) {
             setError('')

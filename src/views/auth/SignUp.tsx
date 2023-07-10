@@ -1,12 +1,14 @@
-import { useState } from "react";
+import axios from "axios";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { SubmitButton } from "../../components/Buttons/Button";
 import Error from "../../components/Error";
 import Input, { PasswordInput } from "../../components/Inputs/Inputs";
 import Label from "../../components/Inputs/Label";
 import CenterLayout from "../../components/Layouts/CenterLayout";
+import { Context } from "../../contexts/Context";
 import { FormType } from "../../types/custom";
-import axios from "../../utils/axios";
+import { api } from "../../utils/axios";
 
 export default function SignUp() {
     const [error, setError] = useState({
@@ -16,6 +18,8 @@ export default function SignUp() {
         common: ''
     });
     const navigate = useNavigate();
+
+    const { login, logout } = useContext(Context)
 
     const handleSubmit = async (e: FormType) => {
         e.preventDefault();
@@ -39,10 +43,8 @@ export default function SignUp() {
             return
         }
 
-
-
         try {
-            const response = await axios.post('/users/signup', JSON.stringify({
+            const response = await api.post('/users/signup', JSON.stringify({
                 fullname: body.name,
                 email: body.email,
                 password: body.password,
@@ -50,23 +52,35 @@ export default function SignUp() {
             }))
 
             if (response.status === 200) {
-
-                console.log(response.data?.role)
+                login({
+                    name: response.data?.fullname,
+                    email: response.data?.email,
+                    authenticated: true,
+                    role: response.data?.role,
+                    token: response.data?.token,
+                })
 
                 if (response.data?.role === 'user') {
                     navigate('/profile', { replace: true });
                 } else {
                     navigate('/dashboard', { replace: true });
                 }
+            } else {
+                logout()
+                setError(prev => ({
+                    ...prev,
+                    common: "something went wrong! please try again..."
+                }))
             }
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
+        } catch (error) {
 
-            setError(prev => ({
-                ...prev,
-                common: error?.response?.data?.email
-            }))
-            console.log(error)
+            if (axios.isAxiosError(error)) {
+                logout()
+                const message = error?.response?.data?.message || 'Something Went Wrong! Please Try Again.';
+
+                setError(message)
+            }
         }
 
     }
