@@ -9,13 +9,13 @@ export default function Booking() {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const formData = new FormData(e.currentTarget);
+        // const formData = new FormData(e.currentTarget);
 
-        const body = {
-            journeyDate: formData.get('date')
-        }
+        // const body = {
+        //     journeyDate: formData.get('date')
+        // }
 
-        const dateTime = String(body.journeyDate);
+        // const dateTime = String(body.journeyDate);
         // const date = formateDate(dateTime)
 
         // const res = await axios.post('/product', {
