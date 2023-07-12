@@ -12,7 +12,6 @@ export function NavButton({ text, to, logout = () => { } }: NavButtonProps) {
     return (<Link to={to} onClick={() => {
         logout()
         Cookies.remove("_token")
-
     }} className="text-lg border md:border-0 border-gray-400 w-full hover:text-green-600">{text}</Link>
     )
 }

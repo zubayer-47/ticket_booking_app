@@ -1,9 +1,12 @@
 import { useContext } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { Context } from '../../contexts/Context';
 
 export default function AdminProtected() {
     const { state } = useContext(Context);
+    const location = useLocation();
 
-    return state.user.role === 'admin' ? <Outlet /> : <Navigate to='/profile' />
+    console.log(state.user.role === 'admin', state.user)
+
+    return (state.user.role === 'admin' && state.user.authenticated) ? <Outlet /> : <Navigate to='/login' replace state={{ from: location }} />
 }

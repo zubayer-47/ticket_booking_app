@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "environmentName": "api-starter-kit",
-    "dateExported": "2023-07-08T15:34:03.015Z",
+    "dateExported": "2023-07-12T13:19:29.923Z",
     "version": "1.0",
     "variables": [
         {
@@ -10,7 +10,7 @@
         },
         {
             "name": "token",
-            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJiMmFiNGFiOS1kM2ZmLTQzYjYtYTk4Yy0xOTliY2Y1MWUzNDkiLCJhdXIiOiJhZG1pbiIsImlhdCI6MTY4ODgyNTIyMywiZXhwIjoxNjg4OTExNjIzfQ.JCBc06rduHboF6-_ccVsN8ey1YO0nhJ0RL2HqjnY1L8"
+            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiIyMmQwNmNmYS0zZjMxLTQ5YWUtYjExYy1mZjc3ZDM1ODExNDciLCJhdXIiOiJhZG1pbiIsImlhdCI6MTY4OTE2NDA5OSwiZXhwIjoxNjg5MjUwNDk5fQ.uhG6W3IPrEjkJA340bd6iebQG5SSRzW6jxuiBE-59Lk"
         }
     ]
 }

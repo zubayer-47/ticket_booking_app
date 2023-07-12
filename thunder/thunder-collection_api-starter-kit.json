@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "api-starter-kit",
-    "dateExported": "2023-07-08T15:33:34.667Z",
+    "dateExported": "2023-07-12T13:19:10.521Z",
     "version": "1.1",
     "folders": [
         {
@@ -17,6 +17,41 @@
             "containerId": "",
             "created": "2023-07-08T12:19:08.733Z",
             "sortNum": 20000
+        },
+        {
+            "_id": "095bf4c4-7a67-4918-aebb-a40a135bdc2c",
+            "name": "Product",
+            "containerId": "",
+            "created": "2023-07-08T15:36:59.338Z",
+            "sortNum": 30000
+        },
+        {
+            "_id": "d2f7ad0a-86a6-43e3-b43a-ade5ff85a4e3",
+            "name": "Location",
+            "containerId": "",
+            "created": "2023-07-08T20:06:06.135Z",
+            "sortNum": 40000
+        },
+        {
+            "_id": "4aec8733-bc3a-4b42-9324-d6b264f72690",
+            "name": "From",
+            "containerId": "",
+            "created": "2023-07-09T20:48:15.948Z",
+            "sortNum": 50000
+        },
+        {
+            "_id": "68b23520-40b8-48b1-bd1e-e35f5912057e",
+            "name": "search",
+            "containerId": "",
+            "created": "2023-07-10T22:16:57.298Z",
+            "sortNum": 60000
+        },
+        {
+            "_id": "a0e79fb0-f200-408a-9233-7245eff55c8a",
+            "name": "Ticket",
+            "containerId": "",
+            "created": "2023-07-12T09:40:04.685Z",
+            "sortNum": 70000
         }
     ],
     "requests": [
@@ -29,7 +64,7 @@
             "method": "POST",
             "sortNum": 10000,
             "created": "2023-07-07T21:05:08.488Z",
-            "modified": "2023-07-08T11:36:34.632Z",
+            "modified": "2023-07-08T16:32:28.352Z",
             "headers": [
                 {
                     "name": "Content-Type",
@@ -60,7 +95,7 @@
             "method": "POST",
             "sortNum": 20000,
             "created": "2023-07-07T21:05:08.487Z",
-            "modified": "2023-07-08T14:07:33.886Z",
+            "modified": "2023-07-12T09:43:24.425Z",
             "headers": [
                 {
                     "name": "Content-Type",
@@ -70,7 +105,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"email\":\"Gorczany.84f761f798f2@thunderclient.com\",\n  \"password\":\"password\"\n}",
+                "raw": "{\n  \"email\":\"Goldner.382ec9ef3904@outlook.com\",\n  \"password\":\"password\"\n}",
                 "form": []
             },
             "tests": [
@@ -91,7 +126,7 @@
             "method": "POST",
             "sortNum": 25000,
             "created": "2023-07-08T12:19:44.820Z",
-            "modified": "2023-07-08T12:58:20.781Z",
+            "modified": "2023-07-12T08:45:32.190Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -101,7 +136,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"name\": \"Hanif\"\n}",
+                "raw": "{\n  \"name\": \"Shemoly\"\n}",
                 "form": []
             },
             "tests": []
@@ -142,6 +177,319 @@
                 }
             ],
             "params": [],
+            "tests": []
+        },
+        {
+            "_id": "3279e1b5-225b-48f2-b2c9-f001d098fa90",
+            "colId": "0453961f-be72-4742-80d9-34e8462370ee",
+            "containerId": "095bf4c4-7a67-4918-aebb-a40a135bdc2c",
+            "name": "create product",
+            "url": "/product",
+            "method": "POST",
+            "sortNum": 70000,
+            "created": "2023-07-08T15:37:08.237Z",
+            "modified": "2023-07-12T12:17:49.583Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"brandID\": \"0c1da3c8-2961-4e30-91e0-4fc16de4bcf0\",\n  \"journey_date\": \"2023-11-30T18:00:00.000Z\",\n  \"location_id\": \"2c149220-3178-48c1-b221-6a44d87fc349\",\n  \"type\": \"AC\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "ba2a931f-e588-4f74-8820-6b8ef23eb619",
+            "colId": "0453961f-be72-4742-80d9-34e8462370ee",
+            "containerId": "095bf4c4-7a67-4918-aebb-a40a135bdc2c",
+            "name": "Get Product",
+            "url": "/product/",
+            "method": "GET",
+            "sortNum": 80000,
+            "created": "2023-07-08T19:33:18.218Z",
+            "modified": "2023-07-08T19:39:53.144Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n   \"brandID\": \"c97a8e42-2c6c-4e8a-8be1-db52a49cc3a7\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "0fe5ab5c-4a9f-4893-934c-61299fb1878d",
+            "colId": "0453961f-be72-4742-80d9-34e8462370ee",
+            "containerId": "095bf4c4-7a67-4918-aebb-a40a135bdc2c",
+            "name": "Get Specific product",
+            "url": "/product/b27843f0-0937-4624-af57-b4d3689a273d",
+            "method": "GET",
+            "sortNum": 90000,
+            "created": "2023-07-08T19:35:23.058Z",
+            "modified": "2023-07-08T20:10:57.351Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "bdb8d767-9e79-4cc2-bf37-b03fa6700a04",
+            "colId": "0453961f-be72-4742-80d9-34e8462370ee",
+            "containerId": "d2f7ad0a-86a6-43e3-b43a-ade5ff85a4e3",
+            "name": "create locatoin",
+            "url": "/location",
+            "method": "POST",
+            "sortNum": 110000,
+            "created": "2023-07-08T20:06:56.286Z",
+            "modified": "2023-07-12T12:18:03.923Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"cumilla\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "948c2115-093f-4c5a-9c54-2e00def3b0ba",
+            "colId": "0453961f-be72-4742-80d9-34e8462370ee",
+            "containerId": "d2f7ad0a-86a6-43e3-b43a-ade5ff85a4e3",
+            "name": "get all location",
+            "url": "/location",
+            "method": "GET",
+            "sortNum": 130000,
+            "created": "2023-07-08T20:08:09.484Z",
+            "modified": "2023-07-08T20:08:51.595Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "c37eb5d0-1080-4cfe-97be-759eadc59d1a",
+            "colId": "0453961f-be72-4742-80d9-34e8462370ee",
+            "containerId": "d2f7ad0a-86a6-43e3-b43a-ade5ff85a4e3",
+            "name": "get specific location",
+            "url": "/location/82ba8f6c-1f0f-4468-bba6-a42691abf952",
+            "method": "GET",
+            "sortNum": 140000,
+            "created": "2023-07-08T20:11:21.288Z",
+            "modified": "2023-07-11T21:04:01.673Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "05117b60-39fc-4015-8c2d-48aa78f77705",
+            "colId": "0453961f-be72-4742-80d9-34e8462370ee",
+            "containerId": "233d1893-be4e-4603-bf9e-84391de92cab",
+            "name": "update brand",
+            "url": "/brand",
+            "method": "PUT",
+            "sortNum": 150000,
+            "created": "2023-07-08T20:35:36.749Z",
+            "modified": "2023-07-08T20:36:43.866Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"brandID\": \"\",\n  \"name\": \"\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "67e535f5-183f-4f50-9aa0-a6691cade3fe",
+            "colId": "0453961f-be72-4742-80d9-34e8462370ee",
+            "containerId": "4aec8733-bc3a-4b42-9324-d6b264f72690",
+            "name": "create From",
+            "url": "/from",
+            "method": "POST",
+            "sortNum": 170000,
+            "created": "2023-07-09T20:48:41.287Z",
+            "modified": "2023-07-12T12:18:44.852Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"productID\": \"3bae595e-eb22-4be5-943e-18526ba20bcc\",\n  \"ticketPrice\": \"500\",\n  \"locationID\": \"669574c2-0d8b-4947-a896-a81121f9598a\"\n  \n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "e4b1a698-56fa-4d78-992f-6fff8743d921",
+            "colId": "0453961f-be72-4742-80d9-34e8462370ee",
+            "containerId": "4aec8733-bc3a-4b42-9324-d6b264f72690",
+            "name": "get product wise location",
+            "url": "/from",
+            "method": "GET",
+            "sortNum": 180000,
+            "created": "2023-07-09T20:51:27.123Z",
+            "modified": "2023-07-12T07:36:50.816Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"productID\": \"b27843f0-0937-4624-af57-b4d3689a273d\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "9a5fbdc3-1ca6-49a2-8f88-0665f680261b",
+            "colId": "0453961f-be72-4742-80d9-34e8462370ee",
+            "containerId": "4aec8733-bc3a-4b42-9324-d6b264f72690",
+            "name": "get specific from",
+            "url": "",
+            "method": "GET",
+            "sortNum": 190000,
+            "created": "2023-07-10T21:53:13.333Z",
+            "modified": "2023-07-10T21:53:13.333Z",
+            "headers": []
+        },
+        {
+            "_id": "adb7d21d-e63e-4a85-a966-a84c771c2aba",
+            "colId": "0453961f-be72-4742-80d9-34e8462370ee",
+            "containerId": "68b23520-40b8-48b1-bd1e-e35f5912057e",
+            "name": "search from location",
+            "url": "/search/fromLocation",
+            "method": "GET",
+            "sortNum": 200000,
+            "created": "2023-07-10T22:17:20.086Z",
+            "modified": "2023-07-10T22:19:58.436Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "060ad68e-d3bf-4edd-a00b-3353409f1933",
+            "colId": "0453961f-be72-4742-80d9-34e8462370ee",
+            "containerId": "68b23520-40b8-48b1-bd1e-e35f5912057e",
+            "name": "To location",
+            "url": "/search/toLocation",
+            "method": "GET",
+            "sortNum": 210000,
+            "created": "2023-07-10T22:21:03.406Z",
+            "modified": "2023-07-12T12:19:17.680Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"fromLocation\": \"669574c2-0d8b-4947-a896-a81121f9598a\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "af05a1c7-1c79-4391-b7e3-f0def605d5c1",
+            "colId": "0453961f-be72-4742-80d9-34e8462370ee",
+            "containerId": "68b23520-40b8-48b1-bd1e-e35f5912057e",
+            "name": "search",
+            "url": "/search/",
+            "method": "GET",
+            "sortNum": 220000,
+            "created": "2023-07-11T20:56:06.473Z",
+            "modified": "2023-07-12T12:28:04.820Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"fromID\": \"52b50fd7-e5b5-4176-b649-9fd07f559374\",\n  \"toLocation\": \"2c149220-3178-48c1-b221-6a44d87fc349\",\n  \"journey_date\": \"2023-11-30T18:00:00\",\n  \"type\": \"AC\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "7cb823fc-17ce-4acd-a340-4ee3619db820",
+            "colId": "0453961f-be72-4742-80d9-34e8462370ee",
+            "containerId": "a0e79fb0-f200-408a-9233-7245eff55c8a",
+            "name": "create Ticket",
+            "url": "/ticket",
+            "method": "POST",
+            "sortNum": 230000,
+            "created": "2023-07-12T09:40:12.462Z",
+            "modified": "2023-07-12T12:29:43.228Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"fromID\": \"52b50fd7-e5b5-4176-b649-9fd07f559374\",\n  \"productID\": \"3bae595e-eb22-4be5-943e-18526ba20bcc\",\n  \"seatName\": \"A2\",\n  \"userID\": \"22d06cfa-3f31-49ae-b11c-ff77d3581147\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "6a137fe6-ed39-4166-8828-31092ff10c18",
+            "colId": "0453961f-be72-4742-80d9-34e8462370ee",
+            "containerId": "a0e79fb0-f200-408a-9233-7245eff55c8a",
+            "name": "Get Ticket",
+            "url": "/ticket",
+            "method": "GET",
+            "sortNum": 240000,
+            "created": "2023-07-12T09:51:14.522Z",
+            "modified": "2023-07-12T12:59:16.556Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n   \"productID\": \"3bae595e-eb22-4be5-943e-18526ba20bcc\"\n}",
+                "form": []
+            },
             "tests": []
         }
     ],

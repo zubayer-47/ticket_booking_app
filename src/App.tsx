@@ -1,17 +1,17 @@
 import Cookies from 'js-cookie'
 import { useContext, useEffect } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Outlet, Route, Routes } from 'react-router-dom'
 import BusList from './components/BusList'
 import Layout from './components/Layouts/Layout'
 import Loader from './components/Loader'
 import Navbar from './components/Navbar'
 import AdminProtected from './components/protected/AdminProtected'
 import Protected from './components/protected/Protected'
+import PublicRoutes from './components/protected/PublicRoutes'
 import { Context } from './contexts/Context'
 import { api } from './utils/axios'
 import Home from './views/Home'
 import NotFound from './views/NotFound'
-import Admin from './views/admin/Admin'
 import Dashboard from './views/admin/Dashboard'
 import SignIn from './views/auth/SignIn'
 import SignUp from './views/auth/SignUp'
@@ -19,14 +19,14 @@ import OrderHistory from './views/orderHistory/OrderHistory'
 import Profile from './views/profile/Profile'
 
 function App() {
-  const { state: { user: { token, authenticated } }, login, loading } = useContext(Context)
+  const { state: { user }, login, loading } = useContext(Context)
+
+  console.log(user, 'app');
 
   const setCookie = (tokenParam: string) => {
     const _token = Cookies.get("_token");
 
-    console.log({ token })
-
-    if (!_token) return () => Cookies.set("_token", tokenParam);
+    if (!_token) return () => Cookies.set("_token", tokenParam, { expires: 2 });
   }
 
   useEffect(() => {
@@ -65,7 +65,7 @@ function App() {
       }
     }
 
-    !authenticated && fetchUser();
+    !user.authenticated && fetchUser();
 
   }, [])
 
@@ -74,21 +74,28 @@ function App() {
       <Loader>
         <Navbar />
         <Routes>
-          <Route path='/' element={<Home />}>
-            <Route path='/ticket' element={<BusList />} />
+          <Route path='/' element={<Outlet />}>
+            <Route element={<PublicRoutes />}>
+              <Route path='/' element={<Home />}>
+                <Route path='ticket' element={<BusList />} />
+              </Route>
+
+              <Route path='/sign-in' element={<SignIn />} />
+              <Route path='/sign-up' element={<SignUp />} />
+            </Route>
+
+            {/* private routes */}
+            <Route element={<Protected />}>
+              <Route index path='/profile' element={<Profile />} />
+              <Route path='/order-history' element={<OrderHistory />} />
+            </Route>
+
+            {/* admin panel private routes */}
+            <Route element={<AdminProtected />}>
+              <Route index path='/dashboard' element={<Dashboard />} />
+            </Route>
+            <Route path="*" element={<NotFound />} />
           </Route>
-          <Route path='/sign-in' element={<SignIn />} />
-          <Route path='/sign-up' element={<SignUp />} />
-          <Route path='/admin' element={<Admin />} />
-          <Route element={<Protected />}>
-            <Route path='/profile' element={<Profile />} />
-            <Route path='/order-history' element={<OrderHistory />} />
-            {/* <Route path='/cancel-ticket' element={<CancelTicket />} /> */}
-          </Route>
-          <Route element={<AdminProtected />}>
-            <Route path='/dashboard' element={<Dashboard />} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
         </Routes>
       </Loader>
     </Layout>
