@@ -1,17 +1,20 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 
 type NavButtonProps = {
     text: string;
     to: string;
     logout?: () => void;
+    isLogout?: boolean
 }
 
-export function NavButton({ text, to, logout = () => { } }: NavButtonProps) {
+export function NavButton({ text, to, logout = () => { }, isLogout = false }: NavButtonProps) {
     return (<Link to={to} onClick={() => {
-        logout()
-        Cookies.remove("_token")
+        if (isLogout) {
+            logout()
+            // Cookies.remove("_token")
+            localStorage.removeItem("_token")
+        }
     }} className="text-lg border md:border-0 border-gray-400 w-full hover:text-green-600">{text}</Link>
     )
 }

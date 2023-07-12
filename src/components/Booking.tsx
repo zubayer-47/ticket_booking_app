@@ -23,9 +23,6 @@ export default function Booking() {
         //     brandID: "4ed2ca7f-4aca-421f-b9e7-eefa1605b7d8",
         //     journey_date: ""
         // })
-
-        console.log({ date }, body.journeyDate)
-
         navigate('/ticket')
     }
 

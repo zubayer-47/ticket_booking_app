@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie'
 import { useContext, useEffect } from 'react'
 import { Outlet, Route, Routes } from 'react-router-dom'
 import BusList from './components/BusList'
@@ -7,7 +6,6 @@ import Loader from './components/Loader'
 import Navbar from './components/Navbar'
 import AdminProtected from './components/protected/AdminProtected'
 import Protected from './components/protected/Protected'
-import PublicRoutes from './components/protected/PublicRoutes'
 import { Context } from './contexts/Context'
 import { api } from './utils/axios'
 import Home from './views/Home'
@@ -15,24 +13,21 @@ import NotFound from './views/NotFound'
 import Dashboard from './views/admin/Dashboard'
 import SignIn from './views/auth/SignIn'
 import SignUp from './views/auth/SignUp'
+import Brand from './views/brand'
+import Create from './views/brand/Create'
 import OrderHistory from './views/orderHistory/OrderHistory'
 import Profile from './views/profile/Profile'
 
-function App() {
-  const { state: { user }, login, loading } = useContext(Context)
+export default function App() {
+  const { state: { user }, login, loading, logout } = useContext(Context)
+  const setLocalStorage = (tokenParam: string) => {
+    const _token = JSON.parse(localStorage.getItem("_token") ?? '""');
 
-  console.log(user, 'app');
-
-  const setCookie = (tokenParam: string) => {
-    const _token = Cookies.get("_token");
-
-    if (!_token) return () => Cookies.set("_token", tokenParam, { expires: 2 });
+    if (!_token) return () => localStorage.setItem("_token", JSON.stringify(tokenParam));
   }
 
   useEffect(() => {
-    console.log('rendering')
-
-    const _token = Cookies.get("_token");
+    const _token = JSON.parse(localStorage.getItem("_token") ?? '""')
 
     const fetchUser = async () => {
       if (_token) {
@@ -44,10 +39,9 @@ function App() {
             }
           });
 
-          setCookie(res.data?.token)
+          setLocalStorage(res.data?.token)
 
           if (res.status === 200) {
-            loading(false);
             login({
               name: res.data?.fullname,
               email: res.data?.email,
@@ -56,10 +50,12 @@ function App() {
               token: res.data?.token,
               ticket: res.data?.ticket
             })
+            loading(false);
           }
 
         } catch (error) {
           loading(false)
+          logout()
           console.log({ error })
         }
       }
@@ -75,24 +71,25 @@ function App() {
         <Navbar />
         <Routes>
           <Route path='/' element={<Outlet />}>
-            <Route element={<PublicRoutes />}>
-              <Route path='/' element={<Home />}>
-                <Route path='ticket' element={<BusList />} />
-              </Route>
-
-              <Route path='/sign-in' element={<SignIn />} />
-              <Route path='/sign-up' element={<SignUp />} />
+            <Route path='/' element={<Home />}>
+              <Route path='ticket' element={<BusList />} />
             </Route>
+
+            <Route path='sign-in' element={<SignIn />} />
+            <Route path='sign-up' element={<SignUp />} />
 
             {/* private routes */}
             <Route element={<Protected />}>
-              <Route index path='/profile' element={<Profile />} />
-              <Route path='/order-history' element={<OrderHistory />} />
+              <Route index path='profile' element={<Profile />} />
+              <Route path='order-history' element={<OrderHistory />} />
             </Route>
 
             {/* admin panel private routes */}
             <Route element={<AdminProtected />}>
-              <Route index path='/dashboard' element={<Dashboard />} />
+              <Route index path='dashboard' element={<Dashboard />} />
+              <Route path='brand' element={<Brand />}>
+                <Route index path='create' element={<Create />} />
+              </Route>
             </Route>
             <Route path="*" element={<NotFound />} />
           </Route>
@@ -101,41 +98,3 @@ function App() {
     </Layout>
   )
 }
-
-// const router = createBrowserRouter(
-//   createRoutesFromElements(
-//     <Route path='/' element={<Loader />}>
-//       <Route path='/' element={<Navbar />}>
-//         <Route path='/' element={<Home />}>
-//           <Route path='/ticket' element={<BusList />} />
-//         </Route>
-//         <Route path='/sign-in' element={<SignIn />} />
-//         <Route path='/sign-up' element={<SignUp />} />
-//         <Route path='/admin' element={<Admin />} />
-//         <Route element={<Protected />}>
-//           <Route path='/profile' element={<Profile />} />
-//           <Route path='/order-history' element={<OrderHistory />} />
-//           {/* <Route path='/cancel-ticket' element={<CancelTicket />} /> */}
-//         </Route>
-//         <Route element={<AdminProtected />}>
-//           <Route path='/dashboard' element={<Dashboard />} />
-//         </Route>
-//         <Route path="*" element={<NotFound />} />
-//       </Route>
-//     </Route>
-//   )
-// );
-
-// return <RouterProvider router={router} />
-
-
-export default App
-
-
-// check busy or not 
-// const navigation = useNavigation();
-//   const busy = navigation.state === "submitting";
-
-
-// explore about Outlet component.
-// ask rasel vai about admin route

@@ -39,10 +39,20 @@ export default function Navbar() {
                             {/* <li><NavButton to="/admin" text="Admin" /></li> */}
                             {state.user.authenticated ? (
                                 <>
-                                    <li><NavButton to='/profile' text='Profile' /></li>
-                                    <li><NavButton to='/order-history' text='Order History' /></li>
+                                    {state.user.role === 'admin' ? (
+                                        <>
+                                            <li><NavButton to='/brand/create' text='Create Brand' /></li>
+                                            <li><NavButton to='/product/create' text='Create Product' /></li>
+                                        </>
+                                    ) :
+                                        (
+                                            <>
+                                                <li><NavButton to='/profile' text='Profile' /></li>
+                                                <li><NavButton to='/order-history' text='Order History' /></li>
+                                            </>
+                                        )}
                                     <li><NavButton to='/change-password' text='Change Password' /></li>
-                                    <li><NavButton logout={logout} to='/' text='Sign Out' /></li>
+                                    <li><NavButton isLogout logout={logout} to='/' text='Sign Out' /></li>
                                 </>
                             ) : (
                                 <>

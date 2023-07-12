@@ -24,9 +24,6 @@ export default function PersonalInfo() {
             dropping_point: formData.get('dropping_point'),
         }
 
-        console.log(body)
-
-
     }
     return (
         <>

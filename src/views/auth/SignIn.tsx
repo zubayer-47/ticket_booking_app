@@ -1,5 +1,4 @@
 import axios from "axios";
-import Cookies from "js-cookie";
 import { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { SubmitButton } from "../../components/Buttons/Button";
@@ -13,13 +12,14 @@ import { api } from "../../utils/axios";
 export default function SignIn() {
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    const { login, logout } = useContext(Context);
+    const { login, logout, state } = useContext(Context);
     const location = useLocation();
 
     const from = location.state?.from?.pathname || '/';
 
     useEffect(() => {
-        const _token = Cookies.get("_token");
+        // const _token = Cookies.get("_token");
+        const _token = localStorage.getItem("_token");
 
         _token && navigate(from);
     }, [])
@@ -44,7 +44,6 @@ export default function SignIn() {
             }
 
             if (response.status === 200) {
-                console.log(response)
                 login({
                     name: response.data?.fullname,
                     email: response.data?.email,
@@ -54,7 +53,8 @@ export default function SignIn() {
                     ticket: response.data?.ticket
                 })
 
-                Cookies.set("_token", response.data?.token);
+                // Cookies.set("_token", response.data?.token);
+                localStorage.setItem("_token", JSON.stringify(response.data?.token));
 
                 if (response.data?.role === 'user') {
                     navigate('/profile', { replace: true });
@@ -97,7 +97,9 @@ export default function SignIn() {
 
             <Link to={'/sign-up'} className="text-emerald-500">Create Account</Link>
             {error && (
-                <Error error={error} />
+                <>
+                    {!state.isLoading ? <Error error={error} /> : null}
+                </>
             )}
         </CenterLayout>
     )
