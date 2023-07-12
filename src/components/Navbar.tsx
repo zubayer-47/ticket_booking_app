@@ -43,6 +43,7 @@ export default function Navbar() {
                                         <>
                                             <li><NavButton to='/brand/create' text='Create Brand' /></li>
                                             <li><NavButton to='/product/create' text='Create Product' /></li>
+                                            <li><NavButton to='/sign-in' text='SignIn' /></li>
                                         </>
                                     ) :
                                         (

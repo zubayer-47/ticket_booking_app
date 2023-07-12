@@ -6,11 +6,8 @@ export default function AdminProtected() {
     const { state } = useContext(Context);
     const location = useLocation();
 
-    return (state.user.role === 'admin' && state.user.authenticated) ?
-        <Outlet />
-        :
-        state.user.authenticated ?
-            <Navigate to='/profile' replace />
-            :
-            <Navigate to='/sign-in' replace state={{ from: location }} />
+    if (state.user.role === 'admin' && state.user.authenticated) return <Outlet />
+    else if (state.user.authenticated) return <Navigate to='/profile' replace />
+
+    return <Navigate to='/sign-in' replace state={{ from: location }} />
 }
