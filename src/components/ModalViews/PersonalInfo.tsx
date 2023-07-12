@@ -13,16 +13,16 @@ export default function PersonalInfo() {
         const formData = new FormData(e.currentTarget);
         // const data = new FormData(target);
 
-        const body = {
-            name: formData.get('name'),
-            gender: formData.get('gender'),
-            email: formData.get('email'),
-            agree: formData.get('agree'),
-            age: formData.get('age'),
-            mobile: formData.get('mobile'),
-            boarding_point: formData.get('boarding_point'),
-            dropping_point: formData.get('dropping_point'),
-        }
+        // const body = {
+        //     name: formData.get('name'),
+        //     gender: formData.get('gender'),
+        //     email: formData.get('email'),
+        //     agree: formData.get('agree'),
+        //     age: formData.get('age'),
+        //     mobile: formData.get('mobile'),
+        //     boarding_point: formData.get('boarding_point'),
+        //     dropping_point: formData.get('dropping_point'),
+        // }
 
     }
     return (

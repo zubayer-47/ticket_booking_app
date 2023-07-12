@@ -1,6 +1,5 @@
 import { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import formateDate from '../utils/formateDate';
 import { SubmitButton } from './Buttons/Button';
 import Input from './Inputs/BookingInput';
 
@@ -17,7 +16,7 @@ export default function Booking() {
         }
 
         const dateTime = String(body.journeyDate);
-        const date = formateDate(dateTime)
+        // const date = formateDate(dateTime)
 
         // const res = await axios.post('/product', {
         //     brandID: "4ed2ca7f-4aca-421f-b9e7-eefa1605b7d8",
