@@ -96,11 +96,9 @@ export default function SignIn() {
             </form>
 
             <Link to={'/sign-up'} className="text-emerald-500">Create Account</Link>
-            {error && (
-                <>
-                    {!state.isLoading ? <Error error={error} /> : null}
-                </>
-            )}
+            {error ? (
+                <Error error={error} />
+            ) : null}
         </CenterLayout>
     )
 }
