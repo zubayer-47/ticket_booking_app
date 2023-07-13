@@ -29,8 +29,8 @@ export default function Navbar() {
     return (
         <div>
             <div className="fixed top-0 left-0 right-0 grid grid-cols-12 gap-2 px-2 md:px-5 py-3 md:py-4 border-b mb-10 select-none bg-gray-50 z-10">
-                <Link to={'/'} className="col-span-6">BD Ticket</Link>
-                <div className="col-span-6">
+                <Link to={'/'} className="col-span-2">BD Ticket</Link>
+                <div className="col-span-10">
                     <div className=' flex justify-end w-full'>
                         <button onClick={handleClick} className='block md:hidden'><HiMiniBars3BottomRight className="h-8 w-8" /></button>
                     </div>
@@ -43,7 +43,7 @@ export default function Navbar() {
                                         <>
                                             <li><NavButton to='/brand/create' text='Create Brand' /></li>
                                             <li><NavButton to='/product/create' text='Create Product' /></li>
-                                            <li><NavButton to='/sign-in' text='SignIn' /></li>
+                                            <li><NavButton to='/brand/all' text='All Brands' /></li>
                                         </>
                                     ) :
                                         (
