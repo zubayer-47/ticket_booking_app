@@ -9,3 +9,29 @@ export const api = axios.create({
     "Content-type": "application/json",
   },
 });
+
+api.interceptors.request.use(
+  function (config) {
+    const _token = localStorage.getItem("_token");
+
+    config.headers.Authorization = JSON.parse(_token ?? '""');
+
+    return config;
+  },
+  function (error) {
+    return Promise.reject(error);
+  }
+);
+
+// api.interceptors.response.use(
+//   function (config) {
+//     const _token = localStorage.getItem("_token");
+
+//     config.headers.Authorization = _token;
+
+//     return config;
+//   },
+//   function (error) {
+//     return Promise.reject(error);
+//   }
+// );
