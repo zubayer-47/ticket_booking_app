@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Link } from "react-router-dom";
+import { ButtonHandler } from "../../types/custom";
 
 type NavButtonProps = {
     text: string;
@@ -22,7 +23,7 @@ export function NavButton({ text, to, logout = () => { }, isLogout = false }: Na
 type ButtonProps = {
     text: string;
     to?: string;
-    type?: string
+    type?: string;
 }
 
 export function Button({ text, to = '/', type = '' }: ButtonProps) {
@@ -36,4 +37,18 @@ type SubmitButtonProps = {
 export function SubmitButton({ text }: SubmitButtonProps) {
 
     return <button type='submit' className='py-2 px-4 rounded-md bg-emerald-500 text-white hover:bg-emerald-600'>{text}</button>
+}
+
+type MiniButtonProps = {
+    text: string;
+    red?: boolean;
+    handler: ButtonHandler;
+}
+
+export function MiniButton({ text, red, handler }: MiniButtonProps) {
+
+    return <button
+        onClick={handler}
+        type='button'
+        className={`px-1 py-0.5 rounded-md  ${red ? 'bg-red-400 text-white hover:bg-red-500' : "bg-emerald-400 text-white hover:bg-emerald-500"}`}>{text}</button>
 }

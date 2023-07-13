@@ -41,6 +41,28 @@ export default function Create() {
                 setError(message)
             }
         }
+
+        try {
+            const response = await api.post('/brand', JSON.stringify({
+                name: body.name
+            }))
+
+            if (response.status === 200) {
+                //    set the state here for brand
+                console.log(response)
+
+                navigate('/brand/all')
+            }
+
+        } catch (error) {
+
+            if (axios.isAxiosError(error)) {
+                console.log(error, "create brand")
+                const message = error?.response?.data?.message || 'Something Went Wrong! Please Try Again.';
+
+                setError(message)
+            }
+        }
     }
 
     return (
