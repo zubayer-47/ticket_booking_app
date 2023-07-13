@@ -14,6 +14,7 @@ import Dashboard from './views/admin/Dashboard'
 import SignIn from './views/auth/SignIn'
 import SignUp from './views/auth/SignUp'
 import Brand from './views/brand'
+import AllBrands from './views/brand/AllBrands'
 import Create from './views/brand/Create'
 import OrderHistory from './views/orderHistory/OrderHistory'
 import Profile from './views/profile/Profile'
@@ -89,6 +90,7 @@ export default function App() {
               <Route index path='dashboard' element={<Dashboard />} />
               <Route path='brand' element={<Brand />}>
                 <Route index path='create' element={<Create />} />
+                <Route path='all' element={<AllBrands />} />
               </Route>
             </Route>
             <Route path="*" element={<NotFound />} />
