@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BsPlusSquareFill } from 'react-icons/bs';
-import { useNavigate } from "react-router-dom";
 import { MiniButton } from "../../components/Buttons/Button";
 import Error from "../../components/Error";
 import CenterLayout from "../../components/Layouts/CenterLayout";
@@ -23,7 +22,6 @@ export default function AllBrands() {
         error: '',
         loading: false
     });
-    const navigate = useNavigate();
 
     useEffect(() => {
 

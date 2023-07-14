@@ -12,7 +12,7 @@ import { api } from "../../utils/axios";
 export default function SignIn() {
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    const { login, logout, state } = useContext(Context);
+    const { login, logout } = useContext(Context);
     const location = useLocation();
 
     const from = location.state?.from?.pathname || '/';
