@@ -11,5 +11,6 @@ module.exports = {
   rules: {
     "react-refresh/only-export-components": "warn",
     "@typescript-eslint/no-unused-vars": 0,
+    "no-extra-boolean-cast": 0
   },
 };

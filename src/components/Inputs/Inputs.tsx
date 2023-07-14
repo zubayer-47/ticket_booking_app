@@ -7,25 +7,29 @@ import { InputError } from "../Error";
 import Label from "./Label";
 
 type InputProps = {
-    label: string;
+    label?: string;
     name: string;
-    id: string;
+    id?: string;
     isRequired?: boolean;
     placeholder?: string;
     type?: string;
     defaultSize?: boolean;
     error?: string;
+    disabled?: boolean
+    brandRef?: React.RefObject<HTMLInputElement>
 }
 
 export default function Input({
-    label,
+    label = '',
     name,
     type = 'text',
     placeholder,
-    id,
+    id = '',
     isRequired = false,
     defaultSize = false,
-    error
+    error,
+    disabled = false,
+    brandRef
 }: InputProps) {
     const [value, setValue] = useState('');
 
@@ -34,19 +38,21 @@ export default function Input({
     }
 
     return (
-        <div>
-            <Label text={label} id={id} isRequired={isRequired} />
+        <div className="w-full">
+            {id ? (<Label text={label} id={id} isRequired={isRequired} />) : null}
 
             <input
+                ref={brandRef}
                 type={type}
                 placeholder={placeholder}
                 id={id}
                 name={name}
-                className={`bg-gray-50 border ${!!error?.length ? "border-red-400" : "border-gray-300"} text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full ${!defaultSize ? "p-1" : 'p-2'} dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500`}
+                className={`bg-gray-50 border  text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ${!defaultSize ? "p-1" : 'p-2'} ${!!error?.length ? "border-red-400" : "border-gray-300"}`}
                 autoComplete="off"
                 value={value}
                 onChange={handleChange}
                 required={isRequired}
+                disabled={disabled}
             />
             {error && (
                 <InputError error={error} />
@@ -105,9 +111,7 @@ export function PasswordInput({ text = "Password", id = "password", error = "" }
                     onChange={handleChange}
                     value={value || ""}
                     placeholder="*********"
-                    className={`bg-gray-50 border 
-                    ${!!error?.length ? "border-red-400" : "border-gray-300"}
-                     text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 `}
+                    className={`bg-gray-50 border text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 ${!!error?.length ? "border-red-400" : "border-gray-300"}`}
                     autoComplete="off"
                 />
                 {!value ? null : (

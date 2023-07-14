@@ -22,7 +22,7 @@ export default function SignIn() {
         const _token = localStorage.getItem("_token");
 
         _token && navigate(from);
-    }, [])
+    }, [from, navigate])
 
     const handleSubmit = async (e: FormType) => {
         e.preventDefault();

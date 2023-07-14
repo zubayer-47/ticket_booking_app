@@ -6,7 +6,6 @@ export default function Home() {
         <>
             <div className="mx-5 max-w-full lg:max-w-4xl lg:mx-auto xl:max-w-5xl border p-2 shadow-md rounded-xl">
                 <Booking />
-
                 <Outlet />
             </div>
         </>

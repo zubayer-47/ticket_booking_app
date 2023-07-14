@@ -15,7 +15,6 @@ import SignIn from './views/auth/SignIn'
 import SignUp from './views/auth/SignUp'
 import Brand from './views/brand'
 import AllBrands from './views/brand/AllBrands'
-import Create from './views/brand/Create'
 import OrderHistory from './views/orderHistory/OrderHistory'
 import Profile from './views/profile/Profile'
 
@@ -28,6 +27,8 @@ export default function App() {
   }
 
   useEffect(() => {
+    const controller = new AbortController();
+
     const _token = JSON.parse(localStorage.getItem("_token") ?? '""')
 
     const fetchUser = async () => {
@@ -37,7 +38,8 @@ export default function App() {
           const res = await api.get('/users/me', {
             headers: {
               Authorization: _token.trim()
-            }
+            },
+            // signal: controller.signal
           });
 
           setLocalStorage(res.data?.token)
@@ -64,7 +66,8 @@ export default function App() {
 
     !user.authenticated && fetchUser();
 
-  }, [])
+    return () => controller.abort();
+  }, [loading, login, logout, user.authenticated])
 
   return (
     <Layout>
@@ -89,7 +92,7 @@ export default function App() {
             <Route element={<AdminProtected />}>
               <Route index path='dashboard' element={<Dashboard />} />
               <Route path='brand' element={<Brand />}>
-                <Route index path='create' element={<Create />} />
+                {/* <Route index path='create' element={<Create />} /> */}
                 <Route path='all' element={<AllBrands />} />
               </Route>
             </Route>
@@ -101,5 +104,6 @@ export default function App() {
   )
 }
 
-
-// talk with rasel vai about AllBrands Component's input default value.
+// abortController in app
+// error boundary
+// authority bio in allBrands

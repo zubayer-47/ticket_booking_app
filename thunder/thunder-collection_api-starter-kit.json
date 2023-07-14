@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "api-starter-kit",
-    "dateExported": "2023-07-12T13:19:10.521Z",
+    "dateExported": "2023-07-14T15:54:06.765Z",
     "version": "1.1",
     "folders": [
         {
@@ -212,7 +212,7 @@
             "method": "GET",
             "sortNum": 80000,
             "created": "2023-07-08T19:33:18.218Z",
-            "modified": "2023-07-08T19:39:53.144Z",
+            "modified": "2023-07-14T11:52:29.892Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -222,7 +222,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n   \"brandID\": \"c97a8e42-2c6c-4e8a-8be1-db52a49cc3a7\"\n}",
+                "raw": "{\n   \"brandID\": \"0c1da3c8-2961-4e30-91e0-4fc16de4bcf0\"\n}",
                 "form": []
             },
             "tests": []
@@ -232,11 +232,11 @@
             "colId": "0453961f-be72-4742-80d9-34e8462370ee",
             "containerId": "095bf4c4-7a67-4918-aebb-a40a135bdc2c",
             "name": "Get Specific product",
-            "url": "/product/b27843f0-0937-4624-af57-b4d3689a273d",
+            "url": "/product/3bae595e-eb22-4be5-943e-18526ba20bcc",
             "method": "GET",
             "sortNum": 90000,
             "created": "2023-07-08T19:35:23.058Z",
-            "modified": "2023-07-08T20:10:57.351Z",
+            "modified": "2023-07-14T11:33:07.096Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -294,11 +294,11 @@
             "colId": "0453961f-be72-4742-80d9-34e8462370ee",
             "containerId": "d2f7ad0a-86a6-43e3-b43a-ade5ff85a4e3",
             "name": "get specific location",
-            "url": "/location/82ba8f6c-1f0f-4468-bba6-a42691abf952",
+            "url": "/location/2c149220-3178-48c1-b221-6a44d87fc349",
             "method": "GET",
             "sortNum": 140000,
             "created": "2023-07-08T20:11:21.288Z",
-            "modified": "2023-07-11T21:04:01.673Z",
+            "modified": "2023-07-14T10:42:54.776Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -313,11 +313,11 @@
             "colId": "0453961f-be72-4742-80d9-34e8462370ee",
             "containerId": "233d1893-be4e-4603-bf9e-84391de92cab",
             "name": "update brand",
-            "url": "/brand",
+            "url": "/brand/",
             "method": "PUT",
             "sortNum": 150000,
             "created": "2023-07-08T20:35:36.749Z",
-            "modified": "2023-07-08T20:36:43.866Z",
+            "modified": "2023-07-14T12:10:26.936Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -327,7 +327,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"brandID\": \"\",\n  \"name\": \"\"\n}",
+                "raw": "{\n  \"brandID\": \"0c1da3c8-2961-4e30-91e0-4fc16de4bcf0\",\n  \"name\": \"Hanif\"\n}",
                 "form": []
             },
             "tests": []
@@ -385,12 +385,19 @@
             "colId": "0453961f-be72-4742-80d9-34e8462370ee",
             "containerId": "4aec8733-bc3a-4b42-9324-d6b264f72690",
             "name": "get specific from",
-            "url": "",
+            "url": "/from/52b50fd7-e5b5-4176-b649-9fd07f559374",
             "method": "GET",
             "sortNum": 190000,
             "created": "2023-07-10T21:53:13.333Z",
-            "modified": "2023-07-10T21:53:13.333Z",
-            "headers": []
+            "modified": "2023-07-14T11:54:17.798Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "tests": []
         },
         {
             "_id": "adb7d21d-e63e-4a85-a966-a84c771c2aba",
@@ -411,18 +418,13 @@
             "colId": "0453961f-be72-4742-80d9-34e8462370ee",
             "containerId": "68b23520-40b8-48b1-bd1e-e35f5912057e",
             "name": "To location",
-            "url": "/search/toLocation",
+            "url": "/search/toLocation/669574c2-0d8b-4947-a896-a81121f9598a",
             "method": "GET",
             "sortNum": 210000,
             "created": "2023-07-10T22:21:03.406Z",
-            "modified": "2023-07-12T12:19:17.680Z",
+            "modified": "2023-07-14T11:04:24.970Z",
             "headers": [],
             "params": [],
-            "body": {
-                "type": "json",
-                "raw": "{\n  \"fromLocation\": \"669574c2-0d8b-4947-a896-a81121f9598a\"\n}",
-                "form": []
-            },
             "tests": []
         },
         {

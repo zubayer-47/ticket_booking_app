@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SubmitButton } from "../../components/Buttons/Button";
 import Error from "../../components/Error";
@@ -10,7 +10,12 @@ import { api } from "../../utils/axios";
 
 export default function Create() {
     const [error, setError] = useState('');
+    const brandRef = useRef() as React.MutableRefObject<HTMLInputElement>;
     const navigate = useNavigate();
+
+    useEffect(() => {
+        brandRef.current.focus();
+    }, [])
 
     const handleSubmit = async (e: FormType) => {
         e.preventDefault();
@@ -18,28 +23,6 @@ export default function Create() {
         const formData = new FormData(e.currentTarget);
         const body = {
             name: formData.get('brand')
-        }
-
-        try {
-            const response = await api.post('/brand', JSON.stringify({
-                name: body.name
-            }))
-
-            if (response.status === 200) {
-                //    set the state here for brand
-                console.log(response)
-
-                navigate('/brand/all')
-            }
-
-        } catch (error) {
-
-            if (axios.isAxiosError(error)) {
-                console.log(error, "create brand")
-                const message = error?.response?.data?.message || 'Something Went Wrong! Please Try Again.';
-
-                setError(message)
-            }
         }
 
         try {
@@ -71,6 +54,7 @@ export default function Create() {
 
             <form onSubmit={handleSubmit} className="space-y-4 mb-3">
                 <Input
+                    brandRef={brandRef}
                     id="brand"
                     name="brand"
                     label="Brand Name"

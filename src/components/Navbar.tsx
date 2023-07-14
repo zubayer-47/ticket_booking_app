@@ -41,9 +41,12 @@ export default function Navbar() {
                                 <>
                                     {state.user.role === 'admin' ? (
                                         <>
-                                            <li><NavButton to='/brand/create' text='Create Brand' /></li>
-                                            <li><NavButton to='/product/create' text='Create Product' /></li>
-                                            <li><NavButton to='/brand/all' text='All Brands' /></li>
+                                            {/* <li><NavButton to='/brand/create' text='Create Bus' /></li> */}
+                                            <li><NavButton to='/brand/all' text='All Buses' /></li>
+                                            <li><NavButton to='/product/create' text='Destinations' /></li>
+                                            <li className='relative'><NavButton to='/product/create' text='Booking' />
+                                                <span className='absolute -top-1.5 -right-4 py-0 px-0.5 bg-emerald-400 rounded-full text-xs'>12+</span>
+                                            </li>
                                         </>
                                     ) :
                                         (
@@ -52,6 +55,10 @@ export default function Navbar() {
                                                 <li><NavButton to='/order-history' text='Order History' /></li>
                                             </>
                                         )}
+
+                                    {/* notification for admin */}
+
+                                    {/* wrap inside a dropdown */}
                                     <li><NavButton to='/change-password' text='Change Password' /></li>
                                     <li><NavButton isLogout logout={logout} to='/' text='Sign Out' /></li>
                                 </>

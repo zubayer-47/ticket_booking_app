@@ -1,16 +1,19 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BsPlusSquareFill } from 'react-icons/bs';
-import { MiniButton } from "../../components/Buttons/Button";
+import { FiEdit, FiTrash2 } from 'react-icons/fi';
+import { BgNoneButton, MiniButton } from "../../components/Buttons/Button";
 import Error from "../../components/Error";
+import Input from "../../components/Inputs/Inputs";
 import CenterLayout from "../../components/Layouts/CenterLayout";
-import { InputType } from "../../types/custom";
+import { FormType, InputType } from "../../types/custom";
 import { api } from "../../utils/axios";
 
 type BrandType = {
     id: string;
     name: string
 }
+
 
 export default function AllBrands() {
     const [brands, setBrands] = useState<BrandType[]>([]);
@@ -27,13 +30,15 @@ export default function AllBrands() {
 
         console.log("rendering")
 
+        const controller = new AbortController()
+
         const fetchBrands = async function () {
             try {
                 setState(prev => ({
                     ...prev,
                     loading: true
                 }))
-                const response = await api.get('/brand');
+                const response = await api.get('/brand', { signal: controller.signal });
 
                 if (response.status === 200) {
                     setBrands(response.data);
@@ -61,6 +66,7 @@ export default function AllBrands() {
 
         fetchBrands();
 
+        return () => controller.abort();
     }, []);
 
     const handleChange = (e: InputType) => {
@@ -69,73 +75,105 @@ export default function AllBrands() {
 
     const handleEdit = (brandId: string) => {
         setUpdatedBrandId(brandId)
+        setCreate(false)
     }
 
     const handleUpdate = async () => {
         try {
-            const response = await api.put('/brand', {
+            await api.put('/brand', {
                 brandID: updatedBrandId,
                 name: brandName
             })
 
-            if (response.status === 200) {
-                setUpdatedBrandId(null);
-            }
+            setUpdatedBrandId(null);
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                const message = error?.response?.data?.message || 'Something Went Wrong! Please Try Again.';
+                const message = error.response?.data?.message
 
                 setError(message)
+                return
             }
+            setError('Something Went Wrong! Please Try Again.')
         }
     }
 
-    const handleAdd = () => {
+    const handleSubmit = async (e: FormType) => {
+        e.preventDefault();
         // send request for creating brand
-        console.log('adding')
+
+        const formData = new FormData(e.currentTarget);
+
+        const body = {
+            name: formData.get('name')
+        }
+
+        if (!body.name) {
+            alert("write your brand name please")
+            return
+        }
+
+        try {
+            const response = await api.post('/brand', {
+                name: body.name
+            })
+
+            if (response.status === 200) {
+                setCreate(false)
+                setBrands(prev => [{ id: response.data?.id, name: response.data?.name }, ...prev])
+            }
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                const message = error.response?.data?.message
+
+                setError(message)
+
+                return
+            }
+            setError('Something Went Wrong! Please Try Again.')
+        }
     }
 
-    console.log(brands);
+    const handleDelete = () => {
+        console.log('')
+    }
 
     return (
         <div>
             <CenterLayout>
-                <ul className="space-y-2">
-                    <li >
-                        <div className="flex justify-between items-center border-b pb-2">
+                <div className="flex justify-between items-center">
 
-                            <span className="text-2xl text-emerald-500">Create </span>
-                            <button type="button" onClick={() => setCreate(true)}><BsPlusSquareFill className="bg-white text-emerald-500 text-2xl" /></button>
+                    <span className="text-2xl text-emerald-500">Bus List</span>
+                    <button type="button" onClick={() => setCreate(true)}><BsPlusSquareFill className="bg-white text-emerald-500 text-2xl" /></button>
+                </div>
 
-                        </div>
+                <div className="mb-3 mt-5">
+                    {/* create add list modal */}
+                    {create ? (
+                        <form className="flex items-center gap-2 mt-2" onSubmit={handleSubmit}>
+                            <Input
+                                name="name"
+                                placeholder="Bus Name"
+                                defaultSize
+                            />
+
+                            <MiniButton
+                                text="Add"
+                                type="submit"
+                            />
+                            <BgNoneButton
+                                red
+                                text="Cancel"
+                                handler={() => {
+                                    setCreate(false)
+                                    setError("")
+                                }}
+                            />
+                        </form>
+                    ) : null}
+                </div>
 
 
-                        {/* create add list modal */}
-                        {create ? (
-                            <form className="flex items-center gap-2 mt-2">
-                                <input
-                                    type="text"
-                                    value={brandName}
-                                    onChange={handleChange}
-                                    className={`bg-transparent text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2 outline-none border`}
-                                // disabled={updatedBrandId !== brand.id}
-                                />
-
-                                <MiniButton
-                                    text="Create"
-                                    handler={handleAdd}
-                                    type="submit"
-                                />
-                                <MiniButton
-                                    red
-                                    text="Cancel"
-                                    handler={() => setCreate(false)}
-                                    type="submit"
-                                />
-                            </form>
-                        ) : null}
-
-                    </li>
+                <ul className="space-y-2 max-h-96 overflow-auto scrollbar-none">
                     {state.loading ? (<h1>Loading...</h1>) : (
                         <>
                             {
@@ -144,10 +182,10 @@ export default function AllBrands() {
                                         <div className="flex-1">
                                             <input
                                                 type="text"
-                                                defaultValue={brand.name}
+                                                defaultValue={updatedBrandId === brand.id && brandName || brand.name || ""}
                                                 // value={updatedBrandId === brand.id && brandName || ""}
                                                 onChange={handleChange}
-                                                className={`bg-transparent text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2 outline-none ${updatedBrandId === brand.id ? 'border' : 'border-none'}`}
+                                                className={`bg-transparent text-gray-900 text-md rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2 outline-none ${updatedBrandId === brand.id ? 'border' : 'border-none'}`}
                                                 disabled={updatedBrandId !== brand.id}
                                             />
                                             {(updatedBrandId === brand.id && error) ? (
@@ -157,7 +195,14 @@ export default function AllBrands() {
 
                                         {
                                             updatedBrandId !== brand.id ? (
-                                                <button type="button" onClick={() => handleEdit(brand.id)}>Edit</button>
+                                                <div className="flex gap-2">
+                                                    <button type="button" onClick={() => handleDelete()}>
+                                                        <FiTrash2 className="text-2xl text-red-500" />
+                                                    </button>
+                                                    <button type="button" onClick={() => handleEdit(brand.id)}>
+                                                        <FiEdit className="text-xl text-emerald-600" />
+                                                    </button>
+                                                </div>
                                             ) :
                                                 (
                                                     <div className="flex justify-center items-center gap-2">
@@ -166,7 +211,7 @@ export default function AllBrands() {
                                                             handler={handleUpdate}
                                                             type="submit"
                                                         />
-                                                        <MiniButton
+                                                        <BgNoneButton
                                                             red
                                                             text="Cancel"
                                                             handler={() => setUpdatedBrandId(null)}
