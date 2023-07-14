@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { BsPlusSquareFill } from 'react-icons/bs';
 import { useNavigate } from "react-router-dom";
 import { MiniButton } from "../../components/Buttons/Button";
 import Error from "../../components/Error";
@@ -16,6 +17,7 @@ export default function AllBrands() {
     const [brands, setBrands] = useState<BrandType[]>([]);
     const [brandName, setBrandName] = useState('');
     const [error, setError] = useState('');
+    const [create, setCreate] = useState(false);
     const [updatedBrandId, setUpdatedBrandId] = useState<string | null>(null);
     const [state, setState] = useState({
         error: '',
@@ -24,6 +26,8 @@ export default function AllBrands() {
     const navigate = useNavigate();
 
     useEffect(() => {
+
+        console.log("rendering")
 
         const fetchBrands = async function () {
             try {
@@ -88,24 +92,67 @@ export default function AllBrands() {
         }
     }
 
+    const handleAdd = () => {
+        // send request for creating brand
+        console.log('adding')
+    }
+
+    console.log(brands);
+
     return (
         <div>
             <CenterLayout>
                 <ul className="space-y-2">
+                    <li >
+                        <div className="flex justify-between items-center border-b pb-2">
+
+                            <span className="text-2xl text-emerald-500">Create </span>
+                            <button type="button" onClick={() => setCreate(true)}><BsPlusSquareFill className="bg-white text-emerald-500 text-2xl" /></button>
+
+                        </div>
+
+
+                        {/* create add list modal */}
+                        {create ? (
+                            <form className="flex items-center gap-2 mt-2">
+                                <input
+                                    type="text"
+                                    value={brandName}
+                                    onChange={handleChange}
+                                    className={`bg-transparent text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2 outline-none border`}
+                                // disabled={updatedBrandId !== brand.id}
+                                />
+
+                                <MiniButton
+                                    text="Create"
+                                    handler={handleAdd}
+                                    type="submit"
+                                />
+                                <MiniButton
+                                    red
+                                    text="Cancel"
+                                    handler={() => setCreate(false)}
+                                    type="submit"
+                                />
+                            </form>
+                        ) : null}
+
+                    </li>
                     {state.loading ? (<h1>Loading...</h1>) : (
                         <>
                             {
                                 brands.map(brand => (
-                                    <li className="flex gap-2" key={brand.id}>
+                                    <li className={`flex gap-2 ${updatedBrandId === brand.id ? "border-none" : "border-b"}`} key={brand.id}>
                                         <div className="flex-1">
                                             <input
                                                 type="text"
-                                                value={updatedBrandId === brand.id && brandName || brand.name || ""}
+                                                defaultValue={brand.name}
+                                                // value={updatedBrandId === brand.id && brandName || ""}
                                                 onChange={handleChange}
                                                 className={`bg-transparent text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2 outline-none ${updatedBrandId === brand.id ? 'border' : 'border-none'}`}
                                                 disabled={updatedBrandId !== brand.id}
                                             />
-                                            {error ? (
+                                            {(updatedBrandId === brand.id && error) ? (
                                                 <Error error={error} />
                                             ) : null}
                                         </div>
@@ -119,6 +166,7 @@ export default function AllBrands() {
                                                         <MiniButton
                                                             text="Update"
                                                             handler={handleUpdate}
+                                                            type="submit"
                                                         />
                                                         <MiniButton
                                                             red

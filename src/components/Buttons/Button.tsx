@@ -41,14 +41,17 @@ export function SubmitButton({ text }: SubmitButtonProps) {
 
 type MiniButtonProps = {
     text: string;
-    red?: boolean;
     handler: ButtonHandler;
+    red?: boolean;
+    type?: "button" | "submit" | "reset";
+    classNames?: string;
 }
 
-export function MiniButton({ text, red, handler }: MiniButtonProps) {
+export function MiniButton({ text, handler, red, type = 'button', classNames = "" }: MiniButtonProps) {
 
     return <button
         onClick={handler}
-        type='button'
-        className={`px-1 py-0.5 rounded-md  ${red ? 'bg-red-400 text-white hover:bg-red-500' : "bg-emerald-400 text-white hover:bg-emerald-500"}`}>{text}</button>
+        type={type}
+        className={`px-1 py-0.5 rounded-md ${red ? 'bg-red-400 text-white hover:bg-red-500' : "bg-emerald-400 text-white hover:bg-emerald-500"} ${classNames}`}
+    >{text}</button>
 }

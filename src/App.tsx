@@ -100,3 +100,6 @@ export default function App() {
     </Layout>
   )
 }
+
+
+// talk with rasel vai about AllBrands Component's input default value.
