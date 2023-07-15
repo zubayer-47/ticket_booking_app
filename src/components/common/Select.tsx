@@ -1,5 +1,6 @@
 
 import AsyncSelect from 'react-select/async';
+import { api } from '../../utils/axios';
 
 const colorOptions = [
     { value: 'chocolate', label: 'Chocolate' },
@@ -13,18 +14,46 @@ const filterColors = (inputValue: string) => {
     );
 };
 
-const promiseOptions = (inputValue: string) =>
-    // fetch here
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    new Promise<Record<string, any>[]>((resolve) => {
+type DataType = { id: string; name: string }
+
+const fetchData = async (): Promise<DataType[]> => {
+    const data = []
+    try {
+        const res: { data: { location: DataType[] } } = await api.get('/search/fromLocation')
+
+        data.push(...res.data.location)
+    } catch (error) {
+        console.log(error, 'from asyncSelect')
+    }
+
+    console.log(data)
+
+    return data
+}
+
+const promiseOptions = () =>
+    new Promise<DataType[]>((resolve) => {
         setTimeout(() => {
-            resolve(filterColors(inputValue));
+            resolve(fetchData());
         }, 1000);
     });
 
-export default function Select() {
+// fetch here
+// console.log(inputValue)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 
-    return <AsyncSelect className='w-full' styles={{
-        menu: provided => ({ ...provided, zIndex: 20 })
-    }} cacheOptions defaultOptions loadOptions={promiseOptions} />
+export default function Select({ name }: { name: string }) {
+
+    return <AsyncSelect
+        autoFocus
+        onChange={(value) => console.log(value)}
+        className='w-full' styles={{
+            menu: provided => ({ ...provided, zIndex: 20 })
+        }}
+        cacheOptions
+        name={name}
+        defaultOptions
+        loadOptions={promiseOptions}
+    />
+
 }

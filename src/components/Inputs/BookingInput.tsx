@@ -1,10 +1,10 @@
-import { ReactNode } from 'react'
-import Select from '../common/Select'
+import { ReactNode } from 'react';
+import Select from '../common/Select';
 // import { InputType } from '../../types/custom'
 
-type InputProps = { type?: string, svg?: ReactNode }
+type InputProps = { type?: string, svg?: ReactNode, name?: string; }
 
-export default function Input({ type, svg }: InputProps) {
+export default function Input({ type, svg, name = '' }: InputProps) {
     // const [text, setText] = useState('')
 
     // const handleChange = (e: InputType) => {
@@ -17,17 +17,9 @@ export default function Input({ type, svg }: InputProps) {
             <div className='relative flex justify-start items-center'>
                 {svg}
 
-                <Select />
+                <Select name={name} />
             </div>
             :
-            <div className='flex justify-center items-center gap-2'>
-                <input type="date" className='w-full border outline-none rounded-md p-2' name="date" id="date" />
-
-                <select className='w-full bg-white p-2 rounded-md outline-none border-2' name="" id="" defaultValue=''>
-                    <option>---</option>
-                    <option value="AC">AC</option>
-                    <option value="NON-AC">NON-AC</option>
-                </select>
-            </div>
+            <input type="date" className='w-full border outline-none rounded-md p-1.5' name="date" id="date" />
     )
 }

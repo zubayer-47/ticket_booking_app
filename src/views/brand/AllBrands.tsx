@@ -145,8 +145,26 @@ export default function AllBrands() {
         }
     }
 
-    const handleDelete = () => {
-        console.log('')
+    const handleDelete = async (brandId: string) => {
+        try {
+            await api.delete(`/brand/${brandId}`)
+
+            setUpdatedBrandId(null);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                const message = error.response?.data?.message
+
+                setState(prev => ({
+                    ...prev,
+                    error: message
+                }))
+                return
+            }
+            setState(prev => ({
+                ...prev,
+                error: 'Something Went Wrong! Please Try Again.'
+            }))
+        }
     }
 
     return (
@@ -214,7 +232,7 @@ export default function AllBrands() {
                                         {
                                             updatedBrandId !== brand.id ? (
                                                 <div className="flex gap-2">
-                                                    <button type="button" onClick={() => handleDelete()}>
+                                                    <button type="button" onClick={() => handleDelete(brand.id)}>
                                                         <FiTrash2 className="text-2xl text-red-500" />
                                                     </button>
                                                     <button type="button" onClick={() => handleEdit(brand.id)}>

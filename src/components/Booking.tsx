@@ -1,27 +1,46 @@
-import { FormEvent } from 'react';
+import axios from 'axios';
+import { FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import formateDate from '../utils/formateDate';
 import { SubmitButton } from './Buttons/Button';
 import Input from './Inputs/BookingInput';
 
 export default function Booking() {
+    const [error, setError] = useState('')
     const navigate = useNavigate();
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // const formData = new FormData(e.currentTarget);
+        const formData = new FormData(e.currentTarget);
 
-        // const body = {
-        //     journeyDate: formData.get('date')
-        // }
+        const body = {
+            from: formData.get('from'),
+            to: formData.get('to'),
+            journeyDate: formData.get('date'),
+            type: formData.get('type'),
+        }
 
-        // const dateTime = String(body.journeyDate);
-        // const date = formateDate(dateTime)
+        console.log(body)
 
-        // const res = await axios.post('/product', {
-        //     brandID: "4ed2ca7f-4aca-421f-b9e7-eefa1605b7d8",
-        //     journey_date: ""
-        // })
+        const dateTime = String(body.journeyDate);
+        const date = formateDate(dateTime)
+
+        try {
+            // const res = await axios.post('/product', {
+            //     brandID: "4ed2ca7f-4aca-421f-b9e7-eefa1605b7d8",
+            //     journey_date: ""
+            // })
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                const message = error.response?.data?.message
+
+                setError(message)
+                return
+            }
+            setError('Something Went Wrong! Please Try Again.')
+        }
+
         navigate('/ticket')
     }
 
@@ -30,21 +49,28 @@ export default function Booking() {
             <form className='space-y-3 bg-gray-200/70 p-3 rounded-lg col-span-12 md:col-span-6' onSubmit={handleSubmit}>
                 <div>
                     <label className='block' htmlFor="from">From</label>
-                    <Input svg={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 absolute border-r">
+                    <Input name='from' svg={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 absolute border-r">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941" />
                     </svg>
                     } />
                 </div>
                 <div>
                     <label className='block' htmlFor="to">To</label>
-                    <Input svg={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 absolute border-r">
+                    <Input name='to' svg={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 absolute border-r">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6L9 12.75l4.286-4.286a11.948 11.948 0 014.306 6.43l.776 2.898m0 0l3.182-5.511m-3.182 5.51l-5.511-3.181" />
                     </svg>
                     } />
                 </div>
-                <div>
-                    <label className='block' htmlFor="date">Journey Date</label>
-                    <Input type='date' />
+                <div className='flex justify-center items-center gap-2'>
+                    <div>
+                        <label className='block' htmlFor="date">Journey Date</label>
+                        <Input type='date' />
+                    </div>
+                    <select className='w-full bg-white p-2 rounded-md outline-none border-2 mt-6' name="type" >
+                        <option>---</option>
+                        <option value="AC">AC</option>
+                        <option value="NON-AC">NON-AC</option>
+                    </select>
                 </div>
 
                 <SubmitButton text='Search' />
