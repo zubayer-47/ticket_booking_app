@@ -1,9 +1,10 @@
 import axios from "axios";
 
 // export const ORIGIN = `https://bus-booking-api.onrender.com/v1`;
-export const ORIGIN = import.meta.env.PROD
-  ? import.meta.env.BASE_URL
-  : "http://localhost:8000/v1";
+export const ORIGIN =
+  import.meta.env.MODE === "production"
+    ? import.meta.env.ORIGIN
+    : "http://localhost:8000/v1";
 
 export const api = axios.create({
   baseURL: `${ORIGIN}`,
