@@ -6,14 +6,15 @@ import { Context } from '../contexts/Context';
 import { NavButton } from "./Buttons/Button";
 
 export default function Navbar() {
-    const [barOpen, setOpen] = useState(false)
+    const [menuBarOpen, setMenuBarOpen] = useState(false)
+    const [userModal, setUserModal] = useState(false)
     const ulRef = useRef<HTMLUListElement>(null);
 
     const { state, logout } = useContext(Context);
 
     useEffect(() => {
         const ul = ulRef.current;
-        if (barOpen) {
+        if (menuBarOpen) {
 
             ul?.classList.add('block')
             ul?.classList.remove('hidden')
@@ -21,10 +22,10 @@ export default function Navbar() {
             ul?.classList.add('hidden')
             ul?.classList.remove('block')
         }
-    }, [barOpen])
+    }, [menuBarOpen])
 
     const handleClick = () => {
-        setOpen(prev => !prev);
+        setMenuBarOpen(prev => !prev);
     }
 
     return (
@@ -62,11 +63,17 @@ export default function Navbar() {
                                     {/* wrap inside a dropdown */}
 
                                     <li className='relative'>
-                                        <FiUser className="text-3xl text-gray-50 rounded-full bg-emerald-500 cursor-pointer p-1" />
-                                        <div className='absolute top-10 right-0 bg-red-100 flex flex-col w-40 gap-2'>
-                                            <NavButton to='/change-password' text='Change Password' />
-                                            <NavButton isLogout logout={logout} to='/' text='Sign Out' />
-                                        </div>
+                                        <button type='button' onClick={() => setUserModal(prev => !prev)} ><FiUser className="text-3xl text-gray-50 rounded-full bg-emerald-500 cursor-pointer p-1" /></button>
+
+                                        {userModal ? (
+                                            <div className='absolute top-10 right-0 bg-gray-100 flex flex-col w-44 gap-2 text-gray-800 px-3 py-2 rounded-md shadow-md'>
+                                                <NavButton handler={() => setUserModal(false)} to='/change-password' text='Change Password' />
+                                                <NavButton isLogout handler={() => {
+                                                    logout()
+                                                    setUserModal(false)
+                                                }} to='/' text='Sign Out' />
+                                            </div>
+                                        ) : null}
                                     </li>
                                 </>
                             ) : (

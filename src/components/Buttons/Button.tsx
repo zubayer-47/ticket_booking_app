@@ -5,17 +5,20 @@ import { ButtonHandler } from "../../types/custom";
 type NavButtonProps = {
     text: string;
     to: string;
-    logout?: () => void;
+    handler?: () => void;
     isLogout?: boolean
 }
 
-export function NavButton({ text, to, logout = () => { }, isLogout = false }: NavButtonProps) {
+export function NavButton({ text, to, handler = () => { }, isLogout = false }: NavButtonProps) {
     return (<Link to={to} onClick={() => {
         if (isLogout) {
-            logout()
+            handler()
             // Cookies.remove("_token")
             localStorage.removeItem("_token")
+            return
         }
+
+        handler();
     }} className="text-lg border md:border-0 border-gray-400 w-full hover:text-green-600">{text}</Link>
     )
 }
