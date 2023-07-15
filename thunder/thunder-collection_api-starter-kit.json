@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "api-starter-kit",
-    "dateExported": "2023-07-14T15:54:06.765Z",
+    "dateExported": "2023-07-15T13:12:38.951Z",
     "version": "1.1",
     "folders": [
         {
@@ -126,7 +126,7 @@
             "method": "POST",
             "sortNum": 25000,
             "created": "2023-07-08T12:19:44.820Z",
-            "modified": "2023-07-12T08:45:32.190Z",
+            "modified": "2023-07-15T11:28:47.411Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -136,7 +136,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"name\": \"Shemoly\"\n}",
+                "raw": "{\n  \"name\": \"Hanif\"\n}",
                 "form": []
             },
             "tests": []
@@ -188,7 +188,7 @@
             "method": "POST",
             "sortNum": 70000,
             "created": "2023-07-08T15:37:08.237Z",
-            "modified": "2023-07-12T12:17:49.583Z",
+            "modified": "2023-07-15T13:05:58.620Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -198,7 +198,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"brandID\": \"0c1da3c8-2961-4e30-91e0-4fc16de4bcf0\",\n  \"journey_date\": \"2023-11-30T18:00:00.000Z\",\n  \"location_id\": \"2c149220-3178-48c1-b221-6a44d87fc349\",\n  \"type\": \"AC\"\n}",
+                "raw": "{\n  \"brandID\": \"55c3065c-d86f-4410-ab46-f977ee7ea0c8\",\n  \"journey_date\": \"2023-11-30T18:00:00.000Z\",\n  \"location_id\": \"2f716bff-e86f-4d0b-90ce-f41b1f650da2\",\n  \"type\": \"AC\"\n}",
                 "form": []
             },
             "tests": []
@@ -255,7 +255,7 @@
             "method": "POST",
             "sortNum": 110000,
             "created": "2023-07-08T20:06:56.286Z",
-            "modified": "2023-07-12T12:18:03.923Z",
+            "modified": "2023-07-15T13:06:11.902Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -317,7 +317,7 @@
             "method": "PUT",
             "sortNum": 150000,
             "created": "2023-07-08T20:35:36.749Z",
-            "modified": "2023-07-14T12:10:26.936Z",
+            "modified": "2023-07-15T11:29:16.196Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -327,7 +327,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"brandID\": \"0c1da3c8-2961-4e30-91e0-4fc16de4bcf0\",\n  \"name\": \"Hanif\"\n}",
+                "raw": "{\n  \"brandID\": \"c1355d87-8da7-452d-9c4e-2fc5a1937764\",\n  \"name\": \"Green Line\"\n}",
                 "form": []
             },
             "tests": []
@@ -341,7 +341,7 @@
             "method": "POST",
             "sortNum": 170000,
             "created": "2023-07-09T20:48:41.287Z",
-            "modified": "2023-07-12T12:18:44.852Z",
+            "modified": "2023-07-15T13:07:08.591Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -351,7 +351,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"productID\": \"3bae595e-eb22-4be5-943e-18526ba20bcc\",\n  \"ticketPrice\": \"500\",\n  \"locationID\": \"669574c2-0d8b-4947-a896-a81121f9598a\"\n  \n}",
+                "raw": "{\n  \"productID\": \"7b12d665-d171-418a-ae71-29a29fe317cd\",\n  \"ticketPrice\": \"500\",\n  \"locationID\": \"9e6d29b7-2389-41a7-b99d-d8025c34c06e\"\n  \n}",
                 "form": []
             },
             "tests": []
@@ -455,7 +455,7 @@
             "method": "POST",
             "sortNum": 230000,
             "created": "2023-07-12T09:40:12.462Z",
-            "modified": "2023-07-12T12:29:43.228Z",
+            "modified": "2023-07-15T13:09:55.856Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -465,7 +465,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"fromID\": \"52b50fd7-e5b5-4176-b649-9fd07f559374\",\n  \"productID\": \"3bae595e-eb22-4be5-943e-18526ba20bcc\",\n  \"seatName\": \"A2\",\n  \"userID\": \"22d06cfa-3f31-49ae-b11c-ff77d3581147\"\n}",
+                "raw": "{\n  \"fromID\": \"c51cb24c-8a3a-42d5-8a8d-f612cce65529\",\n  \"productID\": \"7b12d665-d171-418a-ae71-29a29fe317cd\",\n  \"seatName\": \"A2\"\n}",
                 "form": []
             },
             "tests": []
@@ -475,11 +475,11 @@
             "colId": "0453961f-be72-4742-80d9-34e8462370ee",
             "containerId": "a0e79fb0-f200-408a-9233-7245eff55c8a",
             "name": "Get Ticket",
-            "url": "/ticket",
+            "url": "/ticket/7b12d665-d171-418a-ae71-29a29fe317cd",
             "method": "GET",
             "sortNum": 240000,
             "created": "2023-07-12T09:51:14.522Z",
-            "modified": "2023-07-12T12:59:16.556Z",
+            "modified": "2023-07-15T13:12:05.848Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -489,7 +489,31 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n   \"productID\": \"3bae595e-eb22-4be5-943e-18526ba20bcc\"\n}",
+                "raw": "{\n   \"productID\": \"\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "959bc2a4-6866-475a-8bd5-8787e1cbdee9",
+            "colId": "0453961f-be72-4742-80d9-34e8462370ee",
+            "containerId": "233d1893-be4e-4603-bf9e-84391de92cab",
+            "name": "delete Brand",
+            "url": "/brand",
+            "method": "DELETE",
+            "sortNum": 250000,
+            "created": "2023-07-14T18:55:16.510Z",
+            "modified": "2023-07-15T11:28:34.698Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"brandID\": \"f0fbdbfb-8149-4b02-9e33-18e9008e3f25\"\n}",
                 "form": []
             },
             "tests": []

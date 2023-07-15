@@ -21,12 +21,12 @@ type InputErrorProps = {
 
 export function InputError({ error }: InputErrorProps) {
     return (
-        <p className="">
+        <>
             {!!error && (
                 <span className='text-sm text-red-400 tracking-wider'>
                     {error}
                 </span>
             )}
-        </p>
+        </>
     )
 }

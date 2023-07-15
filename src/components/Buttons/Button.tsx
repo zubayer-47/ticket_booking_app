@@ -48,15 +48,16 @@ type MiniButtonProps = {
     red?: boolean;
     type?: "button" | "submit" | "reset";
     classNames?: string;
-    bgNon?: boolean
+    bgNon?: boolean;
+    isError?: boolean
 }
 
-export function MiniButton({ text, handler, red, type = 'button', classNames = "" }: MiniButtonProps) {
+export function MiniButton({ text, handler, red, type = 'button', classNames = "", isError }: MiniButtonProps) {
 
     return <button
         onClick={handler}
         type={type}
-        className={`px-1 py-0.5 rounded-md ${red ? 'bg-red-400 text-white hover:bg-red-500' : "bg-emerald-400 text-white hover:bg-emerald-500"} ${classNames}`}
+        className={`px-1 py-0.5 rounded-md ${red ? 'bg-red-400 text-white hover:bg-red-500' : "bg-emerald-400 text-white hover:bg-emerald-500"} ${classNames} ${isError ? "mb-6" : "mb-0"}`}
     >{text}</button>
 }
 
@@ -67,13 +68,14 @@ type BgNoneButtonProps = {
     red?: boolean;
     type?: "button" | "submit" | "reset";
     classNames?: string;
+    isError?: boolean
 }
 
-export function BgNoneButton({ text, handler, red, type = 'button', classNames = "" }: BgNoneButtonProps) {
+export function BgNoneButton({ text, handler, red, type = 'button', classNames = "", isError }: BgNoneButtonProps) {
 
     return <button
         onClick={handler}
         type={type}
-        className={`px-1 py-0.5 rounded-md ${red ? 'text-red-400 hover:text-red-500' : "text-emerald-400 hover:text-emerald-500"} ${classNames}`}
+        className={`px-1 py-0.5 rounded-md ${red ? 'text-red-400 hover:text-red-500' : "text-emerald-400 hover:text-emerald-500"} ${classNames} ${isError ? "mb-6" : "mb-0"}`}
     >{text}</button>
 }

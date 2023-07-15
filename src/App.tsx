@@ -107,3 +107,4 @@ export default function App() {
 // abortController in app
 // error boundary
 // authority bio in allBrands
+// re-rendering when server is stopped
