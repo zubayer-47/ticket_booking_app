@@ -14,7 +14,6 @@ type BrandType = {
     name: string
 }
 
-
 export default function AllBrands() {
     const [brands, setBrands] = useState<BrandType[]>([]);
     const [brandName, setBrandName] = useState('');
