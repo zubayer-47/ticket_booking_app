@@ -48,7 +48,7 @@ type MiniButtonProps = {
     bgNon?: boolean
 }
 
-export function MiniButton({ text, handler, red, type = 'button', classNames = "", bgNon }: MiniButtonProps) {
+export function MiniButton({ text, handler, red, type = 'button', classNames = "" }: MiniButtonProps) {
 
     return <button
         onClick={handler}
