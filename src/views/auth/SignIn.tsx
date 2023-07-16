@@ -12,7 +12,7 @@ import { api } from "../../utils/axios";
 export default function SignIn() {
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    const { login, logout } = useContext(Context);
+    const { login, logout, state } = useContext(Context);
     const location = useLocation();
 
     const from = location.state?.from?.pathname || '/';
@@ -21,8 +21,8 @@ export default function SignIn() {
         // const _token = Cookies.get("_token");
         const _token = localStorage.getItem("_token");
 
-        _token && navigate(from);
-    }, [from, navigate])
+        (_token && state.user.authenticated) && navigate(from);
+    }, [from, navigate, state.user.authenticated])
 
     const handleSubmit = async (e: FormType) => {
         e.preventDefault();
