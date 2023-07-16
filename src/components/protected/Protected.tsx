@@ -6,8 +6,13 @@ export default function Protected() {
     const { state } = useContext(Context);
     const location = useLocation();
 
-    if (state.user.role === 'user' && state.user.authenticated) return <Outlet />
-    else if (state.user.authenticated) return <Navigate to='/dashboard' />
+    console.log(state.user.authenticated, 'from protected admin')
 
-    return <Navigate to='/sign-in' replace state={{ from: location }} />
+    if (!state.user.authenticated) {
+        return <Navigate to='/sign-in' replace state={{ from: location }} />
+    } else if (state.user.authenticated && state.user.role === 'user') {
+        return <Outlet />
+    } else {
+        return <Navigate to='/dashboard' />
+    }
 }
