@@ -15,7 +15,6 @@ export default function Loader({ children }: { children: ReactNode }) {
                     </svg>
                     <span className="sr-only">Loading...</span>
                 </div>
-
             )}
         </div>
     )

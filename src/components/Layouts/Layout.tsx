@@ -9,7 +9,7 @@ const Layout: React.FC<PropType> = ({ children }) => {
     const { state } = useContext(Context);
 
     return (
-        <div className={`relative h-screen ${state.isLoading ? 'pt-0' : 'pt-20'} bg-gray-50`}>{children}</div>
+        <div className={`relative h-screen bg-gray-50 ${state.isLoading ? 'pt-0' : 'pt-20'}`}>{children}</div>
     );
 };
 

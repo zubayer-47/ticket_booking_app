@@ -27,6 +27,7 @@ export default function App() {
   }
 
   useEffect(() => {
+
     const controller = new AbortController();
 
     const _token = JSON.parse(localStorage.getItem("_token") ?? '""')
@@ -104,7 +105,5 @@ export default function App() {
   )
 }
 
-// abortController in app
 // error boundary
-// authority bio in allBrands
-// re-rendering when server is stopped
+// authority bio in allBrands -> getting admin specific brands

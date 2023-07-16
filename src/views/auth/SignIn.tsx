@@ -69,11 +69,12 @@ export default function SignIn() {
         } catch (error) {
 
             if (axios.isAxiosError(error)) {
-                logout()
-                const message = error?.response?.data?.message || 'Something Went Wrong! Please Try Again.';
+                const message = error.response?.data?.message
 
                 setError(message)
+                return
             }
+            setError('Something Went Wrong! Please Try Again.')
         }
     }
 

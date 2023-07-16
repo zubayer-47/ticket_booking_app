@@ -15,9 +15,9 @@ export default function Input({ type, svg, name = '' }: InputProps) {
         type !== 'date'
             ?
             <div className='relative flex justify-start items-center'>
-                {svg}
+                {/* {svg} */}
 
-                <Select name={name} />
+                <Select />
             </div>
             :
             <input type="date" className='w-full border outline-none rounded-md p-1.5' name="date" id="date" />
