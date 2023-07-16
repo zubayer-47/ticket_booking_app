@@ -1,83 +1,119 @@
 import { ReactNode, useCallback, useMemo, useReducer } from "react";
 import { Action } from "../constants/context-constant";
-import { ActionType, FromType, ToType, UserType } from "../types/state.types";
+import { ActionType, BrandType, FromType, LocationType, ToType, UserType } from "../types/state.types";
 import { Context } from "./Context";
 
-const initialState = {
-    state: {
-        user: {
-            name: "",
-            email: '',
-            authenticated: false,
-            role: "",
-            token: "",
-            ticket: ""
-        },
-        from: [{ id: "", name: "" }],
-        to: [{ fromID: "", locationID: "", locationName: "" }],
-        isLoading: false
-    },
+type InitialStateType = {
+    user: UserType;
+    isLoading: boolean;
+    from: {
+        selectedFromId: string;
+        list: FromType[];
+    };
+    to: ToType[];
+    brand: {
+        selectedBrandId: string;
+        list: BrandType[];
+    };
+    locations: LocationType[];
 };
 
-function reducer(state: typeof initialState, action: ActionType) {
+const initialState: InitialStateType = {
+    user: {
+        name: "",
+        email: '',
+        authenticated: false,
+        role: "",
+        token: "",
+        ticket: ""
+    },
+    from: {
+        selectedFromId: '',
+        list: [{ id: "", name: "" }],
+    },
+    to: [{ fromID: "", id: "", name: "" }],
+    isLoading: false,
+    brand: {
+        selectedBrandId: '',
+        list: [{ id: '', name: '' }]
+    },
+    locations: [{ id: '', name: '' }]
+};
+
+function reducer(state: InitialStateType, action: ActionType): InitialStateType {
     switch (action.type) {
         case Action.ADD_USER:
             return {
-                state: {
-                    ...state.state,
-                    user: action.payload,
-                },
+                ...state,
+                user: action.payload
             };
         case Action.UPDATE_USER:
             return {
-                state: {
-                    ...state.state,
-                    user: action.payload,
-                },
+                ...state,
+                user: action.payload
             };
         case Action.REMOVE_USER:
             return {
-                state: {
-                    ...state.state,
-                    user: { name: "", email: "", authenticated: false, role: "", token: "", ticket: "" },
-                },
+                ...state,
+                user: { name: "", email: "", authenticated: false, role: "", token: "", ticket: "" },
             };
         case Action.LOADING:
             return {
-                state: {
-                    ...state.state,
-                    isLoading: action.payload
-                },
+                ...state,
+                isLoading: action.payload
             };
         case Action.ADD_FROM:
             return {
-                state: {
-                    ...state.state,
-                    from: action.payload
-                },
+                ...state,
+                from: {
+                    ...state.from,
+                    list: action.payload
+                }
             };
         case Action.REMOVE_FROM:
             return {
-                state: {
-                    ...state.state,
-                    from: []
+                ...state,
+                from: {
+                    ...state.from,
+                    list: [{ id: "", name: "" }]
                 },
             };
         case Action.ADD_TO:
             return {
-                state: {
-                    ...state.state,
-                    to: action.payload
-                },
+                ...state,
+                to: action.payload
             };
         case Action.REMOVE_TO:
             return {
-                state: {
-                    ...state.state,
-                    to: []
-                },
+                ...state,
+                to: [{ fromID: "", id: "", name: "" }],
+            }
+        case Action.ADD_BRAND:
+            return {
+                ...state,
+                brand: {
+                    ...state.brand,
+                    list: action.payload
+                }
             };
-
+        case Action.REMOVE_BRAND:
+            return {
+                ...state,
+                brand: {
+                    ...state.brand,
+                    list: [{ id: '', name: '' }]
+                }
+            }
+        case Action.ADD_LOCATION:
+            return {
+                ...state,
+                locations: action.payload
+            };
+        case Action.REMOVE_LOCATION:
+            return {
+                ...state,
+                locations: [{ id: '', name: '' }],
+            }
         default:
             return state;
     }
@@ -118,10 +154,20 @@ export default function Provider({ children }: { children: ReactNode }) {
         dispatch({ type: Action.REMOVE_TO });
     }, [])
 
-    const value = useMemo(
-        () => ({ ...state, login, logout, updateUser, addFrom, removeFrom, loading, dispatch, addTo, removeTo }),
-        [state, login, logout, updateUser, loading, dispatch, addFrom, removeFrom, addTo, removeTo]
-    );
+    const value = useMemo(() => ({
+        state: {
+            ...state
+        },
+        login,
+        logout,
+        updateUser,
+        addFrom,
+        removeFrom,
+        loading,
+        dispatch,
+        addTo,
+        removeTo
+    }), [state, login, logout, updateUser, loading, dispatch, addFrom, removeFrom, addTo, removeTo]);
 
     return (
         <Context.Provider value={{ ...value }}>

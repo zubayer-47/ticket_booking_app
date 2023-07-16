@@ -9,7 +9,23 @@ export const enum Action {
   ADD_FROM = "ADD_FROM",
   REMOVE_FROM = "REMOVE_FROM",
 
+  // brandID
+  ADD_FROM_ID = "ADD_FROM_ID",
+  REMOVE_FROM_ID = "REMOVE_FROM_ID",
+
   // to
   ADD_TO = "ADD_TO",
   REMOVE_TO = "REMOVE_TO",
+
+  // brand
+  ADD_BRAND = "ADD_BRAND",
+  REMOVE_BRAND = "REMOVE_BRAND",
+
+  // location
+  ADD_LOCATION = "ADD_LOCATION",
+  REMOVE_LOCATION = "REMOVE_LOCATION",
+
+  // brandID
+  ADD_BRAND_ID = "ADD_BRAND_ID",
+  REMOVE_BRAND_ID = "REMOVE_BRAND_ID",
 }

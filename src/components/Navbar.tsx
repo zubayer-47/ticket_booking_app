@@ -44,7 +44,7 @@ export default function Navbar() {
                                     {state.user.role === 'admin' ? (
                                         <>
                                             {/* <li><NavButton to='/brand/create' text='Create Bus' /></li> */}
-                                            <li><NavButton to='/brand/all' text='All Buses' /></li>
+                                            <li><NavButton to='/brands' text='All Buses' /></li>
                                             <li><NavButton to='/product/create' text='Destinations' /></li>
                                             <li className='relative'><NavButton to='/product/create' text='Booking' />
                                                 <span className='absolute -top-1.5 -right-4 py-0 px-0.5 bg-emerald-400 rounded-full text-xs'>12+</span>
@@ -59,8 +59,6 @@ export default function Navbar() {
                                         )}
 
                                     {/* notification for admin */}
-
-                                    {/* wrap inside a dropdown */}
 
                                     <li className='relative'>
                                         <button type='button' onClick={() => setUserModal(prev => !prev)} ><FiUser className="text-3xl text-gray-50 rounded-full bg-emerald-500 cursor-pointer p-1" /></button>

@@ -2,12 +2,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { BsPlusSquareFill } from 'react-icons/bs';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
-import { BgNoneButton, MiniButton } from "../../components/Buttons/Button";
-import Error from "../../components/Error";
-import Input from "../../components/Inputs/Inputs";
-import CenterLayout from "../../components/Layouts/CenterLayout";
-import { FormType, InputType } from "../../types/custom";
-import { api } from "../../utils/axios";
+import { BgNoneButton, MiniButton } from "../../../components/Buttons/Button";
+import Error from "../../../components/Error";
+import Input from "../../../components/Inputs/Inputs";
+import CenterLayout from "../../../components/Layouts/CenterLayout";
+import { FormType, InputType } from "../../../types/custom";
+import { api } from "../../../utils/axios";
 
 type BrandType = {
     id: string;

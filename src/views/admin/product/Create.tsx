@@ -1,14 +1,14 @@
 import axios from 'axios';
 import { FormEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Context } from '../contexts/Context';
-import { api } from '../utils/axios';
-import formateDate from '../utils/formateDate';
-import { SubmitButton } from './Buttons/Button';
-import { DateInput } from './Inputs/Inputs';
-import Select from './common/Select';
+import { SubmitButton } from '../../../components/Buttons/Button';
+import { Context } from '../../../contexts/Context';
+import { api } from '../../../utils/axios';
+import formateDate from '../../../utils/formateDate';
 
-export default function Booking() {
+
+// handle errors
+export default function Create() {
     const [error, setError] = useState('')
     const navigate = useNavigate();
     const { state, addFrom, removeFrom, addTo, removeTo } = useContext(Context);
@@ -21,11 +21,9 @@ export default function Booking() {
                 const res = await api.get('/search/fromLocation', { signal: controller.signal });
 
                 if (res.status === 200) {
-                    console.log(res.data?.location, 'add from list, booking.tsx')
                     addFrom(res.data?.location)
                 }
             } catch (error) {
-                console.log('remove from list, booking.tsx')
                 removeFrom();
                 if (axios.isAxiosError(error)) {
                     const message = error.response?.data?.message
@@ -42,13 +40,7 @@ export default function Booking() {
         return () => controller.abort();
     }, [addFrom, removeFrom])
 
-
-    console.log(state.brand, state.from)
-    // useEffect(() => {
-    // }, [state.from, state.brand])
-
     const getToBasedOnFrom = () => {
-        console.log('rendering')
 
         const fetchTo = async () => {
             try {
@@ -86,8 +78,6 @@ export default function Booking() {
         body.from = String(body.from).split(' ')[1]
         body.to = String(body.to).split(' ')[1]
 
-        console.log(body)
-
         const dateTime = String(body.journeyDate);
         const date = formateDate(dateTime)
 
@@ -119,25 +109,17 @@ export default function Booking() {
     }
 
     return (
-        <div className='grid grid-cols-12 gap-5'>
-            <form className='space-y-3 bg-gray-200/70 p-3 rounded-lg col-span-12 md:col-span-6' onSubmit={handleSubmit}>
+        <div className=''>
+            <form className='space-y-3 bg-gray-200/70 p-3 rounded-lg' onSubmit={handleSubmit}>
                 <div>
-                    <Select
-                        name='from'
-                        label="From"
-                        state={state.from.list}
-                        handleSelected={getToBasedOnFrom}
-                    />
-                    <Select
-                        name='to'
-                        label="To"
-                        state={state.to}
-                    />
+                    <Input
+
+                        name='buses' />
                 </div>
                 <div className='flex justify-center items-center gap-2'>
                     <div>
                         <label className='block' htmlFor="date">Journey Date</label>
-                        <DateInput />
+                        <Input type='date' />
                     </div>
                     <select className='w-full bg-white p-2 rounded-md outline-none border-2 mt-6' name="type" >
                         <option>---</option>
@@ -146,12 +128,8 @@ export default function Booking() {
                     </select>
                 </div>
 
-                <SubmitButton text='Search' />
+                <SubmitButton text='Create' />
             </form>
-
-            <div className='col-span-12 md:col-span-6 flex items-center'>
-                <img className='' src='https://static.busbd.com.bd/busbdmedia/for%20salide.1500371408' />
-            </div>
         </div>
     )
 }

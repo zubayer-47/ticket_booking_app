@@ -11,15 +11,15 @@ import { api } from './utils/axios'
 import Home from './views/Home'
 import NotFound from './views/NotFound'
 import Dashboard from './views/admin/Dashboard'
+import AllBrands from './views/admin/brand/AllBrands'
+import Product from './views/admin/product'
 import SignIn from './views/auth/SignIn'
 import SignUp from './views/auth/SignUp'
-import Brand from './views/brand'
-import AllBrands from './views/brand/AllBrands'
 import OrderHistory from './views/orderHistory/OrderHistory'
 import Profile from './views/profile/Profile'
 
 export default function App() {
-  const { state: { user }, login, loading, logout } = useContext(Context)
+  const { state, login, loading, logout } = useContext(Context)
   const setLocalStorage = (tokenParam: string) => {
     const _token = JSON.parse(localStorage.getItem("_token") ?? '""');
 
@@ -65,10 +65,14 @@ export default function App() {
       }
     }
 
-    !user.authenticated && fetchUser();
+    !state.user.authenticated && fetchUser();
 
     return () => controller.abort();
-  }, [loading, login, logout, user.authenticated])
+  }, [loading, login, logout, state.user.authenticated])
+
+  // useEffect()
+
+  console.log(state.from, state.brand)
 
   return (
     <Layout>
@@ -92,9 +96,9 @@ export default function App() {
             {/* admin panel private routes */}
             <Route element={<AdminProtected />}>
               <Route index path='dashboard' element={<Dashboard />} />
-              <Route path='brand' element={<Brand />}>
-                {/* <Route index path='create' element={<Create />} /> */}
-                <Route path='all' element={<AllBrands />} />
+              <Route path='brands' element={<AllBrands />} />
+              <Route path='product' element={<Product />}>
+                {/* <Route path='create' element={<Create />} /> */}
               </Route>
             </Route>
             <Route path="*" element={<NotFound />} />
