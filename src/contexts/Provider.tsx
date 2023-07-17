@@ -1,6 +1,6 @@
 import { ReactNode, useCallback, useMemo, useReducer } from "react";
 import { Action } from "../constants/context-constant";
-import { ActionType, BrandType, FromType, LocationType, ToType, UserType } from "../types/state.types";
+import { ActionType, IdNameBrandLocationFromType, ToType, UserType } from "../types/state.types";
 import { Context } from "./Context";
 
 type InitialStateType = {
@@ -8,14 +8,14 @@ type InitialStateType = {
     isLoading: boolean;
     from: {
         selectedFromId: string;
-        list: FromType[];
+        list: IdNameBrandLocationFromType[];
     };
     to: ToType[];
     brand: {
         selectedBrandId: string;
-        list: BrandType[];
+        list: IdNameBrandLocationFromType[];
     };
-    locations: LocationType[];
+    locations: IdNameBrandLocationFromType[];
 };
 
 const initialState: InitialStateType = {
@@ -40,7 +40,43 @@ const initialState: InitialStateType = {
     locations: [{ id: '', name: '' }]
 };
 
+function fromToReducer(state: InitialStateType, action: ActionType) {
+    switch (action.type) {
+        case Action.ADD_FROM:
+            return {
+                ...state,
+                from: {
+                    ...state.from,
+                    list: action.payload
+                }
+            };
+        case Action.REMOVE_FROM:
+            return {
+                ...state,
+                from: {
+                    ...state.from,
+                    list: [{ id: "", name: "" }]
+                },
+            };
+        case Action.ADD_TO:
+            return {
+                ...state,
+                to: action.payload
+            };
+        case Action.REMOVE_TO:
+            return {
+                ...state,
+                to: [{ fromID: "", id: "", name: "" }],
+            }
+    }
+}
+
 function reducer(state: InitialStateType, action: ActionType): InitialStateType {
+
+    const fromTo = fromToReducer(state, action);
+
+    // console.log(fromTo )
+
     switch (action.type) {
         case Action.ADD_USER:
             return {
@@ -138,7 +174,7 @@ export default function Provider({ children }: { children: ReactNode }) {
         dispatch({ type: Action.LOADING, payload: loading })
     }, [])
 
-    const addFrom = useCallback((from: FromType[]) => {
+    const addFrom = useCallback((from: IdNameBrandLocationFromType[]) => {
         dispatch({ type: Action.ADD_FROM, payload: from });
     }, [])
 

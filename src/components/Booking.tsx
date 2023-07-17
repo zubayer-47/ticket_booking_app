@@ -21,7 +21,7 @@ export default function Booking() {
                 const res = await api.get('/search/fromLocation', { signal: controller.signal });
 
                 if (res.status === 200) {
-                    console.log(res.data?.location, 'add from list, booking.tsx')
+                    // console.log(res.data?.location, 'add from list, booking.tsx')
                     addFrom(res.data?.location)
                 }
             } catch (error) {
@@ -41,11 +41,6 @@ export default function Booking() {
 
         return () => controller.abort();
     }, [addFrom, removeFrom])
-
-
-    console.log(state.brand, state.from)
-    // useEffect(() => {
-    // }, [state.from, state.brand])
 
     const getToBasedOnFrom = () => {
         console.log('rendering')

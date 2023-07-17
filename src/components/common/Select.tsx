@@ -1,12 +1,12 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Action } from "../../constants/context-constant";
 import { Context } from "../../contexts/Context";
 import { ClickHandler } from "../../types/custom";
-import { BrandType, FromType, LocationType, ToType } from "../../types/state.types";
+import { IdNameBrandLocationFromType, ToType } from "../../types/state.types";
 import Label from "../Inputs/Label";
 
 type SelectProps = {
-    state: ToType[] | FromType[] | BrandType[] | LocationType[];
+    state: ToType[] | IdNameBrandLocationFromType[];
     name: string;
     label: string
     handleSelected?: ClickHandler;
@@ -17,20 +17,26 @@ type SelectProps = {
 // give it a detailed name later
 // eslint-disable-next-line no-empty-pattern
 export default function Select({ name, label, state, handleSelected, defaultOptionValue, empty }: SelectProps) {
-    const { dispatch } = useContext(Context);
+    const { dispatch, state: appState } = useContext(Context);
+
+
+    useEffect(() => {
+
+        console.log(appState.from.selectedFromId)
+    }, [appState.from.selectedFromId])
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const id = e.target.value.split(' ')[1]
 
 
         if (name === 'from' && id) {
-            console.log(id)
             dispatch({ type: Action.ADD_FROM_ID, payload: id })
             return
         }
 
         dispatch({ type: Action.ADD_BRAND_ID, payload: id })
     }
+
 
     return (
         // <div className="w-full space-y-3">

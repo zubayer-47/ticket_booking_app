@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { useContext, useEffect } from 'react'
 import { Outlet, Route, Routes } from 'react-router-dom'
 import BusList from './components/BusList'
@@ -60,7 +61,13 @@ export default function App() {
         } catch (error) {
           loading(false)
           logout()
-          console.log({ error })
+          if (axios.isAxiosError(error)) {
+            const message = error.response?.data?.message ?? error.response?.data
+
+            if (error.response?.status === 401) {
+              localStorage.removeItem("_token")
+            }
+          }
         }
       }
     }
@@ -70,9 +77,7 @@ export default function App() {
     return () => controller.abort();
   }, [loading, login, logout, state.user.authenticated])
 
-  // useEffect()
-
-  console.log(state.from, state.brand)
+  console.log(state)
 
   return (
     <Layout>
