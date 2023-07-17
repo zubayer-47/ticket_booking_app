@@ -1,6 +1,45 @@
 import { Dispatch } from "react";
 import { Action } from "../constants/context-constant";
 
+export type UserType = {
+  email: string;
+  name: string;
+  authenticated: boolean;
+  role: string;
+  token: string;
+  ticket: string;
+};
+
+export type IdNameBrandLocationFromType = {
+  id: string;
+  name: string;
+};
+
+export type ToType = {
+  fromID: string;
+  id: string;
+  name: string;
+};
+
+export type BusBrandType = {
+  id: string;
+  name: string;
+  createdBy: string;
+};
+
+export type BusFromType = {
+  id: string;
+  location: IdNameBrandLocationFromType;
+};
+
+export type BusType = {
+  id: string;
+  type: string;
+  brand: BusBrandType;
+  journey_date: string;
+  from: BusFromType[];
+};
+
 export type ActionType =
   // user
   | { type: Action.ADD_USER; payload: UserType }
@@ -24,28 +63,29 @@ export type ActionType =
   | { type: Action.REMOVE_BRAND_ID }
   // location
   | { type: Action.ADD_LOCATION; payload: IdNameBrandLocationFromType[] }
-  | { type: Action.REMOVE_LOCATION };
+  | { type: Action.REMOVE_LOCATION }
+  // buses
+  | { type: Action.ADD_BUSES; payload: BusType[] }
+  | { type: Action.REMOVE_BUSES };
 
-export type UserType = {
-  email: string;
-  name: string;
-  authenticated: boolean;
-  role: string;
-  token: string;
-  ticket: string;
+// initialStateType
+export type InitialStateType = {
+  user: UserType;
+  isLoading: boolean;
+  from: {
+    selectedFromId: string;
+    list: IdNameBrandLocationFromType[];
+  };
+  to: ToType[];
+  brand: {
+    selectedBrandId: string;
+    list: IdNameBrandLocationFromType[];
+  };
+  locations: IdNameBrandLocationFromType[];
+  buses: BusType[];
 };
 
-export type IdNameBrandLocationFromType = {
-  id: string;
-  name: string;
-};
-
-export type ToType = {
-  fromID: string;
-  id: string;
-  name: string;
-};
-
+// store type
 export type StoreType = {
   state: {
     user: UserType;
@@ -60,6 +100,7 @@ export type StoreType = {
       list: IdNameBrandLocationFromType[];
     };
     locations: IdNameBrandLocationFromType[];
+    buses: BusType[];
   };
   dispatch: Dispatch<ActionType>;
   // user
@@ -73,4 +114,7 @@ export type StoreType = {
   // to
   addTo(to: ToType[]): void;
   removeTo(): void;
+  // buses
+  addBuses(buses: BusType[]): void;
+  removeBuses(): void;
 };
