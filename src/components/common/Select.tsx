@@ -7,7 +7,7 @@ type SelectProps = {
     state: ToType[] | IdNameBrandLocationFromType[];
     name: string;
     label: string
-    handleSelected?: (id: string) => void;
+    handleSelected?: (id: string, name: string) => void;
     defaultOptionValue?: string;
     empty?: string
 }
@@ -16,7 +16,7 @@ type SelectProps = {
 // eslint-disable-next-line no-empty-pattern
 export default function Select({ name, label, state, handleSelected, defaultOptionValue, empty }: SelectProps) {
     const selectRef = useRef(null);
-    const { dispatch, state: appState } = useContext(Context);
+    const { state: appState } = useContext(Context);
 
 
     useEffect(() => {
@@ -30,9 +30,9 @@ export default function Select({ name, label, state, handleSelected, defaultOpti
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleClick = (e: { target: any }) => {
-        const id: string = e.target.value.split(' ')[1]
+        const id: string = e.target?.value.split(' ')[1]
 
-        typeof handleSelected === 'function' && handleSelected(id);
+        typeof handleSelected === 'function' && handleSelected(id, e.target?.name);
     }
 
     return (
