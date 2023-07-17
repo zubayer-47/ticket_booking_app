@@ -42,31 +42,30 @@ export type BusType = {
 
 export type ActionType =
   // user
-  | { type: Action.ADD_USER; payload: UserType }
-  | { type: Action.UPDATE_USER; payload: UserType }
-  | { type: Action.REMOVE_USER }
-  | { type: Action.LOADING; payload: boolean }
+  | { type: "ADD_USER"; payload: UserType }
+  | { type: "REMOVE_USER" }
+  | { type: "LOADING"; payload: boolean }
   // from
-  | { type: Action.ADD_FROM; payload: IdNameBrandLocationFromType[] }
-  | { type: Action.REMOVE_FROM }
+  | { type: "ADD_FROM"; payload: IdNameBrandLocationFromType[] }
+  | { type: "REMOVE_FROM" }
   // fromId
-  | { type: Action.ADD_FROM_ID; payload: string }
+  | { type: "ADD_FROM_ID"; payload: string }
   | { type: Action.REMOVE_FROM_ID }
   // to
-  | { type: Action.ADD_TO; payload: ToType[] }
-  | { type: Action.REMOVE_TO }
+  | { type: "ADD_TO"; payload: ToType[] }
+  | { type: "REMOVE_TO" }
   // brand
-  | { type: Action.ADD_BRAND; payload: IdNameBrandLocationFromType[] }
-  | { type: Action.REMOVE_BRAND }
+  | { type: "ADD_BRAND"; payload: IdNameBrandLocationFromType[] }
+  | { type: "REMOVE_BRAND" }
   // brandId
-  | { type: Action.ADD_BRAND_ID; payload: string }
-  | { type: Action.REMOVE_BRAND_ID }
+  | { type: "ADD_BRAND_ID"; payload: string }
+  | { type: "REMOVE_BRAND_ID" }
   // location
-  | { type: Action.ADD_LOCATION; payload: IdNameBrandLocationFromType[] }
-  | { type: Action.REMOVE_LOCATION }
+  | { type: "ADD_LOCATION"; payload: IdNameBrandLocationFromType[] }
+  | { type: "REMOVE_LOCATION" }
   // buses
-  | { type: Action.ADD_BUSES; payload: BusType[] }
-  | { type: Action.REMOVE_BUSES };
+  | { type: "ADD_BUSES"; payload: BusType[] }
+  | { type: "REMOVE_BUSES" };
 
 // initialStateType
 export type InitialStateType = {
@@ -103,18 +102,4 @@ export type StoreType = {
     buses: BusType[];
   };
   dispatch: Dispatch<ActionType>;
-  // user
-  login(user: UserType): void;
-  logout(): void;
-  updateUser(user: UserType): void;
-  loading(loading: boolean): void;
-  // from
-  addFrom(from: IdNameBrandLocationFromType[]): void;
-  removeFrom(): void;
-  // to
-  addTo(to: ToType[]): void;
-  removeTo(): void;
-  // buses
-  addBuses(buses: BusType[]): void;
-  removeBuses(): void;
 };

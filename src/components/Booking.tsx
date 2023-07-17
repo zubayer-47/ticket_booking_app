@@ -11,7 +11,7 @@ import Select from './common/Select';
 export default function Booking() {
     const [error, setError] = useState('')
     const navigate = useNavigate();
-    const { state, addFrom, removeFrom, removeTo, addTo, addBuses, removeBuses } = useContext(Context);
+    const { state, dispatch } = useContext(Context);
 
     useEffect(() => {
         const controller = new AbortController();
@@ -22,10 +22,9 @@ export default function Booking() {
 
                 if (res.status === 200) {
                     // console.log(res.data?.location, 'add from list, booking.tsx')
-                    addFrom(res.data?.location)
+                    dispatch({ type: "ADD_FROM", payload: res.data?.location });
                 }
             } catch (error) {
-                removeFrom();
                 if (axios.isAxiosError(error)) {
                     const message = error.response?.data?.message
 
@@ -35,26 +34,21 @@ export default function Booking() {
                 setError('Something Went Wrong! Please Try Again.')
             }
         }
-
         getAllFrom()
 
         return () => controller.abort();
-    }, [addFrom, removeFrom])
+    }, [dispatch])
 
     // fetch destination (to)
     const getToBasedOnFrom = (id: string) => {
-        const controller = new AbortController();
-
         const fetchTo = async () => {
             try {
-                const res = await api.get(`/search/toLocation/${id}`, { signal: controller.signal });
+                const res = await api.get(`/search/toLocation/${id}`);
 
                 if (res.status === 200) {
-
-                    addTo(res.data)
+                    dispatch({ type: "ADD_TO", payload: res.data });
                 }
             } catch (error) {
-                removeTo();
                 if (axios.isAxiosError(error)) {
                     const message = error.response?.data?.message
 
@@ -81,31 +75,23 @@ export default function Booking() {
         body.from = String(body.from).split(' ')[1]
         body.to = String(body.to).split(' ')[1]
 
-        console.log(body)
-
         const dateTime = String(body.journeyDate);
         const date = dayjs(dateTime);
 
-        const controller = new AbortController();
-
         try {
-            const res: Record<string, any> = await api.get('/search', {
+            const res = await api.get('/search', {
                 params: {
                     fromId: body.from,
                     toLocation: body.to,
                     journey_date: date,
                     type: body.type
-                },
-                signal: controller.signal
+                }
             })
 
-            if (res.status === 200) {
-                // console.log(res.data)
-                addBuses(res.data);
-            }
+            // console.log(res.data)
+            dispatch({ type: "ADD_BUSES", payload: res.data });
 
         } catch (error) {
-            removeBuses();
             if (axios.isAxiosError(error)) {
                 const message = error.response?.data?.message
 

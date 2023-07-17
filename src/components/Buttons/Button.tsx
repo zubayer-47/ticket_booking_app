@@ -7,9 +7,10 @@ type NavButtonProps = {
     to: string;
     handler?: () => void;
     isLogout?: boolean
+    classNames?: string
 }
 
-export function NavButton({ text, to, handler = () => { }, isLogout = false }: NavButtonProps) {
+export function NavButton({ text, to, handler = () => { }, isLogout = false, classNames }: NavButtonProps) {
     return (<Link to={to} onClick={() => {
         if (isLogout) {
             handler()
@@ -19,7 +20,7 @@ export function NavButton({ text, to, handler = () => { }, isLogout = false }: N
         }
 
         handler();
-    }} className="text-lg border md:border-0 border-gray-400 w-full hover:text-green-600">{text}</Link>
+    }} className={`text-lg border md:border-0 border-gray-400 w-full hover:text-green-600 ${classNames || ""}`}>{text}</Link>
     )
 }
 

@@ -1,17 +1,17 @@
 import axios from 'axios';
+import dayjs from 'dayjs';
 import { FormEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SubmitButton } from '../../../components/Buttons/Button';
+import { DateInput } from '../../../components/Inputs/Inputs';
+import Select from '../../../components/common/Select';
 import { Context } from '../../../contexts/Context';
 import { api } from '../../../utils/axios';
-import formateDate from '../../../utils/formateDate';
 
-
-// handle errors
-export default function Create() {
+export default function Booking() {
     const [error, setError] = useState('')
     const navigate = useNavigate();
-    const { state, addFrom, removeFrom, addTo, removeTo } = useContext(Context);
+    const { state, dispatch } = useContext(Context);
 
     useEffect(() => {
         const controller = new AbortController();
@@ -21,10 +21,10 @@ export default function Create() {
                 const res = await api.get('/search/fromLocation', { signal: controller.signal });
 
                 if (res.status === 200) {
-                    addFrom(res.data?.location)
+                    // console.log(res.data?.location, 'add from list, booking.tsx')
+                    dispatch({ type: "ADD_FROM", payload: res.data?.location });
                 }
             } catch (error) {
-                removeFrom();
                 if (axios.isAxiosError(error)) {
                     const message = error.response?.data?.message
 
@@ -34,23 +34,21 @@ export default function Create() {
                 setError('Something Went Wrong! Please Try Again.')
             }
         }
-
         getAllFrom()
 
         return () => controller.abort();
-    }, [addFrom, removeFrom])
+    }, [dispatch])
 
-    const getToBasedOnFrom = () => {
-
+    // fetch destination (to)
+    const getToBasedOnFrom = (id: string) => {
         const fetchTo = async () => {
             try {
-                // const res = await api.get(`/search/toLocation/${selectedFromId}`);
+                const res = await api.get(`/search/toLocation/${id}`);
 
-                // if (res.status === 200) {
-                //     addTo(res.data)
-                // }
+                if (res.status === 200) {
+                    dispatch({ type: "ADD_TO", payload: res.data });
+                }
             } catch (error) {
-                removeTo();
                 if (axios.isAxiosError(error)) {
                     const message = error.response?.data?.message
 
@@ -66,7 +64,6 @@ export default function Create() {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
         const formData = new FormData(e.currentTarget);
 
         const body = {
@@ -79,21 +76,20 @@ export default function Create() {
         body.to = String(body.to).split(' ')[1]
 
         const dateTime = String(body.journeyDate);
-        const date = formateDate(dateTime)
+        const date = dayjs(dateTime);
 
         try {
-            // const res = await api.get('/search', {
-            //     params: {
-            //         fromId: body.from,
-            //         toLocation: body.to,
-            //         journey_date: date,
-            //         type: body.type
-            //     }
-            // })
+            const res = await api.get('/search', {
+                params: {
+                    fromId: body.from,
+                    toLocation: body.to,
+                    journey_date: date,
+                    type: body.type
+                }
+            })
 
-            // if (res.status === 200) {
-            //     console.log(res.data)
-            // }
+            // console.log(res.data)
+            dispatch({ type: "ADD_BUSES", payload: res.data });
 
         } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -109,27 +105,41 @@ export default function Create() {
     }
 
     return (
-        <div className=''>
-            <form className='space-y-3 bg-gray-200/70 p-3 rounded-lg' onSubmit={handleSubmit}>
+        <div className='grid grid-cols-12 gap-5'>
+            <form className='space-y-3 bg-gray-200/70 p-3 rounded-lg col-span-12 md:col-span-6' onSubmit={handleSubmit}>
                 <div>
-                    <Input
+                    <Select
+                        name='from'
+                        label="From"
+                        state={state.from.list}
+                        handleSelected={getToBasedOnFrom}
+                    />
 
-                        name='buses' />
+                    <Select
+                        name='to'
+                        label="To"
+                        state={state.to}
+                        empty='No Destination Exist'
+                    />
                 </div>
                 <div className='flex justify-center items-center gap-2'>
                     <div>
                         <label className='block' htmlFor="date">Journey Date</label>
-                        <Input type='date' />
+                        <DateInput />
                     </div>
                     <select className='w-full bg-white p-2 rounded-md outline-none border-2 mt-6' name="type" >
                         <option>---</option>
                         <option value="AC">AC</option>
-                        <option value="NON-AC">NON-AC</option>
+                        <option value="non_AC">NON-AC</option>
                     </select>
                 </div>
 
-                <SubmitButton text='Create' />
+                <SubmitButton text='Search' />
             </form>
+
+            <div className='col-span-12 md:col-span-6 flex items-center'>
+                <img className='' src='https://static.busbd.com.bd/busbdmedia/for%20salide.1500371408' />
+            </div>
         </div>
     )
 }

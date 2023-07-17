@@ -19,7 +19,7 @@ export default function SignUp() {
     });
     const navigate = useNavigate();
 
-    const { login, logout } = useContext(Context)
+    const { dispatch } = useContext(Context)
 
     const handleSubmit = async (e: FormType) => {
         e.preventDefault();
@@ -51,37 +51,33 @@ export default function SignUp() {
                 role: body.role
             }))
 
-            if (response.status === 200) {
-                login({
+            dispatch({
+                type: "ADD_USER", payload: {
                     name: response.data?.fullname,
                     email: response.data?.email,
                     authenticated: true,
                     role: response.data?.role,
                     token: response.data?.token,
                     ticket: response.data?.ticket
-                })
-
-                if (response.data?.role === 'user') {
-                    navigate('/profile', { replace: true });
-                } else {
-                    navigate('/dashboard', { replace: true });
                 }
-            } else {
-                logout()
-                setError(prev => ({
-                    ...prev,
-                    common: "something went wrong! please try again..."
-                }))
-            }
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error) {
+            })
 
+            if (response.data?.role === 'user') {
+                navigate('/profile', { replace: true });
+            } else {
+                navigate('/dashboard', { replace: true });
+            }
+        } catch (error) {
             if (axios.isAxiosError(error)) {
-                logout()
-                const message = error?.response?.data?.message || 'Something Went Wrong! Please Try Again.';
+                const message = error.response?.data?.message
 
                 setError(message)
+                return
             }
+            setError(prev => ({
+                ...prev,
+                common: 'Something Went Wrong! Please Try Again.'
+            }))
         }
 
     }

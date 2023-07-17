@@ -10,7 +10,7 @@ export default function Navbar() {
     const [userModal, setUserModal] = useState(false)
     const ulRef = useRef<HTMLUListElement>(null);
 
-    const { state, logout } = useContext(Context);
+    const { state, dispatch } = useContext(Context);
 
     useEffect(() => {
         const ul = ulRef.current;
@@ -31,8 +31,8 @@ export default function Navbar() {
     return (
         <div className='bg-gray-50 w-full fixed top-0 left-0 right-0 px-2 md:px-5 py-3 md:py-4 border-b mb-10 select-none z-10'>
             <div className=" grid grid-cols-12 gap-2 max-w-6xl mx-auto">
-                <Link to={'/'} className="col-span-2">BD Ticket</Link>
-                <div className="col-span-10">
+                <Link to={'/'} className="col-span-3 md:col-span-2">BD Ticket</Link>
+                <div className="col-span-9 md:col-span-10">
                     <div className=' flex justify-end w-full'>
                         <button onClick={handleClick} className='block md:hidden'><HiMiniBars3BottomRight className="h-8 w-8" /></button>
                     </div>
@@ -60,14 +60,14 @@ export default function Navbar() {
 
                                     {/* notification for admin */}
 
-                                    <li className='relative'>
+                                    <li className='relative ml-6'>
                                         <button type='button' onClick={() => setUserModal(prev => !prev)} ><FiUser className="text-3xl text-gray-50 rounded-full bg-emerald-500 cursor-pointer p-1" /></button>
 
                                         {userModal ? (
-                                            <div className='absolute top-10 right-0 bg-gray-100 flex flex-col w-44 gap-2 text-gray-800 px-3 py-2 rounded-md shadow-md'>
-                                                <NavButton handler={() => setUserModal(false)} to='/change-password' text='Change Password' />
-                                                <NavButton isLogout handler={() => {
-                                                    logout()
+                                            <div className='absolute top-10 right-0 bg-gray-100 flex flex-col w-48 text-gray-800 rounded-md shadow-md overflow-hidden'>
+                                                <NavButton classNames='py-1.5 px-3 hover:bg-gray-200' handler={() => setUserModal(false)} to='/change-password' text='Change Password' />
+                                                <NavButton classNames='py-1.5 px-3 hover:bg-gray-200' isLogout handler={() => {
+                                                    dispatch({ type: "REMOVE_USER" })
                                                     setUserModal(false)
                                                 }} to='/' text='Sign Out' />
                                             </div>

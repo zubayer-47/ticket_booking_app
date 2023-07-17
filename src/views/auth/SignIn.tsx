@@ -12,7 +12,7 @@ import { api } from "../../utils/axios";
 export default function SignIn() {
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    const { login, logout, state } = useContext(Context);
+    const { dispatch, state } = useContext(Context);
     const location = useLocation();
 
     const from = location.state?.from?.pathname || '/';
@@ -33,49 +33,48 @@ export default function SignIn() {
             password: formData.get('password'),
         }
 
+        dispatch({ type: "LOADING", payload: true })
         try {
             const response = await api.post('/users/signin', JSON.stringify({
                 email: body.email,
                 password: body.password
             }))
 
-            if (response.status === 401) {
-                setError("User Unauthorized! Please Try Again.")
-            }
-
-            if (response.status === 200) {
-                login({
+            dispatch({
+                type: "ADD_USER", payload: {
                     name: response.data?.fullname,
                     email: response.data?.email,
                     authenticated: true,
                     role: response.data?.role,
                     token: response.data?.token,
                     ticket: response.data?.ticket
-                })
-
-                // Cookies.set("_token", response.data?.token);
-                localStorage.setItem("_token", JSON.stringify(response.data?.token));
-
-                if (response.data?.role === 'user') {
-                    navigate('/profile', { replace: true });
-                } else {
-                    navigate('/dashboard', { replace: true });
                 }
+            })
 
+            localStorage.setItem("_token", JSON.stringify(response.data?.token || ""));
+
+            if (response.data?.role === 'user') {
+                navigate('/profile', { replace: true });
                 return
             }
 
-            logout()
+            navigate('/dashboard', { replace: true });
         } catch (error) {
 
             if (axios.isAxiosError(error)) {
                 const message = error.response?.data?.message
+
+                if (error.status === 401) {
+                    setError("User Unauthorized! Please Try Again.")
+                }
 
                 setError(message)
                 return
             }
             setError('Something Went Wrong! Please Try Again.')
         }
+
+        dispatch({ type: "LOADING", payload: false })
     }
 
     return (

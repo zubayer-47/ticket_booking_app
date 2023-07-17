@@ -1,14 +1,10 @@
-import axios from 'axios'
-import { useContext, useEffect } from 'react'
 import { Outlet, Route, Routes } from 'react-router-dom'
 import BusList from './components/BusList'
-import Layout from './components/Layouts/Layout'
+import { MainLayout } from './components/Layouts/Layout'
 import Loader from './components/Loader'
 import Navbar from './components/Navbar'
 import AdminProtected from './components/protected/AdminProtected'
 import Protected from './components/protected/Protected'
-import { Context } from './contexts/Context'
-import { api } from './utils/axios'
 import Home from './views/Home'
 import NotFound from './views/NotFound'
 import Dashboard from './views/admin/Dashboard'
@@ -20,67 +16,8 @@ import OrderHistory from './views/orderHistory/OrderHistory'
 import Profile from './views/profile/Profile'
 
 export default function App() {
-  const { state, login, loading, logout } = useContext(Context)
-  const setLocalStorage = (tokenParam: string) => {
-    const _token = JSON.parse(localStorage.getItem("_token") ?? '""');
-
-    if (!_token) return () => localStorage.setItem("_token", JSON.stringify(tokenParam));
-  }
-
-  useEffect(() => {
-
-    const controller = new AbortController();
-
-    const _token = JSON.parse(localStorage.getItem("_token") ?? '""')
-
-    const fetchUser = async () => {
-      if (_token) {
-        try {
-          loading(true);
-          const res = await api.get('/users/me', {
-            headers: {
-              Authorization: _token.trim()
-            },
-            // signal: controller.signal
-          });
-
-          setLocalStorage(res.data?.token)
-
-          if (res.status === 200) {
-            login({
-              name: res.data?.fullname,
-              email: res.data?.email,
-              authenticated: true,
-              role: res.data?.role,
-              token: res.data?.token,
-              ticket: res.data?.ticket
-            })
-            loading(false);
-          }
-
-        } catch (error) {
-          loading(false)
-          logout()
-          if (axios.isAxiosError(error)) {
-            const message = error.response?.data?.message ?? error.response?.data
-
-            if (error.response?.status === 401) {
-              localStorage.removeItem("_token")
-            }
-          }
-        }
-      }
-    }
-
-    !state.user.authenticated && fetchUser();
-
-    return () => controller.abort();
-  }, [loading, login, logout, state.user.authenticated])
-
-  console.log(state)
-
   return (
-    <Layout>
+    <MainLayout>
       <Loader>
         <Navbar />
         <Routes>
@@ -110,7 +47,7 @@ export default function App() {
           </Route>
         </Routes>
       </Loader>
-    </Layout>
+    </MainLayout>
   )
 }
 

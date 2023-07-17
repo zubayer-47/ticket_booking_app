@@ -47,39 +47,42 @@ export default function BusList() {
     }
 
     return (
-        <div className="mt-8 w-full overflow-auto">
-            <table className="w-full table-auto border-collapse border border-slate-400 text-center overflow-scroll">
-                <thead className="bg-emerald-500 text-white">
-                    <tr>
-                        <th className="border border-slate-300 lg:p-1">Departing Time</th>
-                        <th className="border border-slate-300 lg:p-1">Coach No</th>
-                        <th className="border border-slate-300 lg:p-1">Starting Counter</th>
-                        <th className="border border-slate-300 lg:p-1">End Counter</th>
-                        <th className="border border-slate-300 lg:p-1">Fare</th>
-                        <th className="border border-slate-300 lg:p-1">Coach Type</th>
-                        <th className="border border-slate-300 lg:p-1">Arrival Time</th>
-                        <th className="border border-slate-300 lg:p-1">Seats Available</th>
-                        <th className="border border-slate-300 lg:p-1">View</th>
-                    </tr>
-                </thead>
-                <tbody className="">
-                    {busList.map(l => <tr key={l.id}>
-                        <td className="border border-slate-300">{l.departing_time}</td>
-                        <td className="border border-slate-300">{l.coach_no}</td>
-                        <td className="border border-slate-300">{l.staring_counter}</td>
-                        <td className="border border-slate-300">{l.end_counter}</td>
-                        <td className="border border-slate-300">{l.fare}</td>
-                        <td className="border border-slate-300">{l.coach_type}</td>
-                        <td className="border border-slate-300">{l.arrival_time}</td>
-                        <td className="border border-slate-300">{l.seats_available}</td>
-                        <td className="border border-slate-300"><button onClick={handleView}>
-                            <FiLayout className="w-6 h-6 text-emerald-500" />
-                        </button></td>
-                    </tr>)}
-                </tbody>
-            </table>
+        <div className="mt-8">
+            <h1 className="text-3xl tracking-wide my-2">Available Buses</h1>
+            <div className="overflow-auto">
+                <table className="w-full table-auto border-collapse border border-slate-400 text-center shadow-md">
+                    <thead className="bg-emerald-500 text-white">
+                        <tr className="">
+                            <th className="border border-slate-300 lg:p-1 ">Departing Time</th>
+                            <th className="border border-slate-300 lg:p-1 ">Coach No</th>
+                            <th className="border border-slate-300 lg:p-1 ">Starting Counter</th>
+                            <th className="border border-slate-300 lg:p-1 ">End Counter</th>
+                            <th className="border border-slate-300 lg:p-1 ">Fare</th>
+                            <th className="border border-slate-300 lg:p-1 ">Coach Type</th>
+                            <th className="border border-slate-300 lg:p-1 ">Arrival Time</th>
+                            <th className="border border-slate-300 lg:p-1 ">Seats Available</th>
+                            <th className="border border-slate-300 lg:p-1 ">View</th>
+                        </tr>
+                    </thead>
+                    <tbody className="">
+                        {busList.map(l => <tr key={l.id}>
+                            <td className="border border-slate-300">{l.departing_time}</td>
+                            <td className="border border-slate-300">{l.coach_no}</td>
+                            <td className="border border-slate-300">{l.staring_counter}</td>
+                            <td className="border border-slate-300">{l.end_counter}</td>
+                            <td className="border border-slate-300">{l.fare}</td>
+                            <td className="border border-slate-300">{l.coach_type}</td>
+                            <td className="border border-slate-300">{l.arrival_time}</td>
+                            <td className="border border-slate-300">{l.seats_available}</td>
+                            <td className="border border-slate-300"><button onClick={handleView}>
+                                <FiLayout className="w-6 h-6 text-emerald-500" />
+                            </button></td>
+                        </tr>)}
+                    </tbody>
+                </table>
 
-            <TicketModal showModal={showModal} setShowModal={setShowModal} />
+                <TicketModal showModal={showModal} setShowModal={setShowModal} />
+            </div>
         </div>
     )
 }
