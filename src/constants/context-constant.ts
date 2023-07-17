@@ -28,4 +28,8 @@ export const enum Action {
   // brandID
   ADD_BRAND_ID = "ADD_BRAND_ID",
   REMOVE_BRAND_ID = "REMOVE_BRAND_ID",
+
+  // buses
+  ADD_BUSES = "ADD_BUSES",
+  REMOVE_BUSES = "REMOVE_BUSES",
 }
