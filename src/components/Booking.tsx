@@ -1,10 +1,9 @@
 import axios from 'axios';
+import dayjs from 'dayjs';
 import { FormEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Action } from '../constants/context-constant';
 import { Context } from '../contexts/Context';
 import { api } from '../utils/axios';
-import formateDate from '../utils/formateDate';
 import { SubmitButton } from './Buttons/Button';
 import { DateInput } from './Inputs/Inputs';
 import Select from './common/Select';
@@ -12,7 +11,7 @@ import Select from './common/Select';
 export default function Booking() {
     const [error, setError] = useState('')
     const navigate = useNavigate();
-    const { state, addFrom, removeFrom, dispatch, removeTo } = useContext(Context);
+    const { state, addFrom, removeFrom, removeTo, addTo, addBuses, removeBuses } = useContext(Context);
 
     useEffect(() => {
         const controller = new AbortController();
@@ -26,7 +25,6 @@ export default function Booking() {
                     addFrom(res.data?.location)
                 }
             } catch (error) {
-                console.log('remove from list, booking.tsx')
                 removeFrom();
                 if (axios.isAxiosError(error)) {
                     const message = error.response?.data?.message
@@ -43,22 +41,16 @@ export default function Booking() {
         return () => controller.abort();
     }, [addFrom, removeFrom])
 
-    const getToBasedOnFrom = (id: string, name: string) => {
-        console.log('rendering')
-
-        // create a local state for selectedFromId and push it in there and then continue
-        if (name === 'from' && id) {
-            dispatch({ type: Action.ADD_FROM_ID, payload: id })
-            return
-        }
-
-        dispatch({ type: Action.ADD_BRAND_ID, payload: id })
+    // fetch destination (to)
+    const getToBasedOnFrom = (id: string) => {
+        const controller = new AbortController();
 
         const fetchTo = async () => {
             try {
-                const res = await api.get(`/search/toLocation/${selectedFromId}`);
+                const res = await api.get(`/search/toLocation/${id}`, { signal: controller.signal });
 
                 if (res.status === 200) {
+
                     addTo(res.data)
                 }
             } catch (error) {
@@ -78,7 +70,6 @@ export default function Booking() {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
         const formData = new FormData(e.currentTarget);
 
         const body = {
@@ -93,23 +84,28 @@ export default function Booking() {
         console.log(body)
 
         const dateTime = String(body.journeyDate);
-        const date = formateDate(dateTime)
+        const date = dayjs(dateTime);
+
+        const controller = new AbortController();
 
         try {
-            // const res = await api.get('/search', {
-            //     params: {
-            //         fromId: body.from,
-            //         toLocation: body.to,
-            //         journey_date: date,
-            //         type: body.type
-            //     }
-            // })
+            const res: Record<string, any> = await api.get('/search', {
+                params: {
+                    fromId: body.from,
+                    toLocation: body.to,
+                    journey_date: date,
+                    type: body.type
+                },
+                signal: controller.signal
+            })
 
-            // if (res.status === 200) {
-            //     console.log(res.data)
-            // }
+            if (res.status === 200) {
+                // console.log(res.data)
+                addBuses(res.data);
+            }
 
         } catch (error) {
+            removeBuses();
             if (axios.isAxiosError(error)) {
                 const message = error.response?.data?.message
 
@@ -132,10 +128,12 @@ export default function Booking() {
                         state={state.from.list}
                         handleSelected={getToBasedOnFrom}
                     />
+
                     <Select
                         name='to'
                         label="To"
                         state={state.to}
+                        empty='No Destination Exist'
                     />
                 </div>
                 <div className='flex justify-center items-center gap-2'>
@@ -146,7 +144,7 @@ export default function Booking() {
                     <select className='w-full bg-white p-2 rounded-md outline-none border-2 mt-6' name="type" >
                         <option>---</option>
                         <option value="AC">AC</option>
-                        <option value="NON-AC">NON-AC</option>
+                        <option value="non_AC">NON-AC</option>
                     </select>
                 </div>
 
