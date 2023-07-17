@@ -1,22 +1,7 @@
 import { ReactNode, useCallback, useMemo, useReducer } from "react";
 import { Action } from "../constants/context-constant";
-import { ActionType, IdNameBrandLocationFromType, ToType, UserType } from "../types/state.types";
+import { ActionType, BusType, IdNameBrandLocationFromType, InitialStateType, ToType, UserType } from "../types/state.types";
 import { Context } from "./Context";
-
-type InitialStateType = {
-    user: UserType;
-    isLoading: boolean;
-    from: {
-        selectedFromId: string;
-        list: IdNameBrandLocationFromType[];
-    };
-    to: ToType[];
-    brand: {
-        selectedBrandId: string;
-        list: IdNameBrandLocationFromType[];
-    };
-    locations: IdNameBrandLocationFromType[];
-};
 
 const initialState: InitialStateType = {
     user: {
@@ -31,16 +16,18 @@ const initialState: InitialStateType = {
         selectedFromId: '',
         list: [{ id: "", name: "" }],
     },
+    // to: [{ fromID: "", id: "", name: "" }],
     to: [{ fromID: "", id: "", name: "" }],
     isLoading: false,
     brand: {
         selectedBrandId: '',
         list: [{ id: '', name: '' }]
     },
-    locations: [{ id: '', name: '' }]
+    locations: [{ id: '', name: '' }],
+    buses: [{ id: '', brand: { id: "", createdBy: "", name: "" }, from: [{ id: "", location: { id: "", name: "" } }], journey_date: "", type: "" }]
 };
 
-function fromToReducer(state: InitialStateType, action: ActionType) {
+function fromReducer(state: InitialStateType, action: ActionType) {
     switch (action.type) {
         case Action.ADD_FROM:
             return {
@@ -72,12 +59,10 @@ function fromToReducer(state: InitialStateType, action: ActionType) {
 }
 
 function reducer(state: InitialStateType, action: ActionType): InitialStateType {
-
-    const fromTo = fromToReducer(state, action);
-
-    // console.log(fromTo )
+    // fromReducer(state, action)
 
     switch (action.type) {
+        // user
         case Action.ADD_USER:
             return {
                 ...state,
@@ -98,6 +83,7 @@ function reducer(state: InitialStateType, action: ActionType): InitialStateType 
                 ...state,
                 isLoading: action.payload
             };
+        // From
         case Action.ADD_FROM:
             return {
                 ...state,
@@ -114,6 +100,7 @@ function reducer(state: InitialStateType, action: ActionType): InitialStateType 
                     list: [{ id: "", name: "" }]
                 },
             };
+        // TO
         case Action.ADD_TO:
             return {
                 ...state,
@@ -122,8 +109,10 @@ function reducer(state: InitialStateType, action: ActionType): InitialStateType 
         case Action.REMOVE_TO:
             return {
                 ...state,
+                // to: [{ fromID: "", id: "", name: "" }],
                 to: [{ fromID: "", id: "", name: "" }],
             }
+        // brand
         case Action.ADD_BRAND:
             return {
                 ...state,
@@ -140,6 +129,7 @@ function reducer(state: InitialStateType, action: ActionType): InitialStateType 
                     list: [{ id: '', name: '' }]
                 }
             }
+        // location
         case Action.ADD_LOCATION:
             return {
                 ...state,
@@ -150,6 +140,18 @@ function reducer(state: InitialStateType, action: ActionType): InitialStateType 
                 ...state,
                 locations: [{ id: '', name: '' }],
             }
+
+        // bus
+        case Action.ADD_BUSES:
+            return {
+                ...state,
+                buses: action.payload
+            };
+        case Action.REMOVE_BUSES:
+            return {
+                ...state,
+                buses: [{ id: '', brand: { id: "", createdBy: "", name: "" }, from: [{ id: "", location: { id: "", name: "" } }], journey_date: "", type: "" }]
+            }
         default:
             return state;
     }
@@ -158,36 +160,42 @@ function reducer(state: InitialStateType, action: ActionType): InitialStateType 
 export default function Provider({ children }: { children: ReactNode }) {
     const [state, dispatch] = useReducer(reducer, initialState);
 
+    // user
     const login = useCallback((user: UserType) => {
         dispatch({ type: Action.ADD_USER, payload: user })
     }, [])
-
     const logout = useCallback(() => {
         dispatch({ type: Action.REMOVE_USER })
     }, [])
-
     const updateUser = useCallback((user: UserType) => {
         dispatch({ type: Action.UPDATE_USER, payload: user })
     }, [])
-
     const loading = useCallback((loading: boolean) => {
         dispatch({ type: Action.LOADING, payload: loading })
     }, [])
 
+    // from
     const addFrom = useCallback((from: IdNameBrandLocationFromType[]) => {
         dispatch({ type: Action.ADD_FROM, payload: from });
     }, [])
-
     const removeFrom = useCallback(() => {
         dispatch({ type: Action.REMOVE_FROM });
     }, [])
 
+    // TO
     const addTo = useCallback((to: ToType[]) => {
         dispatch({ type: Action.ADD_TO, payload: to });
     }, [])
-
     const removeTo = useCallback(() => {
         dispatch({ type: Action.REMOVE_TO });
+    }, [])
+
+    // buses
+    const addBuses = useCallback((buses: BusType[]) => {
+        dispatch({ type: Action.ADD_BUSES, payload: buses });
+    }, [])
+    const removeBuses = useCallback(() => {
+        dispatch({ type: Action.REMOVE_BUSES });
     }, [])
 
     const value = useMemo(() => ({
@@ -202,8 +210,10 @@ export default function Provider({ children }: { children: ReactNode }) {
         loading,
         dispatch,
         addTo,
-        removeTo
-    }), [state, login, logout, updateUser, loading, dispatch, addFrom, removeFrom, addTo, removeTo]);
+        removeTo,
+        addBuses,
+        removeBuses
+    }), [state, login, logout, updateUser, loading, dispatch, addFrom, removeFrom, addTo, removeTo, addBuses, removeBuses]);
 
     return (
         <Context.Provider value={{ ...value }}>
