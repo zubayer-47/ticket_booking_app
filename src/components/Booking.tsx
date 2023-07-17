@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { FormEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Action } from '../constants/context-constant';
 import { Context } from '../contexts/Context';
 import { api } from '../utils/axios';
 import formateDate from '../utils/formateDate';
@@ -11,7 +12,7 @@ import Select from './common/Select';
 export default function Booking() {
     const [error, setError] = useState('')
     const navigate = useNavigate();
-    const { state, addFrom, removeFrom, addTo, removeTo } = useContext(Context);
+    const { state, addFrom, removeFrom, dispatch, removeTo } = useContext(Context);
 
     useEffect(() => {
         const controller = new AbortController();
@@ -42,16 +43,24 @@ export default function Booking() {
         return () => controller.abort();
     }, [addFrom, removeFrom])
 
-    const getToBasedOnFrom = () => {
+    const getToBasedOnFrom = (id: string, name: string) => {
         console.log('rendering')
+
+        // create a local state for selectedFromId and push it in there and then continue
+        if (name === 'from' && id) {
+            dispatch({ type: Action.ADD_FROM_ID, payload: id })
+            return
+        }
+
+        dispatch({ type: Action.ADD_BRAND_ID, payload: id })
 
         const fetchTo = async () => {
             try {
-                // const res = await api.get(`/search/toLocation/${selectedFromId}`);
+                const res = await api.get(`/search/toLocation/${selectedFromId}`);
 
-                // if (res.status === 200) {
-                //     addTo(res.data)
-                // }
+                if (res.status === 200) {
+                    addTo(res.data)
+                }
             } catch (error) {
                 removeTo();
                 if (axios.isAxiosError(error)) {

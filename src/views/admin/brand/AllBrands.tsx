@@ -202,7 +202,7 @@ export default function AllBrands() {
                                         error: ""
                                     }))
                                 }}
-                                isError={!!state.error.length}
+                                isError={!!state.error?.length}
                             />
                         </form>
                     ) : null}
@@ -241,7 +241,7 @@ export default function AllBrands() {
                                                 </div>
                                             ) :
                                                 (
-                                                    <div className="flex justify-center items-center gap-2">
+                                                    <div className="flex justify-center items-center gap-2 mb-6">
                                                         <MiniButton
                                                             text="Update"
                                                             handler={handleUpdate}

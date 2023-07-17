@@ -5,13 +5,15 @@ type ErrorProps = {
 
 export default function Error({ error }: ErrorProps) {
     return (
-        <p className="mt-2 text-center">
+        // <p className="mt-2 text-center">
+        <>
             {!!error && (
                 <span className='mb-2 text-sm text-center text-red-400 tracking-wider'>
                     {error}
                 </span>
             )}
-        </p>
+        </>
+        // </p>
     )
 }
 
