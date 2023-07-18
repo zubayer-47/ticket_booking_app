@@ -1,69 +1,126 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { FormEvent, useContext, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Context } from '../contexts/Context';
+import { BusType, IdNameBrandLocationFromType, ToType } from '../types/state.types';
 import { api } from '../utils/axios';
 import { SubmitButton } from './Buttons/Button';
 import { DateInput } from './Inputs/Inputs';
 import Select from './common/Select';
 
-export default function Booking() {
-    const [error, setError] = useState('')
-    const navigate = useNavigate();
-    const { state, dispatch } = useContext(Context);
+interface ToListType {
+    list: ToType[],
+    loading: boolean;
+    error: string;
+}
+interface FromListType {
+    list: IdNameBrandLocationFromType[],
+    loading: boolean;
+    error: string;
+}
+interface BusesType {
+    list: BusType[],
+    loading: boolean;
+    error: string;
+}
 
+export default function Booking() {
+    const [toList, setToList] = useState<ToListType>({ error: "", loading: false, list: [] });
+    const [fromList, setFromList] = useState<FromListType>({ error: '', loading: false, list: [] });
+    const [buses, setBuses] = useState<BusesType>({ error: "", loading: false, list: [] });
+    const navigate = useNavigate();
+
+    // fetching from list inside useEffect
     useEffect(() => {
         const controller = new AbortController();
 
         const getAllFrom = async () => {
+            setFromList(prev => ({
+                ...prev,
+                loading: true
+            }))
+
             try {
                 const res = await api.get('/search/fromLocation', { signal: controller.signal });
 
                 if (res.status === 200) {
-                    // console.log(res.data?.location, 'add from list, booking.tsx')
-                    dispatch({ type: "ADD_FROM", payload: res.data?.location });
+                    setFromList(prev => ({
+                        ...prev,
+                        list: res.data?.location
+                    }))
                 }
             } catch (error) {
                 if (axios.isAxiosError(error)) {
                     const message = error.response?.data?.message
 
-                    setError(message)
+                    setFromList(prev => ({
+                        ...prev,
+                        error: message
+                    }))
                     return
                 }
-                setError('Something Went Wrong! Please Try Again.')
+                setFromList(prev => ({
+                    ...prev,
+                    error: 'Something Went Wrong! Please Try Again.'
+                }))
             }
+
+            setFromList(prev => ({
+                ...prev,
+                loading: false
+            }))
         }
         getAllFrom()
 
         return () => controller.abort();
-    }, [dispatch])
+    }, [])
 
-    // fetch destination (to)
+    // fetching destination (to)
     const getToBasedOnFrom = (id: string) => {
         const fetchTo = async () => {
+            setToList(prev => ({
+                ...prev,
+                loading: true
+            }))
             try {
                 const res = await api.get(`/search/toLocation/${id}`);
 
                 if (res.status === 200) {
-                    dispatch({ type: "ADD_TO", payload: res.data });
+                    setToList(prev => ({
+                        ...prev,
+                        list: res.data,
+                    }));
                 }
             } catch (error) {
                 if (axios.isAxiosError(error)) {
                     const message = error.response?.data?.message
 
-                    setError(message)
+                    setToList(prev => ({
+                        ...prev,
+                        error: message
+                    }))
                     return
                 }
-                setError('Something Went Wrong! Please Try Again.')
-            }
-        }
 
+                setToList(prev => ({
+                    ...prev,
+                    error: 'Something Went Wrong! Please Try Again.'
+                }))
+            }
+            setToList(prev => ({
+                ...prev,
+                loading: false
+            }))
+        }
         fetchTo()
     }
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setBuses(prev => ({
+            ...prev,
+            loading: true
+        }))
         const formData = new FormData(e.currentTarget);
 
         const body = {
@@ -74,6 +131,11 @@ export default function Booking() {
         }
         body.from = String(body.from).split(' ')[1]
         body.to = String(body.to).split(' ')[1]
+
+        if (!body.from || !body.to || !body.journeyDate || !body.type) {
+            alert("All Fields are required!");
+            return
+        }
 
         const dateTime = String(body.journeyDate);
         const date = dayjs(dateTime);
@@ -88,18 +150,32 @@ export default function Booking() {
                 }
             })
 
-            // console.log(res.data)
-            dispatch({ type: "ADD_BUSES", payload: res.data });
+            setBuses(prev => ({
+                ...prev,
+                list: res.data
+            }))
 
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 const message = error.response?.data?.message
 
-                setError(message)
+                setBuses(prev => ({
+                    ...prev,
+                    error: message
+                }))
                 return
             }
-            setError('Something Went Wrong! Please Try Again.')
+
+            setBuses(prev => ({
+                ...prev,
+                error: 'Something Went Wrong! Please Try Again.'
+            }))
         }
+
+        setBuses(prev => ({
+            ...prev,
+            loading: false
+        }))
 
         navigate('/ticket')
     }
@@ -111,14 +187,14 @@ export default function Booking() {
                     <Select
                         name='from'
                         label="From"
-                        state={state.from.list}
+                        state={fromList}
                         handleSelected={getToBasedOnFrom}
                     />
 
                     <Select
                         name='to'
                         label="To"
-                        state={state.to}
+                        state={toList}
                         empty='No Destination Exist'
                     />
                 </div>

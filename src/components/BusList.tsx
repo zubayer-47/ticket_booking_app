@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FiLayout } from 'react-icons/fi';
+import { FiLayout } from "react-icons/fi";
 import TicketModal from "./ModalViews/TicketModal";
 
 type BUS_LIST_TYPE = {
@@ -50,23 +50,23 @@ export default function BusList() {
         <div className="mt-8">
             <h1 className="text-3xl tracking-wide my-2">Available Buses</h1>
             <div className="overflow-auto">
-                <table className="w-full table-auto border-collapse border border-slate-400 text-center shadow-md">
-                    <thead className="bg-emerald-500 text-white">
-                        <tr className="">
-                            <th className="border border-slate-300 lg:p-1 ">Departing Time</th>
-                            <th className="border border-slate-300 lg:p-1 ">Coach No</th>
-                            <th className="border border-slate-300 lg:p-1 ">Starting Counter</th>
-                            <th className="border border-slate-300 lg:p-1 ">End Counter</th>
-                            <th className="border border-slate-300 lg:p-1 ">Fare</th>
-                            <th className="border border-slate-300 lg:p-1 ">Coach Type</th>
-                            <th className="border border-slate-300 lg:p-1 ">Arrival Time</th>
-                            <th className="border border-slate-300 lg:p-1 ">Seats Available</th>
-                            <th className="border border-slate-300 lg:p-1 ">View</th>
+                <table className="text-center shadow-md w-full">
+                    <thead>
+                        <tr className=" bg-emerald-500 text-white">
+                            <th className="border border-slate-300 lg:p-1">Bus Name</th>
+                            <th className="border border-slate-300 lg:p-1">Coach No</th>
+                            <th className="border border-slate-300 lg:p-1">Starting Counter</th>
+                            <th className="border border-slate-300 lg:p-1">End Counter</th>
+                            <th className="border border-slate-300 lg:p-1">Fare</th>
+                            <th className="border border-slate-300 lg:p-1">Coach Type</th>
+                            <th className="border border-slate-300 lg:p-1">Arrival Time</th>
+                            <th className="border border-slate-300 lg:p-1">Seats Available</th>
+                            <th className="border border-slate-300 lg:p-1">View</th>
                         </tr>
                     </thead>
                     <tbody className="">
                         {busList.map(l => <tr key={l.id}>
-                            <td className="border border-slate-300">{l.departing_time}</td>
+                            <td className="border border-slate-300">{l.coach_no}</td>
                             <td className="border border-slate-300">{l.coach_no}</td>
                             <td className="border border-slate-300">{l.staring_counter}</td>
                             <td className="border border-slate-300">{l.end_counter}</td>

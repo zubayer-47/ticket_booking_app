@@ -13,19 +13,7 @@ const initialState: InitialStateType = {
         token: "",
         ticket: ""
     },
-    from: {
-        selectedFromId: '',
-        list: [{ id: "", name: "" }],
-    },
-    // to: [{ fromID: "", id: "", name: "" }],
-    to: [{ fromID: "", id: "", name: "" }],
-    isLoading: false,
-    brand: {
-        selectedBrandId: '',
-        list: [{ id: '', name: '' }]
-    },
-    locations: [{ id: '', name: '' }],
-    buses: [{ id: '', brand: { id: "", createdBy: "", name: "" }, from: [{ id: "", location: { id: "", name: "" } }], journey_date: "", type: "" }]
+    isLoading: false
 };
 
 function reducer(state: InitialStateType, action: ActionType): InitialStateType {
@@ -48,75 +36,6 @@ function reducer(state: InitialStateType, action: ActionType): InitialStateType 
                 ...state,
                 isLoading: action.payload
             };
-        // From
-        case "ADD_FROM":
-            return {
-                ...state,
-                from: {
-                    ...state.from,
-                    list: action.payload
-                }
-            };
-        case "REMOVE_FROM":
-            return {
-                ...state,
-                from: {
-                    ...state.from,
-                    list: [{ id: "", name: "" }]
-                },
-            };
-        // TO
-        case "ADD_TO":
-            return {
-                ...state,
-                to: action.payload
-            };
-        case "REMOVE_TO":
-            return {
-                ...state,
-                // to: [{ fromID: "", id: "", name: "" }],
-                to: [{ fromID: "", id: "", name: "" }],
-            }
-        // brand
-        case "ADD_BRAND":
-            return {
-                ...state,
-                brand: {
-                    ...state.brand,
-                    list: action.payload
-                }
-            };
-        case "REMOVE_BRAND":
-            return {
-                ...state,
-                brand: {
-                    ...state.brand,
-                    list: [{ id: '', name: '' }]
-                }
-            }
-        // location
-        case "ADD_LOCATION":
-            return {
-                ...state,
-                locations: action.payload
-            };
-        case "REMOVE_LOCATION":
-            return {
-                ...state,
-                locations: [{ id: '', name: '' }],
-            }
-
-        // bus
-        case "ADD_BUSES":
-            return {
-                ...state,
-                buses: action.payload
-            };
-        case "REMOVE_BUSES":
-            return {
-                ...state,
-                buses: [{ id: '', brand: { id: "", createdBy: "", name: "" }, from: [{ id: "", location: { id: "", name: "" } }], journey_date: "", type: "" }]
-            }
         default:
             return state;
     }
@@ -125,14 +44,23 @@ function reducer(state: InitialStateType, action: ActionType): InitialStateType 
 export default function Provider({ children }: { children: ReactNode }) {
     const [state, dispatch] = useReducer(reducer, initialState);
 
+    const setLocalStorage = (token: string) => {
+        const _token = localStorage.getItem('_token');
+
+        if (!_token) {
+            localStorage.setItem("_token", JSON.stringify(token || ""));
+        }
+    }
+
     // handle error boundary
     useEffect(() => {
         const controller = new AbortController();
         const _token = JSON.parse(localStorage.getItem("_token") || '""')
 
         const fetchUser = async () => {
-            dispatch({ type: "LOADING", payload: true })
+            console.log(true)
             if (_token) {
+                dispatch({ type: "LOADING", payload: true })
                 try {
                     const res = await api.get('/users/me', {
                         headers: {
@@ -141,7 +69,7 @@ export default function Provider({ children }: { children: ReactNode }) {
                         signal: controller.signal
                     });
 
-                    localStorage.setItem("_token", JSON.stringify(res.data?.token || ""));
+                    setLocalStorage(res.data?.token)
                     dispatch({
                         type: "ADD_USER", payload: {
                             name: res.data?.fullname,
@@ -161,17 +89,23 @@ export default function Provider({ children }: { children: ReactNode }) {
                         }
                     }
                 }
+                dispatch({ type: "LOADING", payload: false });
+
 
             }
-            dispatch({ type: "LOADING", payload: false });
         }
-
         !state.user.authenticated && fetchUser();
 
         return () => controller.abort();
     }, [state.user.authenticated]);
 
-    console.log(state.isLoading)
+    useEffect(() => {
+        if (state.user.authenticated) {
+            dispatch({ type: "LOADING", payload: false })
+            return
+        }
+        dispatch({ type: "LOADING", payload: true })
+    }, [state.user.authenticated])
 
     const value = useMemo(() => ({ state: { ...state }, dispatch }), [state, dispatch]);
 

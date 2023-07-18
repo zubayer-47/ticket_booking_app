@@ -1,96 +1,143 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { FormEvent, useContext, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SubmitButton } from '../../../components/Buttons/Button';
+import Error from '../../../components/Error';
 import { DateInput } from '../../../components/Inputs/Inputs';
 import Select from '../../../components/common/Select';
-import { Context } from '../../../contexts/Context';
+import { IdNameBrandLocationFromType } from '../../../types/state.types';
 import { api } from '../../../utils/axios';
 
-export default function Booking() {
+interface BrandsType {
+    error: string;
+    loading: boolean;
+    list: IdNameBrandLocationFromType[]
+}
+interface locationsType {
+    error: string;
+    loading: boolean;
+    list: IdNameBrandLocationFromType[]
+}
+
+export default function Create() {
     const [error, setError] = useState('')
+    const [brands, setBrands] = useState<BrandsType>({ error: "", loading: false, list: [] })
+    const [locations, setLocations] = useState<locationsType>({ error: "", loading: false, list: [] })
     const navigate = useNavigate();
-    const { state, dispatch } = useContext(Context);
 
     useEffect(() => {
         const controller = new AbortController();
 
-        const getAllFrom = async () => {
+        // fetch brands
+        const getBrands = async () => {
+            setBrands(prev => ({
+                ...prev,
+                loading: true
+            }))
             try {
-                const res = await api.get('/search/fromLocation', { signal: controller.signal });
+                const res = await api.get('/brand/', { signal: controller.signal });
 
                 if (res.status === 200) {
-                    // console.log(res.data?.location, 'add from list, booking.tsx')
-                    dispatch({ type: "ADD_FROM", payload: res.data?.location });
+                    // console.log(res.data, 'brands')
+                    setBrands(prev => ({
+                        ...prev,
+                        list: res.data
+                    }))
                 }
             } catch (error) {
                 if (axios.isAxiosError(error)) {
                     const message = error.response?.data?.message
 
-                    setError(message)
+                    setBrands(prev => ({
+                        ...prev,
+                        error: message
+                    }))
                     return
                 }
-                setError('Something Went Wrong! Please Try Again.')
+                setBrands(prev => ({
+                    ...prev,
+                    error: 'Something Went Wrong! Please Try Again.'
+                }))
             }
+            setBrands(prev => ({
+                ...prev,
+                loading: false
+            }))
         }
-        getAllFrom()
+
+        // fetch locations
+        const getLocations = () => {
+            const fetchTo = async () => {
+                setLocations(prev => ({
+                    ...prev,
+                    loading: true
+                }))
+                try {
+                    const res = await api.get('/location', { signal: controller.signal });
+
+                    if (res.status === 200) {
+                        setLocations(prev => ({
+                            ...prev,
+                            list: res.data
+                        }))
+                    }
+                } catch (error) {
+                    if (axios.isAxiosError(error)) {
+                        const message = error.response?.data?.message
+
+                        setLocations(prev => ({
+                            ...prev,
+                            error: message
+                        }))
+                        return
+                    }
+                    setLocations(prev => ({
+                        ...prev,
+                        error: "Something Went Wrong! Please Try Again."
+                    }))
+                }
+                setLocations(prev => ({
+                    ...prev,
+                    loading: false
+                }))
+            }
+
+            fetchTo()
+        }
+
+        getBrands()
+        getLocations();
 
         return () => controller.abort();
-    }, [dispatch])
-
-    // fetch destination (to)
-    const getToBasedOnFrom = (id: string) => {
-        const fetchTo = async () => {
-            try {
-                const res = await api.get(`/search/toLocation/${id}`);
-
-                if (res.status === 200) {
-                    dispatch({ type: "ADD_TO", payload: res.data });
-                }
-            } catch (error) {
-                if (axios.isAxiosError(error)) {
-                    const message = error.response?.data?.message
-
-                    setError(message)
-                    return
-                }
-                setError('Something Went Wrong! Please Try Again.')
-            }
-        }
-
-        fetchTo()
-    }
+    }, [])
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
 
         const body = {
-            from: formData.get('from'),
-            to: formData.get('to'),
+            brand: formData.get('brand'),
+            location: formData.get('location'),
             journeyDate: formData.get('date'),
             type: formData.get('type'),
         }
-        body.from = String(body.from).split(' ')[1]
-        body.to = String(body.to).split(' ')[1]
+        body.brand = String(body.brand).split(' ')[1]
+        body.location = String(body.location).split(' ')[1]
+        console.log(body)
+
 
         const dateTime = String(body.journeyDate);
         const date = dayjs(dateTime);
 
         try {
-            const res = await api.get('/search', {
-                params: {
-                    fromId: body.from,
-                    toLocation: body.to,
-                    journey_date: date,
-                    type: body.type
-                }
-            })
-
+            // const res = await api.post('/product/', {
+            //     brandID: body,
+            //     location_id: body.location,
+            //     journey_date: date,
+            //     type: body.type
+            // })
             // console.log(res.data)
-            dispatch({ type: "ADD_BUSES", payload: res.data });
-
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 const message = error.response?.data?.message
@@ -101,45 +148,41 @@ export default function Booking() {
             setError('Something Went Wrong! Please Try Again.')
         }
 
-        navigate('/ticket')
+        // navigate('/ticket')
     }
 
     return (
-        <div className='grid grid-cols-12 gap-5'>
-            <form className='space-y-3 bg-gray-200/70 p-3 rounded-lg col-span-12 md:col-span-6' onSubmit={handleSubmit}>
+        <form className='space-y-3 bg-gray-200/70 p-3 rounded-lg max-w-xl mx-auto' onSubmit={handleSubmit}>
+            <Select
+                name='brand'
+                label="Brand"
+                state={brands}
+                defaultOptionValue="Choose Brand"
+            />
+
+            <Select
+                name='location'
+                label="Location"
+                state={locations}
+                defaultOptionValue="Choose Location"
+            />
+            <div className='flex justify-center items-center gap-2'>
                 <div>
-                    <Select
-                        name='from'
-                        label="From"
-                        state={state.from.list}
-                        handleSelected={getToBasedOnFrom}
-                    />
-
-                    <Select
-                        name='to'
-                        label="To"
-                        state={state.to}
-                        empty='No Destination Exist'
-                    />
+                    <label className='block' htmlFor="date">Journey Date</label>
+                    <DateInput />
                 </div>
-                <div className='flex justify-center items-center gap-2'>
-                    <div>
-                        <label className='block' htmlFor="date">Journey Date</label>
-                        <DateInput />
-                    </div>
-                    <select className='w-full bg-white p-2 rounded-md outline-none border-2 mt-6' name="type" >
-                        <option>---</option>
-                        <option value="AC">AC</option>
-                        <option value="non_AC">NON-AC</option>
-                    </select>
-                </div>
-
-                <SubmitButton text='Search' />
-            </form>
-
-            <div className='col-span-12 md:col-span-6 flex items-center'>
-                <img className='' src='https://static.busbd.com.bd/busbdmedia/for%20salide.1500371408' />
+                <select className='w-full bg-white p-2 rounded-md outline-none border-2 mt-6' name="type" >
+                    <option>---</option>
+                    <option value="AC">AC</option>
+                    <option value="non_AC">NON-AC</option>
+                </select>
             </div>
-        </div>
+
+            <SubmitButton text='Create' />
+
+            <p className='text-center'>
+                {!!error ? (<Error error={error} />) : null}
+            </p>
+        </form>
     )
 }

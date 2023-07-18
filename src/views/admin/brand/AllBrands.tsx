@@ -156,8 +156,8 @@ export default function AllBrands() {
     }
 
     return (
-        <div className="">
-            <div className="flex justify-between items-center">
+        <div className="w-full">
+            <div className="flex justify-between items-center fixed pb-5 bg-gray-500">
 
                 <span className="text-2xl text-emerald-500">Bus List</span>
                 <button type="button" onClick={() => setCreate(true)}><BsPlusSquareFill className="bg-white text-emerald-500 text-2xl" /></button>

@@ -10,6 +10,7 @@ import NotFound from './views/NotFound'
 import Dashboard from './views/admin/Dashboard'
 import AllBrands from './views/admin/brand/AllBrands'
 import Product from './views/admin/product'
+import Create from './views/admin/product/Create'
 import SignIn from './views/auth/SignIn'
 import SignUp from './views/auth/SignUp'
 import OrderHistory from './views/orderHistory/OrderHistory'
@@ -40,7 +41,7 @@ export default function App() {
               <Route index path='dashboard' element={<Dashboard />} />
               <Route path='brands' element={<AllBrands />} />
               <Route path='product' element={<Product />}>
-                {/* <Route path='create' element={<Create />} /> */}
+                <Route path='create' element={<Create />} />
               </Route>
             </Route>
             <Route path="*" element={<NotFound />} />
