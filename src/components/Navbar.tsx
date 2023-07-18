@@ -29,7 +29,7 @@ export default function Navbar() {
     }
 
     return (
-        <div className='bg-gray-50 w-full fixed top-0 left-0 right-0 px-2 md:px-5 py-2 border-b mb-10 select-none z-10'>
+        <div className='bg-gray-50 w-full fixed top-0 left-0 right-0 px-2 md:px-5 py-4 border-b mb-10 select-none z-10'>
             <div className=" grid grid-cols-12 gap-2 items-center max-w-6xl mx-auto">
                 <Link to={'/'} className="col-span-3 md:col-span-2">BD Ticket</Link>
                 <div className="col-span-9 md:col-span-10">

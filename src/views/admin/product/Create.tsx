@@ -131,13 +131,14 @@ export default function Create() {
         const date = dayjs(dateTime);
 
         try {
-            // const res = await api.post('/product/', {
-            //     brandID: body,
-            //     location_id: body.location,
-            //     journey_date: date,
-            //     type: body.type
-            // })
-            // console.log(res.data)
+            const res = await api.post('/product', {
+                brandID: body.brand,
+                location_id: body.location,
+                journey_date: date,
+                type: body.type
+            })
+
+            console.log(res.data)
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 const message = error.response?.data?.message
@@ -171,7 +172,7 @@ export default function Create() {
                     <label className='block' htmlFor="date">Journey Date</label>
                     <DateInput />
                 </div>
-                <select className='w-full bg-white p-2 rounded-md outline-none border-2 mt-6' name="type" >
+                <select className='w-full bg-white p-2 rounded-md outline-none border-2 mt-6' name="type" value='' onChange={() => undefined}>
                     <option>---</option>
                     <option value="AC">AC</option>
                     <option value="non_AC">NON-AC</option>

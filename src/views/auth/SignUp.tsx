@@ -4,8 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { SubmitButton } from "../../components/Buttons/Button";
 import Error from "../../components/Error";
 import Input, { PasswordInput } from "../../components/Inputs/Inputs";
-import Label from "../../components/Inputs/Label";
 import CenterLayout from "../../components/Layouts/CenterLayout";
+import { MiniSelect } from "../../components/common/Select";
 import { Context } from "../../contexts/Context";
 import { FormType } from "../../types/custom";
 import { api } from "../../utils/axios";
@@ -23,7 +23,6 @@ export default function SignUp() {
 
     const handleSubmit = async (e: FormType) => {
         e.preventDefault();
-
 
         const formData = new FormData(e.currentTarget);
         const body = {
@@ -110,20 +109,19 @@ export default function SignUp() {
                 <PasswordInput id="confirmPassword" text="Confirm Password" error={error.password} />
 
                 <div>
-                    <Label text="Role" isRequired id="role" />
-                    <select className="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-blue-500 focus:border-blue-500" name="role" required defaultValue=''>
-                        <option selected>Select Role</option>
+                    <MiniSelect label="Role" name="role">
+                        <option>Select Role</option>
                         <option value='user'>User</option>
                         <option value='admin'>Admin</option>
-                    </select>
+                    </MiniSelect>
                 </div>
 
                 <SubmitButton text="Create Account" />
 
 
-            </form>
+            </form >
 
             <Link to={'/sign-in'} className="text-emerald-500 text-lg">Login Account</Link>
-        </CenterLayout>
+        </CenterLayout >
     )
 }

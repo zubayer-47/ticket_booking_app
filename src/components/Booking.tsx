@@ -195,7 +195,6 @@ export default function Booking() {
                         name='to'
                         label="To"
                         state={toList}
-                        empty='No Destination Exist'
                     />
                 </div>
                 <div className='flex justify-center items-center gap-2'>
@@ -203,7 +202,7 @@ export default function Booking() {
                         <label className='block' htmlFor="date">Journey Date</label>
                         <DateInput />
                     </div>
-                    <select className='w-full bg-white p-2 rounded-md outline-none border-2 mt-6' name="type" >
+                    <select className='w-full bg-white p-2 rounded-md outline-none border-2 mt-6' name="type" value='' onChange={() => undefined}>
                         <option>---</option>
                         <option value="AC">AC</option>
                         <option value="non_AC">NON-AC</option>

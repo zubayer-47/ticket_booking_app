@@ -46,7 +46,7 @@ export default function PersonalInfo() {
                 <div className="grid grid-cols-2 gap-2">
                     <div className="flex justify-center items-center">
                         <Label text="Boarding Point" isRequired />
-                        <select name='boarding_point' className="block w-full p-1 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-blue-500 focus:border-blue-500" required defaultValue=''>
+                        <select name='boarding_point' className="block w-full p-1 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-blue-500 focus:border-blue-500" required value='' onChange={() => undefined}>
                             <option selected>Select a Boarding Point</option>
                             <option value="kadamtoli">Sylhet Kadamtoli Bus Stand (5:00PM)</option>
                             <option value="humayun_cottor">Humayun Cottor (5:00PM)</option>
@@ -54,7 +54,7 @@ export default function PersonalInfo() {
                     </div>
                     <div className="flex justify-center items-center">
                         <Label text="Dropping Point" isRequired />
-                        <select name='dropping_point' className="block w-full p-1 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-blue-500 focus:border-blue-500" required defaultValue=''>
+                        <select name='dropping_point' className="block w-full p-1 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-blue-500 focus:border-blue-500" required value='' onChange={() => undefined}>
                             <option selected>Select a Dropping Point</option>
                             <option value="kadamtoli">Sayedabad (11:00PM)</option>
                         </select>

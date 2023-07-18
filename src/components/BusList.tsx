@@ -50,31 +50,31 @@ export default function BusList() {
         <div className="mt-8">
             <h1 className="text-3xl tracking-wide my-2">Available Buses</h1>
             <div className="overflow-auto">
-                <table className="text-center shadow-md w-full">
-                    <thead>
-                        <tr className=" bg-emerald-500 text-white">
-                            <th className="border border-slate-300 lg:p-1">Bus Name</th>
-                            <th className="border border-slate-300 lg:p-1">Coach No</th>
-                            <th className="border border-slate-300 lg:p-1">Starting Counter</th>
-                            <th className="border border-slate-300 lg:p-1">End Counter</th>
-                            <th className="border border-slate-300 lg:p-1">Fare</th>
-                            <th className="border border-slate-300 lg:p-1">Coach Type</th>
-                            <th className="border border-slate-300 lg:p-1">Arrival Time</th>
-                            <th className="border border-slate-300 lg:p-1">Seats Available</th>
-                            <th className="border border-slate-300 lg:p-1">View</th>
+                <table className="text-center shadow-md w-full border-collapse border border-gray-100">
+                    <thead className="w-full">
+                        <tr className=" bg-emerald-500 text-white flex items-center">
+                            <th className="py-1.5 flex-1 flex-shrink-0">Bus Name</th>
+                            <th className="py-1.5 flex-1 flex-shrink-0">Coach No</th>
+                            <th className="py-1.5 flex-1 flex-shrink-0">Starting Counter</th>
+                            <th className="py-1.5 flex-1 flex-shrink-0">End Counter</th>
+                            <th className="py-1.5 flex-1 flex-shrink-0">Fare</th>
+                            <th className="py-1.5 flex-1 flex-shrink-0">Coach Type</th>
+                            <th className="py-1.5 flex-1 flex-shrink-0">Arrival Time</th>
+                            <th className="py-1.5 flex-1 flex-shrink-0">Seats Available</th>
+                            <th className="py-1.5 flex-1 flex-shrink-0">View</th>
                         </tr>
                     </thead>
-                    <tbody className="">
-                        {busList.map(l => <tr key={l.id}>
-                            <td className="border border-slate-300">{l.coach_no}</td>
-                            <td className="border border-slate-300">{l.coach_no}</td>
-                            <td className="border border-slate-300">{l.staring_counter}</td>
-                            <td className="border border-slate-300">{l.end_counter}</td>
-                            <td className="border border-slate-300">{l.fare}</td>
-                            <td className="border border-slate-300">{l.coach_type}</td>
-                            <td className="border border-slate-300">{l.arrival_time}</td>
-                            <td className="border border-slate-300">{l.seats_available}</td>
-                            <td className="border border-slate-300"><button onClick={handleView}>
+                    <tbody className="w-full">
+                        {busList.map(l => <tr className="flex items-center border" key={l.id}>
+                            <td className="py-1 px-2 flex-1 flex-shrink-0">{l.coach_no}</td>
+                            <td className="py-1 px-2 flex-1 flex-shrink-0">{l.coach_no}</td>
+                            <td className="py-1 px-2 flex-1 flex-shrink-0">{l.staring_counter}</td>
+                            <td className="py-1 px-2 flex-1 flex-shrink-0">{l.end_counter}</td>
+                            <td className="py-1 px-2 flex-1 flex-shrink-0">{l.fare}</td>
+                            <td className="py-1 px-2 flex-1 flex-shrink-0">{l.coach_type}</td>
+                            <td className="py-1 px-2 flex-1 flex-shrink-0">{l.arrival_time}</td>
+                            <td className="py-1 px-2 flex-1 flex-shrink-0">{l.seats_available}</td>
+                            <td className="py-1 px-2 flex-1 flex-shrink-0"><button onClick={handleView}>
                                 <FiLayout className="w-6 h-6 text-emerald-500" />
                             </button></td>
                         </tr>)}

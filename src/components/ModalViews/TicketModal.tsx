@@ -11,19 +11,19 @@ export default function TicketModal({ showModal, setShowModal }: TicketModalProp
 
     return (
         <>
-            {showModal ? (
+            {!showModal ? null : (
                 <>
                     <div
                         tabIndex={1}
-                        className="flex justify-center items-center overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+                        className="flex justify-center items-center overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none mx-5"
                     >
                         <div className="relative my-6 mx-auto">
                             {/*content*/}
                             <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-gray-50 outline-none focus:outline-none">
                                 {/*body*/}
-                                <div className="relative p-6 lg:grid lg:grid-cols-12 gap-2 h-[550px] lg:h-full overflow-auto">
+                                <div className="relative p-6 grid lg:grid lg:grid-cols-12 gap-5 h-[550px] lg:h-full overflow-auto">
 
-                                    <div className="lg:col-span-4 w-[300px] lg:w-full mx-auto">
+                                    <div className="lg:col-span-4 w-[400px] lg:w-full mx-auto">
                                         <div className="bg-gray-200 rounded-md p-2">
                                             <BusSeats />
                                         </div>
@@ -50,7 +50,7 @@ export default function TicketModal({ showModal, setShowModal }: TicketModalProp
                     </div>
                     <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                 </>
-            ) : null}
+            )}
         </>
     );
 }

@@ -134,4 +134,3 @@ export function PasswordInput({ text = "Password", id = "password", error = "" }
 export function DateInput() {
     return <input type="date" className='w-full tracking-widest border outline-none rounded-md p-1.5' name="date" id="date" />
 }
-

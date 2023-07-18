@@ -23,7 +23,7 @@ export const MainLayout: React.FC<PropType> = ({ children }) => {
     const { state } = useContext(Context);
 
     return (
-        <div className={`bg-gray-50 ${state.isLoading ? 'pt-0' : 'pt-20'}`}>
+        <div className={`${state.isLoading ? 'pt-0' : 'pt-20'}`}>
             {children}
         </div>
     );

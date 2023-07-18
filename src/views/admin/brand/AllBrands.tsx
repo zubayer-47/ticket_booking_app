@@ -155,15 +155,18 @@ export default function AllBrands() {
         }
     }
 
-    return (
-        <div className="w-full">
-            <div className="flex justify-between items-center fixed pb-5 bg-gray-500">
+    const handleCreateProduct = () => {
+        console.log(brands)
+    }
 
+    return (
+        <>
+            <div className="flex items-center justify-between w-full mt-5">
                 <span className="text-2xl text-emerald-500">Bus List</span>
                 <button type="button" onClick={() => setCreate(true)}><BsPlusSquareFill className="bg-white text-emerald-500 text-2xl" /></button>
             </div>
 
-            <div className="mb-3 mt-5">
+            <div className="mb-3 mt-2">
                 {/* create add list modal */}
                 {create ? (
                     <form className="flex items-center gap-2 mt-2" onSubmit={handleBrandCreate}>
@@ -195,15 +198,15 @@ export default function AllBrands() {
                 ) : null}
             </div>
 
-
-            <ul className="overflow-auto scrollbar-none">
+            <ul className="overflow-hidden scrollbar-none">
                 {state.loading ? (<h1>Loading...</h1>) : (
                     <>
                         {
                             !brands.length ? (<h1>Bus List Empty</h1>) : brands.map(brand => (
                                 <li className={`flex gap-2 ${updatedBrandId === brand.id ? "border-none" : "border-b"}`} key={brand.id}>
-                                    <div className="flex-1">
+                                    <button className="flex-1">
                                         <input
+                                            onClick={handleCreateProduct}
                                             type="text"
                                             defaultValue={updatedBrandId === brand.id && brandName || brand.name || ""}
                                             // value={updatedBrandId === brand.id && brandName || ""}
@@ -214,7 +217,7 @@ export default function AllBrands() {
                                         {(updatedBrandId === brand.id && state.error) ? (
                                             <Error error={state.error} />
                                         ) : null}
-                                    </div>
+                                    </button>
 
                                     {
                                         updatedBrandId !== brand.id ? (
@@ -247,57 +250,6 @@ export default function AllBrands() {
                     </>
                 )}
             </ul >
-            <ul className="overflow-auto scrollbar-none">
-                {state.loading ? (<h1>Loading...</h1>) : (
-                    <>
-                        {
-                            !brands.length ? (<h1>Bus List Empty</h1>) : brands.map(brand => (
-                                <li className={`flex gap-2 ${updatedBrandId === brand.id ? "border-none" : "border-b"}`} key={brand.id}>
-                                    <div className="flex-1">
-                                        <input
-                                            type="text"
-                                            defaultValue={updatedBrandId === brand.id && brandName || brand.name || ""}
-                                            // value={updatedBrandId === brand.id && brandName || ""}
-                                            onChange={handleChange}
-                                            className={`bg-transparent text-gray-900 text-md rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full px-3 py-5 outline-none ${updatedBrandId === brand.id ? 'border' : 'border-none'}`}
-                                            disabled={updatedBrandId !== brand.id}
-                                        />
-                                        {(updatedBrandId === brand.id && state.error) ? (
-                                            <Error error={state.error} />
-                                        ) : null}
-                                    </div>
-
-                                    {
-                                        updatedBrandId !== brand.id ? (
-                                            <div className="flex gap-2">
-                                                <button type="button" onClick={() => handleDelete(brand.id)}>
-                                                    <FiTrash2 className="text-2xl text-red-500" />
-                                                </button>
-                                                <button type="button" onClick={() => handleEdit(brand.id)}>
-                                                    <FiEdit className="text-xl text-emerald-600" />
-                                                </button>
-                                            </div>
-                                        ) :
-                                            (
-                                                <div className="flex justify-center items-center gap-2 mb-6">
-                                                    <MiniButton
-                                                        text="Update"
-                                                        handler={handleUpdate}
-                                                    />
-                                                    <BgNoneButton
-                                                        red
-                                                        text="Cancel"
-                                                        handler={() => setUpdatedBrandId(null)}
-                                                    />
-                                                </div>
-                                            )
-                                    }
-                                </li>
-                            ))
-                        }
-                    </>
-                )}
-            </ul >
-        </div>
+        </>
     )
 }

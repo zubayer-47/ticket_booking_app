@@ -10,6 +10,7 @@ import NotFound from './views/NotFound'
 import Dashboard from './views/admin/Dashboard'
 import AllBrands from './views/admin/brand/AllBrands'
 import Product from './views/admin/product'
+import Counter from './views/admin/product/Counter'
 import Create from './views/admin/product/Create'
 import SignIn from './views/auth/SignIn'
 import SignUp from './views/auth/SignUp'
@@ -42,6 +43,7 @@ export default function App() {
               <Route path='brands' element={<AllBrands />} />
               <Route path='product' element={<Product />}>
                 <Route path='create' element={<Create />} />
+                <Route path=':brandID' element={<Counter />} />
               </Route>
             </Route>
             <Route path="*" element={<NotFound />} />

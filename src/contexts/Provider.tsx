@@ -90,8 +90,6 @@ export default function Provider({ children }: { children: ReactNode }) {
                     }
                 }
                 dispatch({ type: "LOADING", payload: false });
-
-
             }
         }
         !state.user.authenticated && fetchUser();

@@ -8,12 +8,12 @@ import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <Provider>
-      <BrowserRouter>
-        <ErrorBoundary>
+    <ErrorBoundary>
+      <Provider>
+        <BrowserRouter>
           <App />
-        </ErrorBoundary>
-      </BrowserRouter>
-    </Provider>
+        </BrowserRouter>
+      </Provider>
+    </ErrorBoundary>
   </React.StrictMode >
 )
