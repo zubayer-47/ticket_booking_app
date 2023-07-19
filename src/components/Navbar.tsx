@@ -58,8 +58,6 @@ export default function Navbar() {
                                             </>
                                         )}
 
-                                    {/* notification for admin */}
-
                                     <li className='relative ml-6'>
                                         <button type='button' onClick={() => setUserModal(prev => !prev)} ><FiUser className="text-3xl text-gray-50 rounded-full bg-emerald-500 cursor-pointer p-1" /></button>
 

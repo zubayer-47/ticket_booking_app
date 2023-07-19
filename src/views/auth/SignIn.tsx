@@ -22,7 +22,7 @@ export default function SignIn() {
         const _token = localStorage.getItem("_token");
 
         (_token && state.user.authenticated) && navigate(from);
-    }, [from, navigate, state.user.authenticated])
+    }, [from, navigate, state.user.authenticated, dispatch])
 
     const handleSubmit = async (e: FormType) => {
         e.preventDefault();
@@ -33,7 +33,7 @@ export default function SignIn() {
             password: formData.get('password'),
         }
 
-        dispatch({ type: "LOADING", payload: true })
+        // dispatch({ type: "LOADING", payload: true })
         try {
             const response = await api.post('/users/signin', JSON.stringify({
                 email: body.email,
@@ -51,7 +51,7 @@ export default function SignIn() {
                 }
             })
 
-            localStorage.setItem("_token", JSON.stringify(response.data?.token || ""));
+            localStorage.setItem("_token", JSON.stringify(response.data?.token));
 
             if (response.data?.role === 'user') {
                 navigate('/profile', { replace: true });
@@ -74,7 +74,7 @@ export default function SignIn() {
             setError('Something Went Wrong! Please Try Again.')
         }
 
-        dispatch({ type: "LOADING", payload: false })
+        // dispatch({ type: "LOADING", payload: false })
     }
 
     return (

@@ -10,7 +10,6 @@ export default function Protected() {
         return <Navigate to='/sign-in' replace state={{ from: location }} />
     } else if (state.user.authenticated && state.user.role === 'user') {
         return <Outlet />
-    } else {
-        return <Navigate to='/dashboard' />
     }
+    return <Navigate to='/dashboard' />
 }

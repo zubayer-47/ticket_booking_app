@@ -132,10 +132,13 @@ export default function Booking() {
         body.from = String(body.from).split(' ')[1]
         body.to = String(body.to).split(' ')[1]
 
-        if (!body.from || !body.to || !body.journeyDate || !body.type) {
-            alert("All Fields are required!");
-            return
-        }
+        navigate('/ticket')
+
+
+        // if (!body.from || !body.to || !body.journeyDate || !body.type) {
+        //     alert("All Fields are required!");
+        //     return
+        // }
 
         const dateTime = String(body.journeyDate);
         const date = dayjs(dateTime);
@@ -177,7 +180,7 @@ export default function Booking() {
             loading: false
         }))
 
-        navigate('/ticket')
+        // navigate('/ticket')
     }
 
     return (

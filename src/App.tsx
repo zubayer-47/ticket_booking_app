@@ -19,8 +19,8 @@ import Profile from './views/profile/Profile'
 
 export default function App() {
   return (
-    <MainLayout>
-      <Loader>
+    <Loader>
+      <MainLayout>
         <Navbar />
         <Routes>
           <Route path='/' element={<Outlet />}>
@@ -49,8 +49,8 @@ export default function App() {
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
-      </Loader>
-    </MainLayout>
+      </MainLayout>
+    </Loader>
   )
 }
 

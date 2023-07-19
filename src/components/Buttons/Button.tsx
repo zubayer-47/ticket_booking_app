@@ -15,7 +15,7 @@ export function NavButton({ text, to, handler = () => { }, isLogout = false, cla
         if (isLogout) {
             handler()
             // Cookies.remove("_token")
-            localStorage.removeItem("_token")
+            // localStorage.removeItem("_token")
             return
         }
 

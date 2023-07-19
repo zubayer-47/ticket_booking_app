@@ -23,6 +23,7 @@ export default function SignUp() {
 
     const handleSubmit = async (e: FormType) => {
         e.preventDefault();
+        // dispatch({ type: "LOADING", payload: true })
 
         const formData = new FormData(e.currentTarget);
         const body = {
@@ -79,6 +80,8 @@ export default function SignUp() {
             }))
         }
 
+        console.log('getting false for loading')
+        // dispatch({ type: "LOADING", payload: false })
     }
 
     return (

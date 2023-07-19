@@ -24,12 +24,14 @@ function reducer(state: InitialStateType, action: ActionType): InitialStateType 
         case "ADD_USER":
             return {
                 ...state,
-                user: action.payload
+                user: action.payload,
+                isLoading: false,
             };
         case "REMOVE_USER":
             return {
                 ...state,
                 user: { name: "", email: "", authenticated: false, role: "", token: "", ticket: "" },
+                isLoading: false
             };
         case "LOADING":
             return {
@@ -45,65 +47,56 @@ export default function Provider({ children }: { children: ReactNode }) {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     const setLocalStorage = (token: string) => {
-        const _token = localStorage.getItem('_token');
+        const _token = localStorage.getItem("_token")
+        // console.log(_token?.length);
 
-        if (!_token) {
-            localStorage.setItem("_token", JSON.stringify(token || ""));
+        if (!_token?.length && !!token.length) {
+            localStorage.setItem("_token", JSON.stringify(token));
         }
     }
 
     // handle error boundary
     useEffect(() => {
         const controller = new AbortController();
-        const _token = JSON.parse(localStorage.getItem("_token") || '""')
+        const userToken = localStorage.getItem("_token");
 
         const fetchUser = async () => {
-            console.log(true)
-            if (_token) {
-                dispatch({ type: "LOADING", payload: true })
-                try {
-                    const res = await api.get('/users/me', {
-                        headers: {
-                            Authorization: _token.trim()
-                        },
-                        signal: controller.signal
-                    });
+            try {
+                const res = await api.get('/users/me', {
+                    headers: {
+                        Authorization: userToken
+                    },
+                    signal: controller.signal
+                });
 
-                    setLocalStorage(res.data?.token)
-                    dispatch({
-                        type: "ADD_USER", payload: {
-                            name: res.data?.fullname,
-                            email: res.data?.email,
-                            authenticated: true,
-                            role: res.data?.role,
-                            token: res.data?.token,
-                            ticket: res.data?.ticket
-                        }
-                    })
-                } catch (error) {
-                    if (axios.isAxiosError(error)) {
-                        const message = error.response?.data?.message;
-
-                        if (error.response?.status === 401) {
-                            localStorage.removeItem("_token")
-                        }
+                setLocalStorage(res.data?.token)
+                dispatch({
+                    type: "ADD_USER", payload: {
+                        name: res.data?.fullname,
+                        email: res.data?.email,
+                        authenticated: true,
+                        role: res.data?.role,
+                        token: res.data?.token,
+                        ticket: res.data?.ticket
                     }
+                });
+            } catch (error) {
+                if (axios.isAxiosError(error)) {
+                    // const message = error.response?.data?.message;
+                    // handle error manually
+                    // if (error.status)
+                    console.log(error)
                 }
-                dispatch({ type: "LOADING", payload: false });
             }
+
+            dispatch({ type: "LOADING", payload: false })
         }
-        !state.user.authenticated && fetchUser();
+
+        dispatch({ type: "LOADING", payload: true })
+        fetchUser();
 
         return () => controller.abort();
-    }, [state.user.authenticated]);
-
-    useEffect(() => {
-        if (state.user.authenticated) {
-            dispatch({ type: "LOADING", payload: false })
-            return
-        }
-        dispatch({ type: "LOADING", payload: true })
-    }, [state.user.authenticated])
+    }, [state.user.authenticated, state.isLoading]);
 
     const value = useMemo(() => ({ state: { ...state }, dispatch }), [state, dispatch]);
 
