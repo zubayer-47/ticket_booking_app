@@ -1,3 +1,4 @@
+import { useContext, useEffect } from 'react'
 import { Outlet, Route, Routes } from 'react-router-dom'
 import BusList from './components/BusList'
 import { MainLayout } from './components/Layouts/Layout'
@@ -5,6 +6,7 @@ import Loader from './components/Loader'
 import Navbar from './components/Navbar'
 import AdminProtected from './components/protected/AdminProtected'
 import Protected from './components/protected/Protected'
+import { Context } from './contexts/Context'
 import Home from './views/Home'
 import NotFound from './views/NotFound'
 import Dashboard from './views/admin/Dashboard'
@@ -18,6 +20,13 @@ import OrderHistory from './views/orderHistory/OrderHistory'
 import Profile from './views/profile/Profile'
 
 export default function App() {
+  const { state } = useContext(Context)
+
+  useEffect(() => {
+    console.log(state)
+
+  }, [state])
+
   return (
     <Loader>
       <MainLayout>

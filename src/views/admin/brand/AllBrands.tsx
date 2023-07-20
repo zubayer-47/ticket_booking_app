@@ -160,7 +160,7 @@ export default function AllBrands() {
     }
 
     return (
-        <>
+        <div className="max-w-2xl mx-5 md:mx-auto">
             <div className="flex items-center justify-between w-full mt-5">
                 <span className="text-2xl text-emerald-500">Bus List</span>
                 <button type="button" onClick={() => setCreate(true)}><BsPlusSquareFill className="bg-white text-emerald-500 text-2xl" /></button>
@@ -250,6 +250,6 @@ export default function AllBrands() {
                     </>
                 )}
             </ul >
-        </>
+        </div>
     )
 }

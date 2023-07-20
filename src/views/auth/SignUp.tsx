@@ -9,6 +9,7 @@ import { MiniSelect } from "../../components/common/Select";
 import { Context } from "../../contexts/Context";
 import { FormType } from "../../types/custom";
 import { api } from "../../utils/axios";
+import setLocalStorage from "../../utils/setLocalStorage";
 
 export default function SignUp() {
     const [error, setError] = useState({
@@ -23,7 +24,6 @@ export default function SignUp() {
 
     const handleSubmit = async (e: FormType) => {
         e.preventDefault();
-        // dispatch({ type: "LOADING", payload: true })
 
         const formData = new FormData(e.currentTarget);
         const body = {
@@ -49,7 +49,9 @@ export default function SignUp() {
                 email: body.email,
                 password: body.password,
                 role: body.role
-            }))
+            }));
+
+            setLocalStorage(response.data?.token)
 
             dispatch({
                 type: "ADD_USER", payload: {
@@ -80,8 +82,6 @@ export default function SignUp() {
             }))
         }
 
-        console.log('getting false for loading')
-        // dispatch({ type: "LOADING", payload: false })
     }
 
     return (

@@ -1,7 +1,8 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Context } from '../contexts/Context';
 import { BusType, IdNameBrandLocationFromType, ToType } from '../types/state.types';
 import { api } from '../utils/axios';
 import { SubmitButton } from './Buttons/Button';
@@ -28,6 +29,7 @@ export default function Booking() {
     const [toList, setToList] = useState<ToListType>({ error: "", loading: false, list: [] });
     const [fromList, setFromList] = useState<FromListType>({ error: '', loading: false, list: [] });
     const [buses, setBuses] = useState<BusesType>({ error: "", loading: false, list: [] });
+    const { dispatch } = useContext(Context)
     const navigate = useNavigate();
 
     // fetching from list inside useEffect
@@ -39,16 +41,15 @@ export default function Booking() {
                 ...prev,
                 loading: true
             }))
+            // dispatch({ type: "LOADING", payload: true })
 
             try {
-                const res = await api.get('/search/fromLocation', { signal: controller.signal });
+                const res = await api.get('/search/fromLocation');
 
-                if (res.status === 200) {
-                    setFromList(prev => ({
-                        ...prev,
-                        list: res.data?.location
-                    }))
-                }
+                setFromList(prev => ({
+                    ...prev,
+                    list: res.data?.location
+                }))
             } catch (error) {
                 if (axios.isAxiosError(error)) {
                     const message = error.response?.data?.message
@@ -64,16 +65,18 @@ export default function Booking() {
                     error: 'Something Went Wrong! Please Try Again.'
                 }))
             }
+            // dispatch({ type: "LOADING", payload: false })
 
-            setFromList(prev => ({
-                ...prev,
-                loading: false
-            }))
         }
+
         getAllFrom()
+        setFromList(prev => ({
+            ...prev,
+            loading: false
+        }))
 
         return () => controller.abort();
-    }, [])
+    }, [dispatch])
 
     // fetching destination (to)
     const getToBasedOnFrom = (id: string) => {
@@ -205,7 +208,7 @@ export default function Booking() {
                         <label className='block' htmlFor="date">Journey Date</label>
                         <DateInput />
                     </div>
-                    <select className='w-full bg-white p-2 rounded-md outline-none border-2 mt-6' name="type" value='' onChange={() => undefined}>
+                    <select className='w-full bg-white p-2 rounded-md outline-none border-2 mt-6' name="type">
                         <option>---</option>
                         <option value="AC">AC</option>
                         <option value="non_AC">NON-AC</option>

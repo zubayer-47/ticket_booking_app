@@ -33,7 +33,6 @@ export default function SignIn() {
             password: formData.get('password'),
         }
 
-        // dispatch({ type: "LOADING", payload: true })
         try {
             const response = await api.post('/users/signin', JSON.stringify({
                 email: body.email,
@@ -73,8 +72,6 @@ export default function SignIn() {
             }
             setError('Something Went Wrong! Please Try Again.')
         }
-
-        // dispatch({ type: "LOADING", payload: false })
     }
 
     return (

@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "api-starter-kit",
-    "dateExported": "2023-07-15T13:12:38.951Z",
+    "dateExported": "2023-07-20T14:05:38.165Z",
     "version": "1.1",
     "folders": [
         {
@@ -52,6 +52,13 @@
             "containerId": "",
             "created": "2023-07-12T09:40:04.685Z",
             "sortNum": 70000
+        },
+        {
+            "_id": "defeddb8-7701-4991-8cc2-2a2d71a57b7c",
+            "name": "Booking",
+            "containerId": "",
+            "created": "2023-07-19T18:54:22.941Z",
+            "sortNum": 80000
         }
     ],
     "requests": [
@@ -95,7 +102,7 @@
             "method": "POST",
             "sortNum": 20000,
             "created": "2023-07-07T21:05:08.487Z",
-            "modified": "2023-07-12T09:43:24.425Z",
+            "modified": "2023-07-16T14:09:03.570Z",
             "headers": [
                 {
                     "name": "Content-Type",
@@ -105,7 +112,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"email\":\"Goldner.382ec9ef3904@outlook.com\",\n  \"password\":\"password\"\n}",
+                "raw": "{\n  \"email\":\"Goyette.1bce815c4146@hey.com\",\n  \"password\":\"password\"\n}",
                 "form": []
             },
             "tests": [
@@ -126,7 +133,7 @@
             "method": "POST",
             "sortNum": 25000,
             "created": "2023-07-08T12:19:44.820Z",
-            "modified": "2023-07-15T11:28:47.411Z",
+            "modified": "2023-07-19T15:25:15.547Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -188,7 +195,7 @@
             "method": "POST",
             "sortNum": 70000,
             "created": "2023-07-08T15:37:08.237Z",
-            "modified": "2023-07-15T13:05:58.620Z",
+            "modified": "2023-07-19T19:28:26.432Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -198,7 +205,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"brandID\": \"55c3065c-d86f-4410-ab46-f977ee7ea0c8\",\n  \"journey_date\": \"2023-11-30T18:00:00.000Z\",\n  \"location_id\": \"2f716bff-e86f-4d0b-90ce-f41b1f650da2\",\n  \"type\": \"AC\"\n}",
+                "raw": "{\n  \"brandID\": \"3c58cc0c-3ef1-4815-93af-f155f1e3af56\",\n  \"journey_date\": \"2023-07-20T18:00:00.000Z\",\n  \"location_id\": \"6da40a87-1abc-41e2-95d1-6cf961494bbb\",\n  \"type\": \"AC\"\n}",
                 "form": []
             },
             "tests": []
@@ -208,11 +215,11 @@
             "colId": "0453961f-be72-4742-80d9-34e8462370ee",
             "containerId": "095bf4c4-7a67-4918-aebb-a40a135bdc2c",
             "name": "Get Product",
-            "url": "/product/",
+            "url": "/product/55c3065c-d86f-4410-ab46-f977ee7ea0c8",
             "method": "GET",
             "sortNum": 80000,
             "created": "2023-07-08T19:33:18.218Z",
-            "modified": "2023-07-14T11:52:29.892Z",
+            "modified": "2023-07-16T08:19:15.934Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -220,11 +227,6 @@
                 }
             ],
             "params": [],
-            "body": {
-                "type": "json",
-                "raw": "{\n   \"brandID\": \"0c1da3c8-2961-4e30-91e0-4fc16de4bcf0\"\n}",
-                "form": []
-            },
             "tests": []
         },
         {
@@ -232,18 +234,24 @@
             "colId": "0453961f-be72-4742-80d9-34e8462370ee",
             "containerId": "095bf4c4-7a67-4918-aebb-a40a135bdc2c",
             "name": "Get Specific product",
-            "url": "/product/3bae595e-eb22-4be5-943e-18526ba20bcc",
+            "url": "/product?id=7b12d665-d171-418a-ae71-29a29fe317cd",
             "method": "GET",
             "sortNum": 90000,
             "created": "2023-07-08T19:35:23.058Z",
-            "modified": "2023-07-14T11:33:07.096Z",
+            "modified": "2023-07-16T08:17:38.309Z",
             "headers": [
                 {
                     "name": "Authorization",
                     "value": "{{token}}"
                 }
             ],
-            "params": [],
+            "params": [
+                {
+                    "name": "id",
+                    "value": "7b12d665-d171-418a-ae71-29a29fe317cd",
+                    "isPath": false
+                }
+            ],
             "tests": []
         },
         {
@@ -251,11 +259,11 @@
             "colId": "0453961f-be72-4742-80d9-34e8462370ee",
             "containerId": "d2f7ad0a-86a6-43e3-b43a-ade5ff85a4e3",
             "name": "create locatoin",
-            "url": "/location",
+            "url": "/location/",
             "method": "POST",
             "sortNum": 110000,
             "created": "2023-07-08T20:06:56.286Z",
-            "modified": "2023-07-15T13:06:11.902Z",
+            "modified": "2023-07-19T15:53:10.655Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -265,7 +273,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"name\": \"cumilla\"\n}",
+                "raw": "{\n  \"name\": \"daudkandi\"\n}",
                 "form": []
             },
             "tests": []
@@ -294,11 +302,11 @@
             "colId": "0453961f-be72-4742-80d9-34e8462370ee",
             "containerId": "d2f7ad0a-86a6-43e3-b43a-ade5ff85a4e3",
             "name": "get specific location",
-            "url": "/location/2c149220-3178-48c1-b221-6a44d87fc349",
+            "url": "/location/2f716bff-e86f-4d0b-90ce-f41b1f650da2",
             "method": "GET",
             "sortNum": 140000,
             "created": "2023-07-08T20:11:21.288Z",
-            "modified": "2023-07-14T10:42:54.776Z",
+            "modified": "2023-07-16T08:22:58.641Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -317,7 +325,7 @@
             "method": "PUT",
             "sortNum": 150000,
             "created": "2023-07-08T20:35:36.749Z",
-            "modified": "2023-07-15T11:29:16.196Z",
+            "modified": "2023-07-16T14:09:44.465Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -327,7 +335,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"brandID\": \"c1355d87-8da7-452d-9c4e-2fc5a1937764\",\n  \"name\": \"Green Line\"\n}",
+                "raw": "{\n  \"brandID\": \"a1cbef29-67f8-4b34-895c-fd150813f63d\",\n  \"name\": \"Green Line\"\n}",
                 "form": []
             },
             "tests": []
@@ -337,11 +345,11 @@
             "colId": "0453961f-be72-4742-80d9-34e8462370ee",
             "containerId": "4aec8733-bc3a-4b42-9324-d6b264f72690",
             "name": "create From",
-            "url": "/from",
+            "url": "/from/",
             "method": "POST",
             "sortNum": 170000,
             "created": "2023-07-09T20:48:41.287Z",
-            "modified": "2023-07-15T13:07:08.591Z",
+            "modified": "2023-07-19T19:29:26.038Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -351,7 +359,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"productID\": \"7b12d665-d171-418a-ae71-29a29fe317cd\",\n  \"ticketPrice\": \"500\",\n  \"locationID\": \"9e6d29b7-2389-41a7-b99d-d8025c34c06e\"\n  \n}",
+                "raw": "{\n  \"productID\": \"583600f5-b581-4659-9cbc-6945a9082833\",\n  \"ticketPrice\": \"300\",\n  \"locationID\": \"2e29cf14-1101-4f49-8c5f-a5e3b6d4dab4\"\n  \n}",
                 "form": []
             },
             "tests": []
@@ -361,23 +369,24 @@
             "colId": "0453961f-be72-4742-80d9-34e8462370ee",
             "containerId": "4aec8733-bc3a-4b42-9324-d6b264f72690",
             "name": "get product wise location",
-            "url": "/from",
+            "url": "/from?productID=7b12d665-d171-418a-ae71-29a29fe317cd",
             "method": "GET",
             "sortNum": 180000,
             "created": "2023-07-09T20:51:27.123Z",
-            "modified": "2023-07-12T07:36:50.816Z",
+            "modified": "2023-07-16T08:21:49.787Z",
             "headers": [
                 {
                     "name": "Authorization",
                     "value": "{{token}}"
                 }
             ],
-            "params": [],
-            "body": {
-                "type": "json",
-                "raw": "{\n  \"productID\": \"b27843f0-0937-4624-af57-b4d3689a273d\"\n}",
-                "form": []
-            },
+            "params": [
+                {
+                    "name": "productID",
+                    "value": "7b12d665-d171-418a-ae71-29a29fe317cd",
+                    "isPath": false
+                }
+            ],
             "tests": []
         },
         {
@@ -385,11 +394,11 @@
             "colId": "0453961f-be72-4742-80d9-34e8462370ee",
             "containerId": "4aec8733-bc3a-4b42-9324-d6b264f72690",
             "name": "get specific from",
-            "url": "/from/52b50fd7-e5b5-4176-b649-9fd07f559374",
+            "url": "/from/c51cb24c-8a3a-42d5-8a8d-f612cce65529",
             "method": "GET",
             "sortNum": 190000,
             "created": "2023-07-10T21:53:13.333Z",
-            "modified": "2023-07-14T11:54:17.798Z",
+            "modified": "2023-07-18T14:17:56.412Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -432,18 +441,34 @@
             "colId": "0453961f-be72-4742-80d9-34e8462370ee",
             "containerId": "68b23520-40b8-48b1-bd1e-e35f5912057e",
             "name": "search",
-            "url": "/search/",
+            "url": "/search?fromID=ff1194f6-cf63-4347-954d-a53020f1057e&toLocation=2f716bff-e86f-4d0b-90ce-f41b1f650da2&journey_date=2023-11-30T18:00:00&type=AC",
             "method": "GET",
             "sortNum": 220000,
             "created": "2023-07-11T20:56:06.473Z",
-            "modified": "2023-07-12T12:28:04.820Z",
+            "modified": "2023-07-16T15:38:43.952Z",
             "headers": [],
-            "params": [],
-            "body": {
-                "type": "json",
-                "raw": "{\n  \"fromID\": \"52b50fd7-e5b5-4176-b649-9fd07f559374\",\n  \"toLocation\": \"2c149220-3178-48c1-b221-6a44d87fc349\",\n  \"journey_date\": \"2023-11-30T18:00:00\",\n  \"type\": \"AC\"\n}",
-                "form": []
-            },
+            "params": [
+                {
+                    "name": "fromID",
+                    "value": "ff1194f6-cf63-4347-954d-a53020f1057e",
+                    "isPath": false
+                },
+                {
+                    "name": "toLocation",
+                    "value": "2f716bff-e86f-4d0b-90ce-f41b1f650da2",
+                    "isPath": false
+                },
+                {
+                    "name": "journey_date",
+                    "value": "2023-11-30T18:00:00",
+                    "isPath": false
+                },
+                {
+                    "name": "type",
+                    "value": "AC",
+                    "isPath": false
+                }
+            ],
             "tests": []
         },
         {
@@ -451,11 +476,11 @@
             "colId": "0453961f-be72-4742-80d9-34e8462370ee",
             "containerId": "a0e79fb0-f200-408a-9233-7245eff55c8a",
             "name": "create Ticket",
-            "url": "/ticket",
+            "url": "/ticket/",
             "method": "POST",
             "sortNum": 230000,
             "created": "2023-07-12T09:40:12.462Z",
-            "modified": "2023-07-15T13:09:55.856Z",
+            "modified": "2023-07-20T13:57:02.358Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -465,7 +490,7 @@
             "params": [],
             "body": {
                 "type": "json",
-                "raw": "{\n  \"fromID\": \"c51cb24c-8a3a-42d5-8a8d-f612cce65529\",\n  \"productID\": \"7b12d665-d171-418a-ae71-29a29fe317cd\",\n  \"seatName\": \"A2\"\n}",
+                "raw": "{\n  \"fromID\": \"4e66dfe1-8648-460c-a968-69a1c4745f2f\",\n  \"productID\": \"583600f5-b581-4659-9cbc-6945a9082833\",\n  \"seatName\": \"B3\"\n}",
                 "form": []
             },
             "tests": []
@@ -475,11 +500,11 @@
             "colId": "0453961f-be72-4742-80d9-34e8462370ee",
             "containerId": "a0e79fb0-f200-408a-9233-7245eff55c8a",
             "name": "Get Ticket",
-            "url": "/ticket/7b12d665-d171-418a-ae71-29a29fe317cd",
+            "url": "/ticket/fdbf11d6-9df0-42d8-bc91-991d9159a71f",
             "method": "GET",
             "sortNum": 240000,
             "created": "2023-07-12T09:51:14.522Z",
-            "modified": "2023-07-15T13:12:05.848Z",
+            "modified": "2023-07-19T15:54:31.738Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -487,11 +512,6 @@
                 }
             ],
             "params": [],
-            "body": {
-                "type": "json",
-                "raw": "{\n   \"productID\": \"\"\n}",
-                "form": []
-            },
             "tests": []
         },
         {
@@ -499,11 +519,11 @@
             "colId": "0453961f-be72-4742-80d9-34e8462370ee",
             "containerId": "233d1893-be4e-4603-bf9e-84391de92cab",
             "name": "delete Brand",
-            "url": "/brand",
+            "url": "/brand/55c3065c-d86f-4410-ab46-f977ee7ea0c8",
             "method": "DELETE",
             "sortNum": 250000,
             "created": "2023-07-14T18:55:16.510Z",
-            "modified": "2023-07-15T11:28:34.698Z",
+            "modified": "2023-07-15T18:05:06.323Z",
             "headers": [
                 {
                     "name": "Authorization",
@@ -511,11 +531,69 @@
                 }
             ],
             "params": [],
-            "body": {
-                "type": "json",
-                "raw": "{\n  \"brandID\": \"f0fbdbfb-8149-4b02-9e33-18e9008e3f25\"\n}",
-                "form": []
-            },
+            "tests": []
+        },
+        {
+            "_id": "9c281fa0-0690-4b23-b71a-6f5cf4ca3afa",
+            "colId": "0453961f-be72-4742-80d9-34e8462370ee",
+            "containerId": "4aec8733-bc3a-4b42-9324-d6b264f72690",
+            "name": "delete from",
+            "url": "/from/ff1194f6-cf63-4347-954d-a53020f1057e",
+            "method": "DELETE",
+            "sortNum": 260000,
+            "created": "2023-07-19T15:08:36.549Z",
+            "modified": "2023-07-19T15:12:14.394Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "508a7d81-3d51-43b6-86d6-a71853fae3a1",
+            "colId": "0453961f-be72-4742-80d9-34e8462370ee",
+            "containerId": "defeddb8-7701-4991-8cc2-2a2d71a57b7c",
+            "name": "Get All Booking",
+            "url": "/booking/",
+            "method": "GET",
+            "sortNum": 280000,
+            "created": "2023-07-19T18:54:49.253Z",
+            "modified": "2023-07-19T18:55:30.860Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "8f6ba7c7-f2de-4c15-9676-cf512c2cd99d",
+            "colId": "0453961f-be72-4742-80d9-34e8462370ee",
+            "containerId": "defeddb8-7701-4991-8cc2-2a2d71a57b7c",
+            "name": "Booking search",
+            "url": "/booking/search?fullName=Emmerich",
+            "method": "GET",
+            "sortNum": 300000,
+            "created": "2023-07-19T19:58:13.116Z",
+            "modified": "2023-07-20T14:03:16.649Z",
+            "headers": [
+                {
+                    "name": "Authorization",
+                    "value": "{{token}}"
+                }
+            ],
+            "params": [
+                {
+                    "name": "fullName",
+                    "value": "Emmerich",
+                    "isPath": false
+                }
+            ],
             "tests": []
         }
     ],
