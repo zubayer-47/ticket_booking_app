@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { Link } from "react-router-dom";
-import { InputType } from '../../types/custom';
-import { InputError } from "../Error";
+import { InputHandlerType, InputHtmlType, InputType } from '../../types/custom';
+import Error, { InputError } from "../Error";
 import Label from "./Label";
 
 type InputProps = {
@@ -16,7 +16,9 @@ type InputProps = {
     defaultSize?: boolean;
     error?: string;
     disabled?: boolean
-    brandRef?: React.RefObject<HTMLInputElement>
+    brandRef?: React.RefObject<HTMLInputElement>,
+    classNames?: string
+    defVale?: number
 }
 
 export default function Input({
@@ -29,17 +31,19 @@ export default function Input({
     defaultSize = false,
     error,
     disabled = false,
-    brandRef
+    brandRef,
+    classNames,
+    defVale
 }: InputProps) {
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState(defVale || "");
 
     const handleChange = (e: InputType) => {
         setValue(e.target.value)
     }
 
     return (
-        <div className="w-full">
-            {id ? (<Label text={label} id={id} isRequired={isRequired} />) : null}
+        <div className={`w-full ${classNames || ""}`}>
+            <Label text={label} id={id} isRequired={isRequired} />
 
             <input
                 ref={brandRef}
@@ -134,3 +138,85 @@ export function PasswordInput({ text = "Password", id = "password", error = "" }
 export function DateInput() {
     return <input type="date" className='w-full tracking-widest border outline-none rounded-md p-1.5' name="date" id="date" />
 }
+
+type Props = {
+    label: string;
+    type: InputHtmlType;
+    name: string;
+    change: InputHandlerType;
+    value: string | number;
+    placeholder: string;
+    disableAutoComplete?: boolean;
+    required?: boolean;
+    minMax?: number[];
+    error?: string;
+    isLoading?: boolean;
+    children?: React.ReactNode;
+    classNames?: string
+};
+
+export const CommonInput: React.FC<Props> = ({
+    label,
+    type,
+    name,
+    change,
+    value,
+    minMax,
+    disableAutoComplete,
+    placeholder,
+    required,
+    error,
+    isLoading,
+    children,
+    classNames
+}) => (
+    <div className={`mb-3 ${classNames}`}>
+        {label && (
+            <label
+                htmlFor={name}
+                className='w-full flex items-center justify-between text-xs md:text-md font-bold tracking-wider px-1 text-cst-white'
+            >
+                <span className='flex items-center'>
+                    <span>{label}</span>
+                    {required ? (
+                        <span className='ml-0.5 -my-2 text-base font-bold text-cst-red'>
+                            *
+                        </span>
+                    ) : null}
+                </span>
+                {children}
+            </label>
+        )}
+        {minMax ? (
+            <input
+                type={type}
+                name={name}
+                className={`w-full mt-1 p-3.5 text-sm bg-cst-main outline-none rounded-lg tracking-wide border border-cst-secondary-light ${error ? 'text-cst-red' : 'text-cst-white'
+                    }`}
+                onChange={change}
+                value={value || ''}
+                min={minMax[0] || 0}
+                max={minMax[1] || 0}
+                step={10}
+                autoComplete='off'
+                id={name}
+                placeholder={placeholder}
+                disabled={isLoading}
+            />
+        ) : (
+            <input
+                type={type}
+                name={name}
+                className={`w-full mt-1 px-3.5 py-3.5 text-sm bg-cst-main outline-none rounded-lg tracking-wide border border-cst-secondary-light ${error ? 'text-cst-red' : 'text-cst-white'
+                    }`}
+                onChange={change}
+                value={value || ''}
+                id={name}
+                placeholder={placeholder}
+                autoComplete={disableAutoComplete ? 'off' : 'on'}
+                disabled={isLoading}
+            />
+        )}
+        <Error error={error || ""} />
+    </div>
+);
