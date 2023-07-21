@@ -32,7 +32,7 @@ interface BusesType {
 	error: string;
 }
 
-type BusObjType = {
+export type BusObjType = {
 	loading: boolean;
 	locations: LocationType[];
 	to: {

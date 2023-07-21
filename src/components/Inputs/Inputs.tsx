@@ -51,11 +51,9 @@ export default function Input({
 				placeholder={placeholder}
 				id={id}
 				name={name}
-				className={`bg-gray-50 border  text-gray-900 text-sm rounded-lg focus:outline-none block w-full ${
-					!error?.length ? 'focus:ring-blue-500 focus:border-blue-500' : ''
-				} ${!error?.length ? 'border-gray-400' : 'border-red-400'} ${
-					!defaultSize ? 'p-1' : 'p-2'
-				} `}
+				className={`bg-gray-50 border  text-gray-900 text-sm rounded-lg focus:outline-none block w-full ${!error?.length ? 'focus:ring-blue-500 focus:border-blue-500' : ''
+					} ${!error?.length ? 'border-gray-400' : 'border-red-400'} ${!defaultSize ? 'p-1' : 'p-2'
+					} `}
 				autoComplete='off'
 				value={value}
 				onChange={handleChange}
@@ -131,9 +129,8 @@ export function PasswordInput({
 					onChange={handleChange}
 					value={value || ''}
 					placeholder='*********'
-					className={`bg-gray-50 border text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2 ${
-						!!error?.length ? 'border-red-400' : 'border-gray-300'
-					}`}
+					className={`bg-gray-50 border text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full p-2 ${!!error?.length ? 'border-red-400' : 'border-gray-300'
+						}`}
 					autoComplete='off'
 				/>
 				{!value ? null : (
@@ -159,7 +156,7 @@ export function DateInput() {
 	return (
 		<input
 			type='date'
-			className='w-full tracking-widest border outline-none rounded-md p-1.5'
+			className='w-full tracking-widest border outline-none rounded-md p-2.5'
 			name='date'
 			id='date'
 		/>
