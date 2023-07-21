@@ -1,130 +1,140 @@
-import axios from "axios";
-import { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { SubmitButton } from "../../components/Buttons/Button";
-import Error from "../../components/Error";
-import Input, { PasswordInput } from "../../components/Inputs/Inputs";
-import CenterLayout from "../../components/Layouts/CenterLayout";
-import { MiniSelect } from "../../components/common/Select";
-import { Context } from "../../contexts/Context";
-import { FormType } from "../../types/custom";
-import { api } from "../../utils/axios";
-import setLocalStorage from "../../utils/setLocalStorage";
+import axios from 'axios';
+import { useContext, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { SubmitButton } from '../../components/Buttons/Button';
+import Error from '../../components/Error';
+import Input, { PasswordInput } from '../../components/Inputs/Inputs';
+import CenterLayout from '../../components/Layouts/CenterLayout';
+import { MiniSelect } from '../../components/common/Select';
+import { Context } from '../../contexts/Context';
+import { FormType } from '../../types/custom';
+import api from '../../utils/axios';
+import setLocalStorage from '../../utils/setLocalStorage';
+import SectionTitle from '../../components/Headers/SectionTitle';
 
 export default function SignUp() {
-    const [error, setError] = useState({
-        name: '',
-        email: '',
-        password: '',
-        common: ''
-    });
-    const navigate = useNavigate();
+	const [error, setError] = useState({
+		name: '',
+		email: '',
+		password: '',
+		common: '',
+	});
+	const navigate = useNavigate();
 
-    const { dispatch } = useContext(Context)
+	const { dispatch } = useContext(Context);
 
-    const handleSubmit = async (e: FormType) => {
-        e.preventDefault();
+	const handleSubmit = async (e: FormType) => {
+		e.preventDefault();
 
-        const formData = new FormData(e.currentTarget);
-        const body = {
-            name: formData.get('name'),
-            email: formData.get('email'),
-            confirmPassword: formData.get('confirmPassword'),
-            password: formData.get('password'),
-            role: formData.get('role')
-        }
+		const formData = new FormData(e.currentTarget);
+		const body = {
+			name: formData.get('name'),
+			email: formData.get('email'),
+			confirmPassword: formData.get('confirmPassword'),
+			password: formData.get('password'),
+			role: formData.get('role'),
+		};
 
-        if (body.password !== body.confirmPassword) {
-            setError(prev => ({
-                ...prev,
-                password: "password doesn't matched!"
-            }))
+		if (body.password !== body.confirmPassword) {
+			setError((prev) => ({
+				...prev,
+				password: "password doesn't matched!",
+			}));
 
-            return
-        }
+			return;
+		}
 
-        try {
-            const response = await api.post('/users/signup', JSON.stringify({
-                fullname: body.name,
-                email: body.email,
-                password: body.password,
-                role: body.role
-            }));
+		try {
+			const response = await api.post(
+				'/users/signup',
+				JSON.stringify({
+					fullname: body.name,
+					email: body.email,
+					password: body.password,
+					role: body.role,
+				})
+			);
 
-            setLocalStorage(response.data?.token)
+			setLocalStorage(response.data?.token);
 
-            dispatch({
-                type: "ADD_USER", payload: {
-                    name: response.data?.fullname,
-                    email: response.data?.email,
-                    authenticated: true,
-                    role: response.data?.role,
-                    token: response.data?.token,
-                    ticket: response.data?.ticket
-                }
-            })
+			dispatch({
+				type: 'ADD_USER',
+				payload: {
+					name: response.data?.fullname,
+					email: response.data?.email,
+					role: response.data?.role,
+					token: response.data?.token,
+					ticket: response.data?.ticket,
+				},
+			});
 
-            if (response.data?.role === 'user') {
-                navigate('/profile', { replace: true });
-            } else {
-                navigate('/dashboard', { replace: true });
-            }
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const message = error.response?.data?.message
+			if (response.data?.role === 'user') {
+				navigate('/profile', { replace: true });
+			} else {
+				navigate('/dashboard', { replace: true });
+			}
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				const message = error.response?.data?.message;
 
-                setError(message)
-                return
-            }
-            setError(prev => ({
-                ...prev,
-                common: 'Something Went Wrong! Please Try Again.'
-            }))
-        }
+				setError(message);
+				return;
+			}
+			setError((prev) => ({
+				...prev,
+				common: 'Something Went Wrong! Please Try Again.',
+			}));
+		}
+	};
 
-    }
+	return (
+		<CenterLayout smWidth>
+			<SectionTitle title='Create new account' />
+			<form onSubmit={handleSubmit} className='space-y-4 mb-3'>
+				<Error error={error.common} />
+				<Input
+					label='Full Name'
+					name='name'
+					id='name'
+					isRequired
+					placeholder='your full name'
+					defaultSize
+					error={error.name}
+				/>
+				<Input
+					label='email'
+					name='email'
+					type='email'
+					id='email'
+					isRequired
+					placeholder='example@zubayer.com'
+					defaultSize
+					error={error.email}
+				/>
+				<PasswordInput error={error.password} />
+				<PasswordInput
+					id='confirmPassword'
+					text='Confirm Password'
+					error={error.password}
+				/>
 
-    return (
-        <CenterLayout>
-            <form onSubmit={handleSubmit} className="space-y-4 mb-3">
+				<div>
+					<MiniSelect label='Role' name='role'>
+						<option>Select Role</option>
+						<option value='user'>User</option>
+						<option value='admin'>Admin</option>
+					</MiniSelect>
+				</div>
 
-                <Error error={error.common} />
-                <Input
-                    label="Full Name"
-                    name="name"
-                    id="name"
-                    isRequired
-                    placeholder="your full name"
-                    defaultSize
-                    error={error.name}
-                />
-                <Input
-                    label="email"
-                    name="email"
-                    type="email"
-                    id="email"
-                    isRequired
-                    placeholder="example@zubayer.com"
-                    defaultSize
-                    error={error.email}
-                />
-                <PasswordInput error={error.password} />
-                <PasswordInput id="confirmPassword" text="Confirm Password" error={error.password} />
+				<SubmitButton text='Create Account' />
+			</form>
 
-                <div>
-                    <MiniSelect label="Role" name="role">
-                        <option>Select Role</option>
-                        <option value='user'>User</option>
-                        <option value='admin'>Admin</option>
-                    </MiniSelect>
-                </div>
-
-                <SubmitButton text="Create Account" />
-
-
-            </form >
-
-            <Link to={'/sign-in'} className="text-emerald-500 text-lg">Login Account</Link>
-        </CenterLayout >
-    )
+			<div className='flex items-center gap-2 text-sm'>
+				<span>Already have an account ?</span>
+				<Link to={'/sign-in'} className='text-emerald-500'>
+					Login Now
+				</Link>
+			</div>
+		</CenterLayout>
+	);
 }

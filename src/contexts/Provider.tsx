@@ -1,103 +1,102 @@
-import axios from "axios";
-import { ReactNode, useEffect, useMemo, useReducer } from "react";
-import { ActionType, InitialStateType } from "../types/state.types";
-import { api } from "../utils/axios";
-import { Context } from "./Context";
+import axios from 'axios';
+import { ReactNode, useEffect, useMemo, useReducer } from 'react';
+import { ActionType, InitialStateType } from '../types/state.types';
+import api from '../utils/axios';
+import { Context } from './Context';
 
 const initialState: InitialStateType = {
-    user: {
-        name: "",
-        email: '',
-        authenticated: false,
-        role: "",
-        token: "",
-        ticket: ""
-    },
-    isLoading: false
+	user: {
+		name: '',
+		email: '',
+		role: '',
+		token: '',
+		ticket: '',
+	},
+	authenticated: false,
+	isLoading: true,
 };
 
-function reducer(state: InitialStateType, action: ActionType): InitialStateType {
-    // fromReducer(state, action)
+function reducer(
+	state: InitialStateType,
+	action: ActionType
+): InitialStateType {
+	// fromReducer(state, action)
 
-    switch (action.type) {
-        // user
-        case "ADD_USER":
-            return {
-                ...state,
-                user: action.payload,
-                isLoading: false,
-            };
-        case "REMOVE_USER":
-            return {
-                ...state,
-                user: { name: "", email: "", authenticated: false, role: "", token: "", ticket: "" },
-                isLoading: false
-            };
-        case "LOADING":
-            return {
-                ...state,
-                isLoading: action.payload
-            };
-        default:
-            return state;
-    }
+	switch (action.type) {
+		// user
+		case 'ADD_USER':
+			return {
+				...state,
+				user: action.payload,
+				authenticated: true,
+				isLoading: false,
+			};
+		case 'REMOVE_USER':
+			return initialState;
+		case 'LOADING':
+			return {
+				...state,
+				isLoading: action.payload,
+			};
+		default:
+			return state;
+	}
 }
 
 export default function Provider({ children }: { children: ReactNode }) {
-    const [state, dispatch] = useReducer(reducer, initialState);
+	const [state, dispatch] = useReducer(reducer, initialState);
 
-    // handle error boundary
-    useEffect(() => {
-        dispatch({ type: "LOADING", payload: true })
+	// handle error boundary
+	useEffect(() => {
+		// dispatch({ type: 'LOADING', payload: true });
 
-        const controller = new AbortController();
-        const userToken = localStorage.getItem("_token");
+		const controller = new AbortController();
+		const userToken = localStorage.getItem('_token');
+		// console.log('userToken :', userToken);
 
-        const fetchUser = async () => {
-            if (userToken) {
-                try {
-                    const res = await api.get('/users/me', {
-                        headers: {
-                            Authorization: userToken
-                        },
-                        signal: controller.signal
-                    });
+		if (!userToken) dispatch({ type: 'LOADING', payload: false });
 
-                    // setLocalStorage(res.data?.token)
-                    dispatch({
-                        type: "ADD_USER", payload: {
-                            name: res.data?.fullname,
-                            email: res.data?.email,
-                            authenticated: true,
-                            role: res.data?.role,
-                            token: res.data?.token,
-                            ticket: res.data?.ticket
-                        }
-                    });
-                } catch (error) {
-                    if (axios.isAxiosError(error)) {
-                        // const message = error.response?.data?.message;
-                        console.log(error)
-                        // handle error manually
-                        // if (error.status)
-                    }
-                }
+		if (userToken)
+			(async () => {
+				try {
+					const res = await api.get('/users/me', {
+						// headers: {
+						// 	Authorization: userToken,
+						// },
+						signal: controller.signal,
+					});
 
-                // dispatch({ type: "LOADING", payload: false })
-            }
-            // dispatch({ type: "LOADING", payload: false })
-        }
+					// setLocalStorage(res.data?.token)
+					dispatch({
+						type: 'ADD_USER',
+						payload: {
+							name: res.data?.fullname,
+							email: res.data?.email,
+							role: res.data?.role,
+							token: res.data?.token,
+							ticket: res.data?.ticket,
+						},
+					});
+					// localStorage.setItem('_token', res.data?.token);
+				} catch (error) {
+					if (axios.isAxiosError(error)) {
+						// const message = error.response?.data?.message;
+						if (error.response?.status === 401)
+							localStorage.removeItem('_token');
+						// handle error manually
+						// if (error.status)
+					}
+				}
+				// test purpose
+				dispatch({ type: 'LOADING', payload: false });
+			})();
 
-        fetchUser();
+		// fetchUser();
 
-        return () => controller.abort();
-    }, []);
+		return () => controller.abort();
+	}, []);
 
-    const value = useMemo(() => ({ state: { ...state }, dispatch }), [state, dispatch]);
+	const value = useMemo(() => ({ state, dispatch }), [state, dispatch]);
 
-    return (
-        <Context.Provider value={{ ...value }}>
-            {children}
-        </Context.Provider>
-    )
+	return <Context.Provider value={value}>{children}</Context.Provider>;
 }

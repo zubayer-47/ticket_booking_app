@@ -3,224 +3,320 @@ import dayjs from 'dayjs';
 import { FormEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Context } from '../contexts/Context';
-import { BusType, IdNameBrandLocationFromType, ToType } from '../types/state.types';
-import { api } from '../utils/axios';
+import {
+	BusType,
+	IdNameBrandLocationFromType,
+	LocationType,
+	ToType,
+} from '../types/state.types';
+
+import { IoTicketOutline } from 'react-icons/io5';
+import api from '../utils/axios';
 import { SubmitButton } from './Buttons/Button';
+import CommonSelect from './Inputs/CommonSelect';
 import { DateInput } from './Inputs/Inputs';
-import Select from './common/Select';
 
 interface ToListType {
-    list: ToType[],
-    loading: boolean;
-    error: string;
+	list: ToType[];
+	loading: boolean;
+	error: string;
 }
 interface FromListType {
-    list: IdNameBrandLocationFromType[],
-    loading: boolean;
-    error: string;
+	list: IdNameBrandLocationFromType[];
+	loading: boolean;
+	error: string;
 }
 interface BusesType {
-    list: BusType[],
-    loading: boolean;
-    error: string;
+	list: BusType[];
+	loading: boolean;
+	error: string;
 }
 
+type BusObjType = {
+	loading: boolean;
+	locations: LocationType[];
+	to: {
+		loading: boolean;
+		locations: LocationType[];
+	};
+	on: {
+		from: string | null;
+		to: string | null;
+	};
+};
+
 export default function Booking() {
-    const [toList, setToList] = useState<ToListType>({ error: "", loading: false, list: [] });
-    const [fromList, setFromList] = useState<FromListType>({ error: '', loading: false, list: [] });
-    const [buses, setBuses] = useState<BusesType>({ error: "", loading: false, list: [] });
-    const { dispatch } = useContext(Context)
-    const navigate = useNavigate();
+	const [busFormObj, setBusFormObj] = useState<BusObjType>({
+		loading: true,
+		locations: [],
+		to: {
+			loading: false,
+			locations: [],
+		},
+		on: {
+			from: null,
+			to: null,
+		},
+	});
 
-    // fetching from list inside useEffect
-    useEffect(() => {
-        const controller = new AbortController();
+	const [error, setError] = useState<string | null>(null);
 
-        const getAllFrom = async () => {
-            setFromList(prev => ({
-                ...prev,
-                loading: true
-            }))
-            // dispatch({ type: "LOADING", payload: true })
+	const [toList, setToList] = useState<ToListType>({
+		error: '',
+		loading: false,
+		list: [],
+	});
+	const [fromList, setFromList] = useState<FromListType>({
+		error: '',
+		loading: true,
+		list: [],
+	});
+	const [buses, setBuses] = useState<BusesType>({
+		error: '',
+		loading: false,
+		list: [],
+	});
+	const { dispatch } = useContext(Context);
+	const navigate = useNavigate();
 
-            try {
-                const res = await api.get('/search/fromLocation');
+	// fetching from list inside useEffect
+	useEffect(() => {
+		const controller = new AbortController();
 
-                setFromList(prev => ({
-                    ...prev,
-                    list: res.data?.location
-                }))
-            } catch (error) {
-                if (axios.isAxiosError(error)) {
-                    const message = error.response?.data?.message
+		(async () => {
+			// setFromList((prev) => ({
+			// 	...prev,
+			// 	loading: true,
+			// }));
+			// dispatch({ type: "LOADING", payload: true })
 
-                    setFromList(prev => ({
-                        ...prev,
-                        error: message
-                    }))
-                    return
-                }
-                setFromList(prev => ({
-                    ...prev,
-                    error: 'Something Went Wrong! Please Try Again.'
-                }))
-            }
-            // dispatch({ type: "LOADING", payload: false })
+			try {
+				const res = await api.get(`/search/fromLocation`, {
+					signal: controller.signal,
+				});
 
-        }
+				setBusFormObj((prev) => ({
+					...prev,
+					loading: false,
+					locations: res.data?.location || [],
+				}));
 
-        getAllFrom()
-        setFromList(prev => ({
-            ...prev,
-            loading: false
-        }))
+				// setFromList((prev) => ({
+				// 	...prev,
+				// 	list: res.data?.location,
+				// 	// loading: false,
+				// }));
+			} catch (error) {
+				if (axios.isAxiosError(error)) {
+					const message = error.response?.data?.message;
 
-        return () => controller.abort();
-    }, [dispatch])
+					// setFromList((prev) => ({
+					// 	...prev,
+					// 	error: message,
+					// }));
+					setError(message);
+					return;
+				}
+				// setFromList((prev) => ({
+				// 	...prev,
+				// 	error: 'Something Went Wrong! Please Try Again.',
+				// }));
+				setError('Something Went Wrong! Please Try Again.');
+			}
+			// dispatch({ type: "LOADING", payload: false })
+			// setFromList((prev) => ({
+			// 	...prev,
+			// 	loading: false,
+			// }));
+		})();
 
-    // fetching destination (to)
-    const getToBasedOnFrom = (id: string) => {
-        const fetchTo = async () => {
-            setToList(prev => ({
-                ...prev,
-                loading: true
-            }))
-            try {
-                const res = await api.get(`/search/toLocation/${id}`);
+		return () => controller.abort();
+	}, [dispatch]);
 
-                if (res.status === 200) {
-                    setToList(prev => ({
-                        ...prev,
-                        list: res.data,
-                    }));
-                }
-            } catch (error) {
-                if (axios.isAxiosError(error)) {
-                    const message = error.response?.data?.message
+	// fetching destination (to)
+	const getToBasedOnFrom = async (id: string) => {
+		setBusFormObj((prev) => ({
+			...prev,
+			to: { ...prev.to, loading: true },
+			on: { ...prev.on, from: id },
+		}));
 
-                    setToList(prev => ({
-                        ...prev,
-                        error: message
-                    }))
-                    return
-                }
+		try {
+			const res = await api.get(`/search/toLocation/${id}`);
 
-                setToList(prev => ({
-                    ...prev,
-                    error: 'Something Went Wrong! Please Try Again.'
-                }))
-            }
-            setToList(prev => ({
-                ...prev,
-                loading: false
-            }))
-        }
-        fetchTo()
-    }
+			setBusFormObj((prev) => ({
+				...prev,
+				to: { locations: res?.data || [], loading: false },
+			}));
 
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setBuses(prev => ({
-            ...prev,
-            loading: true
-        }))
-        const formData = new FormData(e.currentTarget);
+			// setToList((prev) => ({
+			// 	...prev,
+			// 	list: res.data,
+			// }));
+		} catch (error) {
+			setBusFormObj((prev) => ({
+				...prev,
+				to: { locations: [], loading: false },
+			}));
 
-        const body = {
-            from: formData.get('from'),
-            to: formData.get('to'),
-            journeyDate: formData.get('date'),
-            type: formData.get('type'),
-        }
-        body.from = String(body.from).split(' ')[1]
-        body.to = String(body.to).split(' ')[1]
+			if (axios.isAxiosError(error)) {
+				const message = error.response?.data?.message;
 
-        navigate('/ticket')
+				// setToList((prev) => ({
+				// 	...prev,
+				// 	error: message,
+				// }));
+				setError(message);
+				return;
+			}
 
+			// setToList((prev) => ({
+			// 	...prev,
+			// 	error: 'Something Went Wrong! Please Try Again.',
+			// }));
+			setError('Something Went Wrong! Please Try Again.');
+		}
+	};
 
-        // if (!body.from || !body.to || !body.journeyDate || !body.type) {
-        //     alert("All Fields are required!");
-        //     return
-        // }
+	const handleInput = (id: string) =>
+		setBusFormObj((prev) => ({ ...prev, on: { ...prev.on, to: id } }));
 
-        const dateTime = String(body.journeyDate);
-        const date = dayjs(dateTime);
+	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		setBuses((prev) => ({
+			...prev,
+			loading: true,
+		}));
+		const formData = new FormData(e.currentTarget);
 
-        try {
-            const res = await api.get('/search', {
-                params: {
-                    fromId: body.from,
-                    toLocation: body.to,
-                    journey_date: date,
-                    type: body.type
-                }
-            })
+		const body = {
+			from: formData.get('from'),
+			to: formData.get('to'),
+			journeyDate: formData.get('date'),
+			type: formData.get('type'),
+		};
+		body.from = String(body.from).split(' ')[1];
+		body.to = String(body.to).split(' ')[1];
 
-            setBuses(prev => ({
-                ...prev,
-                list: res.data
-            }))
+		navigate('/ticket');
 
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const message = error.response?.data?.message
+		// if (!body.from || !body.to || !body.journeyDate || !body.type) {
+		//     alert("All Fields are required!");
+		//     return
+		// }
 
-                setBuses(prev => ({
-                    ...prev,
-                    error: message
-                }))
-                return
-            }
+		const dateTime = String(body.journeyDate);
+		const date = dayjs(dateTime);
 
-            setBuses(prev => ({
-                ...prev,
-                error: 'Something Went Wrong! Please Try Again.'
-            }))
-        }
+		try {
+			const res = await api.get('/search', {
+				params: {
+					fromId: body.from,
+					toLocation: body.to,
+					journey_date: date,
+					type: body.type,
+				},
+			});
 
-        setBuses(prev => ({
-            ...prev,
-            loading: false
-        }))
+			setBuses((prev) => ({
+				...prev,
+				list: res.data,
+			}));
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				const message = error.response?.data?.message;
 
-        // navigate('/ticket')
-    }
+				setBuses((prev) => ({
+					...prev,
+					error: message,
+				}));
+				return;
+			}
 
-    return (
-        <div className='grid grid-cols-12 gap-5'>
-            <form className='space-y-3 bg-gray-200/70 p-3 rounded-lg col-span-12 md:col-span-6' onSubmit={handleSubmit}>
-                <div>
-                    <Select
-                        name='from'
-                        label="From"
-                        state={fromList}
-                        handleSelected={getToBasedOnFrom}
-                    />
+			setBuses((prev) => ({
+				...prev,
+				error: 'Something Went Wrong! Please Try Again.',
+			}));
+		}
 
-                    <Select
-                        name='to'
-                        label="To"
-                        state={toList}
-                    />
-                </div>
-                <div className='flex justify-center items-center gap-2'>
-                    <div>
-                        <label className='block' htmlFor="date">Journey Date</label>
-                        <DateInput />
-                    </div>
-                    <select className='w-full bg-white p-2 rounded-md outline-none border-2 mt-6' name="type">
-                        <option>---</option>
-                        <option value="AC">AC</option>
-                        <option value="non_AC">NON-AC</option>
-                    </select>
-                </div>
+		setBuses((prev) => ({
+			...prev,
+			loading: false,
+		}));
 
-                <SubmitButton text='Search' />
-            </form>
+		// navigate('/ticket')
+	};
 
-            <div className='col-span-12 md:col-span-6 flex items-center'>
-                <img className='' src='https://static.busbd.com.bd/busbdmedia/for%20salide.1500371408' />
-            </div>
-        </div>
-    )
+	return (
+		<div>
+			<div className='flex items-center gap-2 mb-3'>
+				<IoTicketOutline className='w-6 h-6 text-emerald-500' />
+				<h2 className='text-2xl font-medium text-emerald-500'>Buy Ticket</h2>
+			</div>
+			<div className='grid grid-cols-12 gap-5'>
+				<form
+					className='space-y-3 bg-gray-200/70 p-3 rounded-lg col-span-12 md:col-span-6'
+					onSubmit={handleSubmit}
+				>
+					<div>
+						{/* <Select
+						name='from'
+						label='Leaving From'
+						state={fromList}
+						handleSelected={getToBasedOnFrom}
+					/> */}
+
+						<CommonSelect
+							defSelectName='Choose Leaving From'
+							label='Leaving From'
+							name='from-loc'
+							options={busFormObj.locations}
+							change={(e) => getToBasedOnFrom(e.target.value)}
+							value={busFormObj.on?.from + ''}
+							required
+						/>
+
+						<CommonSelect
+							defSelectName='------'
+							label='Going To'
+							name='to'
+							options={busFormObj.to.locations}
+							change={(e) => handleInput(e.target.value)}
+							value={busFormObj.on?.to + ''}
+							required
+						/>
+
+						{/* <Select name='to' label='Going To' state={toList} /> */}
+					</div>
+					<div className='flex justify-center items-center gap-2'>
+						<div>
+							<label className='block' htmlFor='date'>
+								Journey Date
+							</label>
+							<DateInput />
+						</div>
+						<select
+							className='w-full bg-white p-2 rounded-md outline-none border-2 mt-6'
+							name='type'
+						>
+							<option>----</option>
+							<option value='AC'>AC</option>
+							<option value='non_AC'>NON-AC</option>
+						</select>
+					</div>
+
+					<div className='flex justify-end'>
+						<SubmitButton text='Search Bus' />
+					</div>
+				</form>
+
+				<div className='col-span-12 md:col-span-6 flex items-center'>
+					<img
+						className=''
+						src='https://static.busbd.com.bd/busbdmedia/for%20salide.1500371408'
+					/>
+				</div>
+			</div>
+		</div>
+	);
 }
