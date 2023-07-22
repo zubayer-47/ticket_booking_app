@@ -140,7 +140,7 @@ export default function BrandWiseProduct() {
                                             onClick={handleCreateProduct}
                                             type='text'
                                             defaultValue={
-                                                (updatedBrandId === prod.id && brandName) ||
+                                                (updatedBrandId === prod.id && productState.prodName) ||
                                                 brand.name ||
                                                 ''
                                             }
