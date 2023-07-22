@@ -3,15 +3,28 @@ import { useContext, useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { SubmitButton } from '../../components/Buttons/Button';
 import Error from '../../components/Error';
-import Input, { PasswordInput } from '../../components/Inputs/Inputs';
+import SectionTitle from '../../components/Headers/SectionTitle';
+import CommonInput from '../../components/Inputs/CommonInput';
 import CenterLayout from '../../components/Layouts/CenterLayout';
 import { Context } from '../../contexts/Context';
 import { FormType } from '../../types/custom';
 import api from '../../utils/axios';
-import SectionTitle from '../../components/Headers/SectionTitle';
+
+
+type LoginCredential = {
+	email: string;
+	password: string;
+	loading: boolean;
+	error: {
+		email: string;
+		password: string;
+		common: string
+	}
+}
 
 export default function SignIn() {
 	const [error, setError] = useState('');
+	const [loginCredentials, setLoginCredentials] = useState<LoginCredential>({ email: "", password: "", loading: false, error: { email: "", password: "", common: "" } })
 	const navigate = useNavigate();
 	const { dispatch, state } = useContext(Context);
 	const location = useLocation();
@@ -28,18 +41,28 @@ export default function SignIn() {
 	const handleSubmit = async (e: FormType) => {
 		e.preventDefault();
 
-		const formData = new FormData(e.currentTarget);
-		const body = {
-			email: formData.get('email'),
-			password: formData.get('password'),
-		};
+		if (!loginCredentials.password) return setLoginCredentials(prev => ({
+			...prev,
+			error: {
+				...prev.error,
+				password: "Required Field"
+			}
+		}))
+
+		if (!loginCredentials.email) return setLoginCredentials(prev => ({
+			...prev,
+			error: {
+				...prev.error,
+				email: "Required Field"
+			}
+		}))
 
 		try {
 			const response = await api.post(
 				'/users/signin',
 				JSON.stringify({
-					email: body.email,
-					password: body.password,
+					email: loginCredentials.email,
+					password: loginCredentials.password,
 				})
 			);
 
@@ -66,14 +89,22 @@ export default function SignIn() {
 			if (axios.isAxiosError(error)) {
 				const message = error.response?.data?.message;
 
-				if (error.status === 401) {
-					setError('User Unauthorized! Please Try Again.');
-				}
-
-				setError(message);
+				setLoginCredentials(prev => ({
+					...prev,
+					error: {
+						...prev.error,
+						common: message
+					}
+				}))
 				return;
 			}
-			setError('Something Went Wrong! Please Try Again.');
+			setLoginCredentials(prev => ({
+				...prev,
+				error: {
+					...prev.error,
+					common: 'Something Went Wrong! Please Try Again.'
+				}
+			}))
 		}
 	};
 
@@ -81,16 +112,40 @@ export default function SignIn() {
 		<CenterLayout smWidth>
 			<SectionTitle title='Login' />
 			<form onSubmit={handleSubmit} className='space-y-4 mb-3'>
-				<Input
+				<CommonInput
+					change={(e) => {
+						setLoginCredentials(prev => ({
+							...prev,
+							email: e.target.value
+						}))
+					}}
 					label='Email'
 					name='email'
-					id='email'
-					type='email'
-					isRequired
 					placeholder='example@zubayer.com'
-					defaultSize
+					type="email"
+					value={loginCredentials?.email}
+					disableAutoComplete
+					required
+					inputClasses='bg-gray-100'
+					error={loginCredentials.error.email}
 				/>
-				<PasswordInput />
+
+				<CommonInput
+					change={(e) => {
+						setLoginCredentials(prev => ({
+							...prev,
+							password: e.target.value
+						}))
+					}}
+					label='Password'
+					name='password'
+					placeholder='*******'
+					type="password"
+					value={loginCredentials.password}
+					required
+					inputClasses='bg-gray-100'
+					error={loginCredentials.error.password}
+				/>
 
 				<div className='flex items-center gap-3'>
 					<SubmitButton text='Login Account' />
@@ -103,7 +158,9 @@ export default function SignIn() {
 				</div>
 			</form>
 
-			{error ? <Error error={error} /> : null}
+			{loginCredentials.error.common ?
+				<Error error={loginCredentials.error.common} />
+				: null}
 		</CenterLayout>
 	);
 }
