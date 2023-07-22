@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { BgNoneButton, SubmitButton } from '../../../components/Buttons/Button';
 import CommonInput from '../../../components/Inputs/CommonInput';
-import CommonSelect from '../../../components/Inputs/CommonSelect';
 import { DateInput } from '../../../components/Inputs/Inputs';
+import CommonSelect from '../../../components/Selects/CommonSelect';
 import { IdNameBrandLocationFromType, LocationType } from '../../../types/state.types';
 import api from '../../../utils/axios';
 
@@ -36,14 +36,10 @@ export type BusObjType = {
 		locations: LocationType[];
 	};
 	on: {
-		busName: string | null;
+		busId: string | null;
 		destination: string | null;
 	};
 };
-
-// { location: "6da40a87-1abc-41e2-95d1-6cf961494bbb", price: 500, identifier:  },
-//         { location: "29e0fa71-4add-4153-99e4-184a13c56f78", price: 500 },
-//         { location: "2e29cf14-1101-4f49-8c5f-a5e3b6d4dab4", price: 500 },
 
 export default function Create() {
 	const [product, setProduct] = useState<BusObjType>({
@@ -54,7 +50,7 @@ export default function Create() {
 			locations: [],
 		},
 		on: {
-			busName: null,
+			busId: null,
 			destination: null,
 		},
 	});
@@ -118,6 +114,13 @@ export default function Create() {
 			}));
 		};
 
+		getBrands();
+		return () => controller.abort();
+	}, []);
+
+	useEffect(() => {
+		const controller = new AbortController();
+
 		// fetch locations
 		const getLocations = () => {
 			const fetchTo = async () => {
@@ -165,33 +168,27 @@ export default function Create() {
 			fetchTo();
 		};
 
-		getBrands();
 		getLocations();
-
 		return () => controller.abort();
-	}, []);
+	}, [])
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
 
 		const body = {
-			brand: formData.get('bus'),
-			location: formData.get('location'),
 			journeyDate: formData.get('date'),
 			type: formData.get('type'),
 		};
-		body.brand = String(body.brand).split(' ')[1];
-		body.location = String(body.location).split(' ')[1];
-		console.log(body);
-
 		const dateTime = String(body.journeyDate);
 		const date = dayjs(dateTime);
 
+		console.log(product.on, 'create')
+
 		try {
 			const res = await api.post('/product', {
-				brandID: body.brand,
-				location_id: body.location,
+				brandID: product.on.busId,
+				location_id: product.on.destination,
 				journey_date: date,
 				type: body.type,
 			});
@@ -262,8 +259,9 @@ export default function Create() {
 					name='bus'
 					options={product.buses}
 					change={(e) => console.log(e.target.value)}
-					value={product.on?.busName + ''}
+					value={product.on?.busId + ''}
 					required
+					selectClasses='bg-white'
 				/>
 
 				<CommonSelect
@@ -274,6 +272,7 @@ export default function Create() {
 					change={(e) => handleInput(e.target.value)}
 					value={product.on?.destination + ''}
 					required
+					selectClasses='bg-white'
 				/>
 
 				{/* <Select name='to' label='Going To' state={toList} /> */}
@@ -302,6 +301,7 @@ export default function Create() {
 					classNames='border border-emerald-600 px-5 text-emerald-600 mb-2'
 				/>
 
+				{/* from locations */}
 				<div className='flex flex-col'>
 					{froms.map((from) => {
 						const filteredList = locations.list.filter(
@@ -322,6 +322,7 @@ export default function Create() {
 									}}
 									value={from.location}
 									classNames='flex-1'
+									selectClasses='bg-white'
 								/>
 
 								<CommonInput
