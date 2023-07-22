@@ -15,6 +15,7 @@ import api from '../utils/axios';
 import { SubmitButton } from './Buttons/Button';
 import CommonSelect from './Inputs/CommonSelect';
 import { DateInput } from './Inputs/Inputs';
+import Label from './Inputs/Label';
 
 interface ToListType {
 	list: ToType[];
@@ -247,6 +248,8 @@ export default function Booking() {
 		// navigate('/ticket')
 	};
 
+	console.log(buses)
+
 	return (
 		<div>
 			<div className='flex items-center gap-2 mb-3'>
@@ -255,7 +258,7 @@ export default function Booking() {
 			</div>
 			<div className='grid grid-cols-12 gap-5'>
 				<form
-					className='space-y-3 bg-gray-200/70 p-3 rounded-lg col-span-12 md:col-span-6'
+					className='space-y-3 bg-gray-200/70 p-3 rounded-lg col-span-12 lg:col-span-6'
 					onSubmit={handleSubmit}
 				>
 					<div>
@@ -290,13 +293,11 @@ export default function Booking() {
 					</div>
 					<div className='flex justify-center items-center gap-2'>
 						<div>
-							<label className='block' htmlFor='date'>
-								Journey Date
-							</label>
+							<Label text='Journey Date' id='date' isRequired />
 							<DateInput />
 						</div>
 						<select
-							className='w-full bg-white p-2 rounded-md outline-none border-2 mt-6'
+							className='w-full bg-white p-3 rounded-md outline-none border-2 mt-5'
 							name='type'
 						>
 							<option>----</option>
@@ -310,7 +311,7 @@ export default function Booking() {
 					</div>
 				</form>
 
-				<div className='col-span-12 md:col-span-6 flex items-center'>
+				<div className='hidden md:col-span-6 lg:flex items-center'>
 					<img
 						className=''
 						src='https://static.busbd.com.bd/busbdmedia/for%20salide.1500371408'
