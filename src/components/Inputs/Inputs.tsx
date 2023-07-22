@@ -153,12 +153,16 @@ export function PasswordInput({
 }
 
 export function DateInput() {
+	const [value, setValue] = useState('');
+
 	return (
 		<input
 			type='date'
 			className='w-full tracking-widest border outline-none rounded-md p-2.5'
 			name='date'
 			id='date'
+			value={value}
+			onChange={(e) => setValue(e.target.value)}
 		/>
 	);
 }
