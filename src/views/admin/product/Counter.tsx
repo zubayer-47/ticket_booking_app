@@ -1,9 +1,14 @@
 import { useParams } from "react-router-dom";
+import CenterLayout from "../../../components/Layouts/CenterLayout";
 
 export default function Counter() {
     const params = useParams();
 
+    console.log(params)
+
     return (
-        <div>{params?.id}</div>
+        <CenterLayout>
+            <p className="bg-red-300">{params?.brandID || 'ss'}</p>
+        </CenterLayout>
     )
 }
