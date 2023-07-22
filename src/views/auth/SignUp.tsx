@@ -3,14 +3,14 @@ import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { SubmitButton } from '../../components/Buttons/Button';
 import Error from '../../components/Error';
-import Input, { PasswordInput } from '../../components/Inputs/Inputs';
+import SectionTitle from '../../components/Headers/SectionTitle';
+import CommonInput from '../../components/Inputs/CommonInput';
 import CenterLayout from '../../components/Layouts/CenterLayout';
-import { MiniSelect } from '../../components/common/Select';
+import CommonSelect from '../../components/Selects/CommonSelect';
 import { Context } from '../../contexts/Context';
 import { FormType } from '../../types/custom';
 import api from '../../utils/axios';
 import setLocalStorage from '../../utils/setLocalStorage';
-import SectionTitle from '../../components/Headers/SectionTitle';
 
 export default function SignUp() {
 	const [error, setError] = useState({
@@ -90,49 +90,88 @@ export default function SignUp() {
 	return (
 		<CenterLayout smWidth>
 			<SectionTitle title='Create new account' />
-			<form onSubmit={handleSubmit} className='space-y-4 mb-3'>
-				<Error error={error.common} />
-				<Input
+			<form onSubmit={handleSubmit} className='mb-3'>
+				<div className='text-center'><Error error={error.common} /></div>
+				<CommonInput
+					change={() => {
+						console.log('')
+					}}
 					label='Full Name'
 					name='name'
-					id='name'
-					isRequired
 					placeholder='your full name'
-					defaultSize
+					type="text"
+					value=''
+					disableAutoComplete
+					required
 					error={error.name}
-				/>
-				<Input
-					label='email'
-					name='email'
-					type='email'
-					id='email'
-					isRequired
-					placeholder='example@zubayer.com'
-					defaultSize
-					error={error.email}
-				/>
-				<PasswordInput error={error.password} />
-				<PasswordInput
-					id='confirmPassword'
-					text='Confirm Password'
-					error={error.password}
+					inputClasses='bg-gray-100'
 				/>
 
-				<div>
-					<MiniSelect label='Role' name='role'>
-						<option>Select Role</option>
-						<option value='user'>User</option>
-						<option value='admin'>Admin</option>
-					</MiniSelect>
+				<CommonInput
+					change={() => {
+						console.log('')
+					}}
+					label='Email'
+					name='email'
+					placeholder='example@zubayer.com'
+					type="email"
+					value=''
+					disableAutoComplete
+					required
+					error={error.email}
+					inputClasses='bg-gray-100'
+				/>
+
+				<CommonInput
+					change={() => {
+						console.log('')
+					}}
+					label='Password'
+					name='password'
+					placeholder='*******'
+					type="password"
+					value=''
+					required
+					error={error.password}
+					inputClasses='bg-gray-100'
+				/>
+
+				<CommonInput
+					change={() => {
+						console.log('')
+					}}
+					label='Confirm Password'
+					name='confirmPassword'
+					placeholder='*******'
+					type="password"
+					value=''
+					required
+					error={error.password}
+					inputClasses='bg-gray-100'
+				/>
+
+				<div className='mb-6'>
+					<CommonSelect
+						defSelectName="Select Role"
+						required
+						change={() => {
+							console.log('')
+						}}
+						value=''
+						label='Role'
+						name='role'
+						options={[{ id: 1, name: "User" }, { id: 2, name: "Admin" }]}
+						selectClasses='bg-gray-100'
+					/>
 				</div>
 
 				<SubmitButton text='Create Account' />
 			</form>
 
 			<div className='flex items-center gap-2 text-sm'>
-				<span>Already have an account ?</span>
-				<Link to={'/sign-in'} className='text-emerald-500'>
-					Login Now
+				<span>Already have an account?</span>
+				<Link to={'/sign-in'} className='text-emerald-500 hover:underline'>
+					Login Account
 				</Link>
 			</div>
 		</CenterLayout>
