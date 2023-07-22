@@ -235,10 +235,11 @@ export default function Create() {
 		});
 	};
 
-	const handleInput = (id: string) =>
-		setProduct((prev) => ({ ...prev, on: { ...prev.on, destination: id } }));
+	const handleInput = (id: string, name: string) => {
+		if (name === 'bus') return setProduct((prev) => ({ ...prev, on: { ...prev.on, busId: id } }));
 
-	// console.log(froms)
+		else return setProduct((prev) => ({ ...prev, on: { ...prev.on, destination: id } }));
+	}
 
 	return (
 		<form
@@ -246,19 +247,12 @@ export default function Create() {
 			onSubmit={handleSubmit}
 		>
 			<div>
-				{/* <Select
-						name='from'
-						label='Leaving From'
-						state={fromList}
-						handleSelected={getToBasedOnFrom}
-					/> */}
-
 				<CommonSelect
 					defSelectName='Choose Bus'
 					label='Bus'
 					name='bus'
 					options={product.buses}
-					change={(e) => console.log(e.target.value)}
+					change={(e) => handleInput(e.target.value, e.target.name)}
 					value={product.on?.busId + ''}
 					required
 					selectClasses='bg-white'
@@ -269,7 +263,7 @@ export default function Create() {
 					label='Going To'
 					name='to'
 					options={product.destination.locations}
-					change={(e) => handleInput(e.target.value)}
+					change={(e) => handleInput(e.target.value, e.target.name)}
 					value={product.on?.destination + ''}
 					required
 					selectClasses='bg-white'
@@ -358,103 +352,4 @@ export default function Create() {
 			</div>
 		</form>
 	);
-
-	// return (
-	// 	<form
-	// 		className='bg-gray-200/70 p-3 rounded-lg max-w-xl mx-auto'
-	// 		onSubmit={handleSubmit}
-	// 	>
-	// 		<Select
-	// 			name='bus'
-	// 			label='Bus'
-	// 			state={brands}
-	// 			defaultOptionValue='Choose Brand'
-	// 		/>
-
-	// 		<Select
-	// 			name='location'
-	// 			label='Location'
-	// 			state={locations}
-	// 			defaultOptionValue='Choose Location'
-	// 		/>
-	// 		{/* <FromSelect /> */}
-
-	// 		<div className='flex justify-center items-center gap-2'>
-	// 			<div>
-	// 				<label className='block' htmlFor='date'>
-	// 					Journey Date
-	// 				</label>
-	// 				<DateInput />
-	// 			</div>
-	// 			<select
-	// 				className='w-full bg-white p-2 rounded-md outline-none border-2 mt-6'
-	// 				name='type'
-	// 			>
-	// 				<option>---</option>
-	// 				<option value='AC'>AC</option>
-	// 				<option value='non_AC'>NON-AC</option>
-	// 			</select>
-	// 		</div>
-
-	// 		<div className='mb-8 mt-3'>
-	// 			<BgNoneButton
-	// 				text='Add From Locations'
-	// 				handler={createFromLocations}
-	// 				classNames='border border-emerald-600 px-5 text-emerald-600 mb-2'
-	// 			/>
-
-	// 			<div className='flex flex-col'>
-	// 				{froms.map((from) => {
-	// 					const filteredList = locations.list.filter(
-	// 						(l) => !froms.map((f) => f.location).includes(l.id)
-	// 					);
-	// 					// console.log('filteredList :', filteredList);
-	// 					// console.log('from.location :', from.location);
-	// 					return (
-	// 						<div key={from.id} className='flex items-center gap-2'>
-	// 							<CommonSelect
-	// 								defSelectName='Choose Location'
-	// 								label='From Locations'
-	// 								name='from-loc'
-	// 								options={filteredList}
-	// 								change={(e) => {
-	// 									handleChange(e, from.id);
-	// 								}}
-	// 								value={from.location}
-	// 								classNames='flex-1'
-	// 							/>
-
-	// 							<CommonInput
-	// 								label='Ticket Price'
-	// 								type='number'
-	// 								name='price'
-	// 								minMax={[0, 2000]}
-	// 								change={(e) => {
-	// 									handleChange(e, from.id);
-	// 								}}
-	// 								value={from.price}
-	// 								placeholder='Ticket Price'
-	// 								classNames='flex-1'
-	// 							/>
-
-	// 							<div className='flex items-stretch gap-1 mt-2'>
-	// 								<button
-	// 									onClick={() => deleteFromLocations(from.id)}
-	// 									type='button'
-	// 									className='p-2 rounded-md bg-red-500/25'
-	// 								>
-	// 									<FiTrash2 className='h-5 w-5 text-red-400' />
-	// 								</button>
-	// 							</div>
-	// 						</div>
-	// 					);
-	// 				})}
-	// 			</div>
-	// 		</div>
-
-	// 		<SubmitButton text='Create Coach' />
-
-	// 		<p className='text-center'>{!!error ? <Error error={error} /> : null}</p>
-	// 	</form>
-	// );
 }
