@@ -13,9 +13,9 @@ import {
 import { IoTicketOutline } from 'react-icons/io5';
 import api from '../utils/axios';
 import { SubmitButton } from './Buttons/Button';
-import CommonSelect from './Inputs/CommonSelect';
 import { DateInput } from './Inputs/Inputs';
 import Label from './Inputs/Label';
+import CommonSelect from './Selects/CommonSelect';
 
 interface ToListType {
 	list: ToType[];
@@ -277,6 +277,7 @@ export default function Booking() {
 							change={(e) => getToBasedOnFrom(e.target.value)}
 							value={busFormObj.on?.from + ''}
 							required
+							selectClasses='bg-white'
 						/>
 
 						<CommonSelect
@@ -287,6 +288,7 @@ export default function Booking() {
 							change={(e) => handleInput(e.target.value)}
 							value={busFormObj.on?.to + ''}
 							required
+							selectClasses='bg-white'
 						/>
 
 						{/* <Select name='to' label='Going To' state={toList} /> */}
