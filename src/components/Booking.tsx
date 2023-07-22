@@ -199,8 +199,6 @@ export default function Booking() {
 		body.from = String(body.from).split(' ')[1];
 		body.to = String(body.to).split(' ')[1];
 
-		navigate('/ticket');
-
 		// if (!body.from || !body.to || !body.journeyDate || !body.type) {
 		//     alert("All Fields are required!");
 		//     return
