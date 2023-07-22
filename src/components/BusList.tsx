@@ -1,46 +1,16 @@
 import { useState } from 'react';
 import { FiLayout } from 'react-icons/fi';
+import { useLocation } from 'react-router-dom';
+import { BusType } from '../types/state.types';
+import { makeCoachName } from '../utils/coachName';
 import TicketModal from './ModalViews/TicketModal';
-
-type BUS_LIST_TYPE = {
-	id: string;
-	departing_time: string;
-	coach_no: string;
-	staring_counter: string;
-	end_counter: string;
-	fare: string;
-	coach_type: string;
-	arrival_time: string;
-	seats_available: number;
-};
-
-const busList: BUS_LIST_TYPE[] = [
-	{
-		id: '1',
-		departing_time: '10:00 PM',
-		coach_no: '105-syl-dhk',
-		staring_counter: 'Moulovibazar',
-		end_counter: 'Saydabad',
-		fare: 'E-Class: 700.00',
-		coach_type: 'NON-AC',
-		arrival_time: '5:00 AM',
-		seats_available: 4,
-	},
-	{
-		id: '2',
-		departing_time: '10:00 PM',
-		coach_no: '105-syl-dhk',
-		staring_counter: 'Moulovibazar',
-		end_counter: 'Saydabad',
-		fare: 'E-Class: 700.00',
-		coach_type: 'AC',
-		arrival_time: '5:00 AM',
-		seats_available: 4,
-	},
-];
 
 export default function BusList() {
 	const [showModal, setShowModal] = useState(false);
+	const location = useLocation();
+	const prodList: BusType[] = location.state;
+
+	console.log(prodList)
 
 	const handleView = () => {
 		setShowModal(true);
@@ -59,31 +29,27 @@ export default function BusList() {
 							<th className='py-1.5 flex-1 flex-shrink-0'>End Counter</th>
 							<th className='py-1.5 flex-1 flex-shrink-0'>Fare</th>
 							<th className='py-1.5 flex-1 flex-shrink-0'>Coach Type</th>
-							<th className='py-1.5 flex-1 flex-shrink-0'>Arrival Time</th>
 							<th className='py-1.5 flex-1 flex-shrink-0'>Seats Available</th>
 							<th className='py-1.5 flex-1 flex-shrink-0'>View</th>
 						</tr>
 					</thead>
 					<tbody className='w-full'>
-						{busList.map((l) => (
-							<tr className='flex items-center border' key={l.id}>
-								<td className='py-1 px-2 flex-1 flex-shrink-0'>{l.coach_no}</td>
-								<td className='py-1 px-2 flex-1 flex-shrink-0'>{l.coach_no}</td>
+						{prodList.map((prod) => (
+							<tr className='flex items-center border' key={prod.id}>
+								<td className='py-1 px-2 flex-1 flex-shrink-0'>{prod.brand.name}</td>
+								<td className='py-1 px-2 flex-1 flex-shrink-0'>{makeCoachName(prod.id, prod.brand.name)}</td>
 								<td className='py-1 px-2 flex-1 flex-shrink-0'>
-									{l.staring_counter}
+									{prod.From[0].location.name}
 								</td>
 								<td className='py-1 px-2 flex-1 flex-shrink-0'>
-									{l.end_counter}
+									{prod.location.name}
 								</td>
-								<td className='py-1 px-2 flex-1 flex-shrink-0'>{l.fare}</td>
+								<td className='py-1 px-2 flex-1 flex-shrink-0'>{prod.From[0].ticket_price}</td>
 								<td className='py-1 px-2 flex-1 flex-shrink-0'>
-									{l.coach_type}
-								</td>
-								<td className='py-1 px-2 flex-1 flex-shrink-0'>
-									{l.arrival_time}
+									{prod.type}
 								</td>
 								<td className='py-1 px-2 flex-1 flex-shrink-0'>
-									{l.seats_available}
+									{/* {prod.} */} 12
 								</td>
 								<td className='py-1 px-2 flex-1 flex-shrink-0'>
 									<button onClick={handleView}>
