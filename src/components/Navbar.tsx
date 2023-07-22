@@ -115,6 +115,7 @@ export default function Navbar() {
 													classNames='py-1.5 px-3 hover:bg-gray-200'
 													isLogout
 													handler={() => {
+														localStorage.removeItem("_token")
 														dispatch({ type: 'REMOVE_USER' });
 														setUserModal(false);
 													}}
