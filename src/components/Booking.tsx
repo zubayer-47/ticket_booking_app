@@ -191,18 +191,14 @@ export default function Booking() {
 		const formData = new FormData(e.currentTarget);
 
 		const body = {
-			from: formData.get('from'),
-			to: formData.get('to'),
 			journeyDate: formData.get('date'),
 			type: formData.get('type'),
 		};
-		body.from = String(body.from).split(' ')[1];
-		body.to = String(body.to).split(' ')[1];
 
-		// if (!body.from || !body.to || !body.journeyDate || !body.type) {
-		//     alert("All Fields are required!");
-		//     return
-		// }
+		if (!busFormObj.on.from || !busFormObj.on.to || !body.journeyDate || !body.type) {
+			alert("All Fields are required!");
+			return
+		}
 
 		const dateTime = String(body.journeyDate);
 		const date = dayjs(dateTime);
@@ -210,8 +206,8 @@ export default function Booking() {
 		try {
 			const res = await api.get('/search', {
 				params: {
-					fromId: body.from,
-					toLocation: body.to,
+					fromId: busFormObj.on.from,
+					toLocation: busFormObj.on.to,
 					journey_date: date,
 					type: body.type,
 				},
@@ -221,6 +217,8 @@ export default function Booking() {
 				...prev,
 				list: res.data,
 			}));
+
+			navigate('/ticket', { state: res.data })
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
 				const message = error.response?.data?.message;
@@ -242,8 +240,6 @@ export default function Booking() {
 			...prev,
 			loading: false,
 		}));
-
-		// navigate('/ticket')
 	};
 
 	console.log(buses)
