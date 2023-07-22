@@ -2,8 +2,10 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { BsPlusSquareFill } from 'react-icons/bs';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 import { BgNoneButton, MiniButton } from '../../../components/Buttons/Button';
 import Error from '../../../components/Error';
+import SectionTitle from '../../../components/Headers/SectionTitle';
 import Input from '../../../components/Inputs/Inputs';
 import { FormType, InputType } from '../../../types/custom';
 import { IdNameBrandLocationFromType } from '../../../types/state.types';
@@ -20,8 +22,6 @@ export default function AllBrands() {
 	});
 
 	useEffect(() => {
-		console.log('rendering');
-
 		const controller = new AbortController();
 
 		const fetchBrands = async function () {
@@ -164,7 +164,7 @@ export default function AllBrands() {
 	return (
 		<div className='max-w-2xl mx-5 md:mx-auto'>
 			<div className='flex items-center justify-between w-full mt-5'>
-				<span className='text-2xl text-emerald-500'>Bus List</span>
+				<SectionTitle title='Bus List' />
 				<button type='button' onClick={() => setCreate(true)}>
 					<BsPlusSquareFill className='bg-white text-emerald-500 text-2xl' />
 				</button>
@@ -215,12 +215,11 @@ export default function AllBrands() {
 						) : (
 							brands.map((brand) => (
 								<li
-									className={`flex gap-2 ${
-										updatedBrandId === brand.id ? 'border-none' : 'border-b'
-									}`}
+									className={`flex items-stretch gap-2 cursor-pointer ${updatedBrandId === brand.id ? 'border-none' : 'border-b'
+										}`}
 									key={brand.id}
 								>
-									<button className='flex-1'>
+									<Link to={`/brands/${brand.id}`} className='flex-1'>
 										<input
 											onClick={handleCreateProduct}
 											type='text'
@@ -231,15 +230,14 @@ export default function AllBrands() {
 											}
 											// value={updatedBrandId === brand.id && brandName || ""}
 											onChange={handleChange}
-											className={`bg-transparent text-gray-900 text-md rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full px-3 py-5 outline-none ${
-												updatedBrandId === brand.id ? 'border' : 'border-none'
-											}`}
+											className={`bg-transparent text-gray-900 text-md rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full px-3 py-5 outline-none ${updatedBrandId === brand.id ? 'border' : 'border-none'
+												}`}
 											disabled={updatedBrandId !== brand.id}
 										/>
 										{updatedBrandId === brand.id && state.error ? (
 											<Error error={state.error} />
 										) : null}
-									</button>
+									</Link>
 
 									{updatedBrandId !== brand.id ? (
 										<div className='flex gap-2'>
