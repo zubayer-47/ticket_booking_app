@@ -10,17 +10,8 @@ type NavButtonProps = {
     classNames?: string
 }
 
-export function NavButton({ text, to, handler = () => { }, isLogout = false, classNames }: NavButtonProps) {
-    return (<Link to={to} onClick={() => {
-        if (isLogout) {
-            handler()
-            // Cookies.remove("_token")
-            // localStorage.removeItem("_token")
-            return
-        }
-
-        handler();
-    }} className={`text-lg border md:border-0 border-gray-400 w-full hover:text-green-600 ${classNames || ""}`}>{text}</Link>
+export function NavButton({ text, to, handler = () => { }, classNames }: NavButtonProps) {
+    return (<Link to={to} onClick={handler} className={`text-lg border md:border-0 border-gray-400 w-full hover:text-green-600 ${classNames || ""}`}>{text}</Link>
     )
 }
 
