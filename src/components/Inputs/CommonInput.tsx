@@ -4,13 +4,13 @@ import { InputHandlerType, InputHtmlType } from '../../types/custom';
 import Error from '../Error';
 
 type Props = {
-	label: string;
 	type: InputHtmlType;
 	name: string;
 	change: InputHandlerType;
 	value: string | number;
 	placeholder: string;
 	disableAutoComplete?: boolean;
+	label?: string;
 	required?: boolean;
 	minMax?: number[];
 	error?: string;
