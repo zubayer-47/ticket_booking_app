@@ -1,7 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BsPlusSquareFill } from "react-icons/bs";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { useParams } from "react-router-dom";
+import { BgNoneButton, MiniButton } from "../../../../components/Buttons/Button";
+import Error from "../../../../components/Error";
+import CommonInput from "../../../../components/Inputs/CommonInput";
+import Input from "../../../../components/Inputs/Inputs";
+import { InputType } from "../../../../types/custom";
 import { IdNameBrandLocationFromType } from "../../../../types/state.types";
 import api from "../../../../utils/axios";
 
@@ -77,6 +83,24 @@ export default function BrandWiseProduct() {
         console.log('create product')
     }
 
+    const handleChange = (e: InputType) => {
+        setProductState(prev => ({
+            ...prev,
+            prodName: e.target.value
+        }))
+    };
+
+    const handleDelete = async (brandId: string) => {
+        console.log('delete prod')
+    };
+
+    const handleEdit = async (brandId: string) => {
+        console.log('edit prod')
+    };
+    const handleUpdate = async () => {
+        console.log('update prod')
+    };
+
     return (
         <div className='max-w-2xl mx-5 md:mx-auto'>
             <div className='flex items-center justify-between w-full mt-5'>
@@ -88,34 +112,41 @@ export default function BrandWiseProduct() {
 
             <div className='mb-3 mt-2'>
                 {/* create add list modal */}
-                {create ? (
+                {createProduct ? (
                     <form
                         className='flex items-center gap-2 mt-2'
-                        onSubmit={handleBrandCreate}
+                    // onSubmit={handleBrandCreate}
                     >
                         <Input
                             name='name'
                             placeholder='Bus Name'
                             defaultSize
-                            error={state.error}
+                        // error={state.error}
+                        />
+
+                        <CommonInput
+                            change={() => {
+                                console.log('changes')
+                            }}
+                            value=''
                         />
 
                         <MiniButton
                             text='Add'
                             type='submit'
-                            isError={!!state.error?.length}
+                        // isError={!!state.error?.length}
                         />
                         <BgNoneButton
                             red
                             text='Cancel'
                             handler={() => {
-                                setCreate(false);
-                                setState((prev) => ({
-                                    ...prev,
-                                    error: '',
-                                }));
+                                setCreateProduct(false);
+                                // setState((prev) => ({
+                                //     ...prev,
+                                //     error: '',
+                                // }));
                             }}
-                            isError={!!state.error?.length}
+                        // isError={!!state.error?.length}
                         />
                     </form>
                 ) : null}
@@ -127,7 +158,7 @@ export default function BrandWiseProduct() {
                 ) : (
                     <>
                         {!productState.productList.length ? (
-                            <h1>Bus List Empty</h1>
+                            <h1>Product List Empty</h1>
                         ) : (
                             productState.productList.map((prod) => (
                                 <li
@@ -140,32 +171,29 @@ export default function BrandWiseProduct() {
                                             onClick={handleCreateProduct}
                                             type='text'
                                             defaultValue={
-                                                (updatedBrandId === prod.id && productState.prodName) ||
-                                                brand.name ||
-                                                ''
-                                            }
+                                                (updatedBrandId === prod.id && productState.prodName) || ''}
                                             // value={updatedBrandId === brand.id && brandName || ""}
                                             onChange={handleChange}
-                                            className={`bg-transparent text-gray-900 text-md rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full px-3 py-5 outline-none ${updatedBrandId === brand.id ? 'border' : 'border-none'
+                                            className={`bg-transparent text-gray-900 text-md rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full px-3 py-5 outline-none ${updatedBrandId === prod.id ? 'border' : 'border-none'
                                                 }`}
-                                            disabled={updatedBrandId !== brand.id}
+                                            disabled={updatedBrandId !== prod.id}
                                         />
-                                        {updatedBrandId === brand.id && state.error ? (
-                                            <Error error={state.error} />
+                                        {updatedBrandId === prod.id && productState.error ? (
+                                            <Error error={productState.error} />
                                         ) : null}
                                     </div>
 
-                                    {updatedBrandId !== brand.id ? (
+                                    {updatedBrandId !== prod.id ? (
                                         <div className='flex gap-2'>
                                             <button
                                                 type='button'
-                                                onClick={() => handleDelete(brand.id)}
+                                                onClick={() => handleDelete(prod.id)}
                                             >
                                                 <FiTrash2 className='text-2xl text-red-500' />
                                             </button>
                                             <button
                                                 type='button'
-                                                onClick={() => handleEdit(brand.id)}
+                                                onClick={() => handleEdit(prod.id)}
                                             >
                                                 <FiEdit className='text-xl text-emerald-600' />
                                             </button>
