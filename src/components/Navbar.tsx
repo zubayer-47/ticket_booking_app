@@ -75,10 +75,10 @@ export default function Navbar() {
 												<NavButton to='/brands' text='All Buses' />
 											</li>
 											<li>
-												<NavButton to='/product/create' text='Destinations' />
+												<NavButton to='/product' text='Destinations' />
 											</li>
 											<li className='relative'>
-												<NavButton to='/product/create' text='Booking' />
+												<NavButton to='/product' text='Booking' />
 												<span className='absolute -top-1.5 -right-4 py-0 px-0.5 bg-emerald-400 rounded-full text-xs'>
 													12+
 												</span>
