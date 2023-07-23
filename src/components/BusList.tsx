@@ -1,19 +1,23 @@
 import { useState } from 'react';
 import { FiLayout } from 'react-icons/fi';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { BusType } from '../types/state.types';
 import { makeCoachName } from '../utils/coachName';
 import TicketModal from './ModalViews/TicketModal';
 
 export default function BusList() {
 	const [showModal, setShowModal] = useState(false);
+	const [prodID, setProdID] = useState('');
 	const location = useLocation();
 	const prodList: BusType[] = location.state;
+	const navigate = useNavigate();
 
 	console.log(prodList)
 
-	const handleView = () => {
+	const handleView = (prodID: string) => {
 		setShowModal(true);
+
+		setProdID(prodID)
 	};
 
 	return (
@@ -39,7 +43,7 @@ export default function BusList() {
 								<td className='py-1 px-2 flex-1 flex-shrink-0'>{prod.brand.name}</td>
 								<td className='py-1 px-2 flex-1 flex-shrink-0'>{makeCoachName(prod.id, prod.brand.name)}</td>
 								<td className='py-1 px-2 flex-1 flex-shrink-0'>
-									{prod.From[0].location.name}
+									{prod.From[0].location?.name}
 								</td>
 								<td className='py-1 px-2 flex-1 flex-shrink-0'>
 									{prod.location.name}
@@ -52,7 +56,7 @@ export default function BusList() {
 									{/* {prod.} */} 12
 								</td>
 								<td className='py-1 px-2 flex-1 flex-shrink-0'>
-									<button onClick={handleView}>
+									<button onClick={() => handleView(prod.id)}>
 										<FiLayout className='w-6 h-6 text-emerald-500' />
 									</button>
 								</td>
@@ -61,7 +65,7 @@ export default function BusList() {
 					</tbody>
 				</table>
 
-				<TicketModal showModal={showModal} setShowModal={setShowModal} />
+				<TicketModal showModal={showModal} setShowModal={setShowModal} prodID={prodID} />
 			</div>
 		</div>
 	);
