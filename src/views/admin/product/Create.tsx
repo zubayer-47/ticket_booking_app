@@ -16,7 +16,7 @@ interface BrandsType {
 	loading: boolean;
 	list: IdNameBrandLocationFromType[];
 }
-interface locationsType {
+export interface LocationsType {
 	error: string;
 	loading: boolean;
 	list: IdNameBrandLocationFromType[];
@@ -62,7 +62,7 @@ export default function Create() {
 		loading: false,
 		list: [],
 	});
-	const [locations, setLocations] = useState<locationsType>({
+	const [locations, setLocations] = useState<LocationsType>({
 		error: '',
 		loading: false,
 		list: [],
