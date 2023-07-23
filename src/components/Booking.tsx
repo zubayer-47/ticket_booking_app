@@ -55,7 +55,7 @@ export default function Booking() {
 			locations: [],
 		},
 		on: {
-			from: null,
+			from: '',
 			to: null,
 		},
 	});
@@ -242,7 +242,19 @@ export default function Booking() {
 		}));
 	};
 
-	console.log(buses)
+
+	useEffect(() => {
+		const filteredToLocations = busFormObj.to.locations.filter((value) => value.id !== busFormObj.on.from);
+
+		setBusFormObj(prev => ({
+			...prev,
+			to: {
+				loading: false,
+				locations: filteredToLocations
+			}
+		}))
+
+	}, [busFormObj.to.locations.length])
 
 	return (
 		<div>
@@ -256,13 +268,6 @@ export default function Booking() {
 					onSubmit={handleSubmit}
 				>
 					<div>
-						{/* <Select
-						name='from'
-						label='Leaving From'
-						state={fromList}
-						handleSelected={getToBasedOnFrom}
-					/> */}
-
 						<CommonSelect
 							defSelectName='Choose Leaving From'
 							label='Leaving From'
