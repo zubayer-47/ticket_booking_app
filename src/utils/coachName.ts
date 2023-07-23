@@ -1,5 +1,4 @@
-export const makeCoachName = (prodId: string, prodName: string) => {
-  const coachName = prodId.split("-")[0] + `-${prodName}`;
-
-  return coachName;
+export const makeCoachName = (prodId: string, prodName?: string) => {
+  prodName = prodName ? `-${prodName}` : "";
+  return prodId.split("-")[0] + prodName;
 };
