@@ -30,7 +30,7 @@ const CommonSelect: React.FC<Props> = ({
 	selectClasses
 }) => {
 
-	console.log(value)
+	console.log(value, 'from commonselect')
 
 	return (
 		<div className={`mb-3 ${classNames || ''}`}>
