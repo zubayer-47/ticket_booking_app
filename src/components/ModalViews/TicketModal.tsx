@@ -6,9 +6,12 @@ import SeatInfo from "./SeatInfo";
 type TicketModalProps = {
     showModal: boolean;
     setShowModal: (isShow: boolean) => void;
+    prodID: string
 }
 
-export default function TicketModal({ showModal, setShowModal }: TicketModalProps) {
+export default function TicketModal({ showModal, setShowModal, prodID }: TicketModalProps) {
+
+    console.log(prodID)
 
     return (
         <>
