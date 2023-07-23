@@ -8,9 +8,17 @@ import CommonInput from '../../components/Inputs/CommonInput';
 import CenterLayout from '../../components/Layouts/CenterLayout';
 import CommonSelect from '../../components/Selects/CommonSelect';
 import { Context } from '../../contexts/Context';
-import { FormType } from '../../types/custom';
+import { FormType, InputSelectChangeType } from '../../types/custom';
 import api from '../../utils/axios';
 import setLocalStorage from '../../utils/setLocalStorage';
+
+type CredentialsType = {
+	fullname: string;
+	email: string;
+	password: string;
+	confirmPassword: string;
+	role: string;
+}
 
 export default function SignUp() {
 	const [error, setError] = useState({
@@ -19,23 +27,22 @@ export default function SignUp() {
 		password: '',
 		common: '',
 	});
+	const [credentials, setCredentials] = useState<CredentialsType>({ confirmPassword: "", password: "", email: "", fullname: "", role: "" })
 	const navigate = useNavigate();
 
 	const { dispatch } = useContext(Context);
 
+	const handleChange = (e: InputSelectChangeType) => {
+		setCredentials(prev => ({
+			...prev,
+			[e.target.name]: e.target.value
+		}))
+	}
+
 	const handleSubmit = async (e: FormType) => {
 		e.preventDefault();
 
-		const formData = new FormData(e.currentTarget);
-		const body = {
-			name: formData.get('name'),
-			email: formData.get('email'),
-			confirmPassword: formData.get('confirmPassword'),
-			password: formData.get('password'),
-			role: formData.get('role'),
-		};
-
-		if (body.password !== body.confirmPassword) {
+		if (credentials.password !== credentials.confirmPassword) {
 			setError((prev) => ({
 				...prev,
 				password: "password doesn't matched!",
@@ -44,16 +51,10 @@ export default function SignUp() {
 			return;
 		}
 
+		const { confirmPassword, ...rest } = credentials
+
 		try {
-			const response = await api.post(
-				'/users/signup',
-				JSON.stringify({
-					fullname: body.name,
-					email: body.email,
-					password: body.password,
-					role: body.role,
-				})
-			);
+			const response = await api.post('/users/signup', rest);
 
 			setLocalStorage(response.data?.token);
 
@@ -93,14 +94,12 @@ export default function SignUp() {
 			<form onSubmit={handleSubmit} className='mb-3'>
 				<div className='text-center'><Error error={error.common} /></div>
 				<CommonInput
-					change={() => {
-						console.log('')
-					}}
+					change={handleChange}
 					label='Full Name'
-					name='name'
+					name='fullname'
 					placeholder='your full name'
 					type="text"
-					value=''
+					value={credentials.fullname}
 					disableAutoComplete
 					required
 					error={error.name}
@@ -108,14 +107,12 @@ export default function SignUp() {
 				/>
 
 				<CommonInput
-					change={() => {
-						console.log('')
-					}}
+					change={handleChange}
 					label='Email'
 					name='email'
 					placeholder='example@zubayer.com'
 					type="email"
-					value=''
+					value={credentials.email}
 					disableAutoComplete
 					required
 					error={error.email}
@@ -123,28 +120,24 @@ export default function SignUp() {
 				/>
 
 				<CommonInput
-					change={() => {
-						console.log('')
-					}}
+					change={handleChange}
 					label='Password'
 					name='password'
 					placeholder='*******'
 					type="password"
-					value=''
+					value={credentials.password}
 					required
 					error={error.password}
 					inputClasses='bg-gray-100'
 				/>
 
 				<CommonInput
-					change={() => {
-						console.log('')
-					}}
+					change={handleChange}
 					label='Confirm Password'
 					name='confirmPassword'
 					placeholder='*******'
 					type="password"
-					value=''
+					value={credentials.confirmPassword}
 					required
 					error={error.password}
 					inputClasses='bg-gray-100'
@@ -154,14 +147,13 @@ export default function SignUp() {
 					<CommonSelect
 						defSelectName="Select Role"
 						required
-						change={() => {
-							console.log('')
-						}}
-						value=''
+						change={handleChange}
+						value={credentials.role}
 						label='Role'
 						name='role'
-						options={[{ id: 1, name: "User" }, { id: 2, name: "Admin" }]}
+						options={[{ id: 1, name: "user" }, { id: 2, name: "admin" }]}
 						selectClasses='bg-gray-100'
+						valueInName
 					/>
 				</div>
 
