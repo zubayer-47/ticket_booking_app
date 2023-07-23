@@ -219,7 +219,7 @@ export default function AllBrands() {
 										}`}
 									key={brand.id}
 								>
-									<Link to={`/brands/${brand.id}`} className='flex-1'>
+									<Link to={`/brands/${brand.id}`} state={{ brandName: brand.name }} className='flex-1'>
 										<input
 											onClick={handleCreateProduct}
 											type='text'
