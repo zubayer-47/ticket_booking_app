@@ -61,11 +61,13 @@ type BgNoneButtonProps = {
     type?: "button" | "submit" | "reset";
     classNames?: string;
     isError?: boolean
+    disabled?: boolean
 }
 
-export function BgNoneButton({ text, handler, red, type = 'button', classNames = "", isError }: BgNoneButtonProps) {
+export function BgNoneButton({ text, handler, red, type = 'button', classNames = "", isError, disabled }: BgNoneButtonProps) {
 
     return <button
+        disabled={disabled}
         onClick={handler}
         type={type}
         className={`px-1 py-0.5 rounded-md ${red ? 'text-red-400 hover:text-red-500' : "text-emerald-400 hover:text-emerald-500"} ${classNames} ${isError ? "mb-6" : "mb-0"}`}
