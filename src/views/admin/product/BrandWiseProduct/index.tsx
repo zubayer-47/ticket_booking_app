@@ -1,15 +1,16 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { BsPlusSquareFill } from "react-icons/bs";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
-import { useParams } from "react-router-dom";
-import { BgNoneButton, MiniButton } from "../../../../components/Buttons/Button";
+import { useLocation, useParams } from "react-router-dom";
+import { v4 as uuidv4 } from 'uuid';
 import Error from "../../../../components/Error";
-import CommonInput from "../../../../components/Inputs/CommonInput";
-import Input from "../../../../components/Inputs/Inputs";
-import { InputType } from "../../../../types/custom";
+import FromModal from "../../../../components/ModalViews/FromModal/FromModal";
+import useFetchLocations from "../../../../hooks/useFetchLocations";
+import { InputSelectChangeType } from "../../../../types/custom";
 import { IdNameBrandLocationFromType } from "../../../../types/state.types";
 import api from "../../../../utils/axios";
+import { makeCoachName } from "../../../../utils/coachName";
+import { FromStateType } from "../Create";
 
 // {
 //     "id": "478386bf-4079-496d-a346-b4d674e85611",
@@ -31,19 +32,21 @@ interface ProductType {
 
 interface ProductStateType {
     productList: ProductType[],
-    prodName: string;
     loading: boolean;
     error: string;
 }
 
 export default function BrandWiseProduct() {
-    const { id } = useParams();
-    const [createProduct, setCreateProduct] = useState(false);
-    const [updatedBrandId, setUpdatedBrandId] = useState<string | null>(null);
+    const { brandID } = useParams();
+    const location = useLocation();
+    const brandName = location.state?.brandName;
+    const [editProductModal, setEditProductModal] = useState(false);
+    const [updatedProductID, setUpdatedProductID] = useState<string | null>(null);
+    const [froms, setFroms] = useState<FromStateType[]>([]);
+    const [locations] = useFetchLocations();
     const [productState, setProductState] = useState<ProductStateType>({
         error: "",
         loading: false,
-        prodName: "",
         productList: [
             {
                 id: "",
@@ -52,14 +55,15 @@ export default function BrandWiseProduct() {
                 type: ""
             },
         ]
-    })
+    });
 
     useEffect(() => {
+        console.log('rendering brandwiseproduct')
         const controller = new AbortController();
 
         const fetchProducts = async () => {
             try {
-                const res = await api.get(`/product/${id}`, { signal: controller.signal });
+                const res = await api.get(`/product/${brandID}`, { signal: controller.signal });
 
                 setProductState(prev => ({
                     ...prev,
@@ -77,113 +81,100 @@ export default function BrandWiseProduct() {
         fetchProducts()
 
         return () => controller.abort();
-    }, [id])
+    }, [brandID, productState.productList.length])
 
     const handleCreateProduct = () => {
         console.log('create product')
     }
 
-    const handleChange = (e: InputType) => {
-        setProductState(prev => ({
-            ...prev,
-            prodName: e.target.value
-        }))
-    };
-
     const handleDelete = async (brandId: string) => {
         console.log('delete prod')
     };
 
-    const handleEdit = async (brandId: string) => {
-        console.log('edit prod')
+    const handleEdit = async (prodID: string) => {
+        setEditProductModal(true)
+        setUpdatedProductID(prodID)
     };
     const handleUpdate = async () => {
         console.log('update prod')
     };
 
+    const createFromLocations = () => {
+        // set froms
+        const id = uuidv4();
+        setFroms((prev) => [...prev, { id, location: '', price: 0 }]);
+    };
+
+    const handleFromSelectChange = (e: InputSelectChangeType, fromID: string) => {
+        setFroms(prev => {
+            const clone = [...prev];
+            const data = clone.findIndex(d => d.id === fromID);
+
+            if (e.target.name === 'from-loc') {
+                clone[data].location = e.target.value
+            }
+
+            clone[data].price = +e.target.value;
+
+            return clone;
+        })
+    }
+
+    const deleteFromLocations = (id: string) =>
+        setFroms((prev) => prev.filter((v) => v.id !== id));
+
     return (
-        <div className='max-w-2xl mx-5 md:mx-auto'>
-            <div className='flex items-center justify-between w-full mt-5'>
+        <>
+            {!editProductModal ? null : (
+                <FromModal
+                    froms={froms}
+                    createFromLocations={createFromLocations}
+                    locations={locations.list}
+                    showModal={editProductModal}
+                    setShowModal={setEditProductModal}
+                    deleteFromLocations={deleteFromLocations}
+                    handleChange={handleFromSelectChange}
+                />
+            )}
+            <div className='max-w-2xl mx-5 md:mx-auto'>
+                {/* <div className='flex items-center justify-between w-full mt-5'> */}
                 <span className='text-2xl text-emerald-500 font-bold'>Product List</span>
-                <button type='button' onClick={() => setCreateProduct(true)}>
+                {/* 
+                <BgNoneButton
+                    text='Add From Locations'
+                    handler={createFromLocations}
+                    classNames='border border-emerald-600 px-5 text-emerald-600 mb-2'
+                /> */}
+
+                {/* <button type='button' onClick={() => setCreateProduct(true)}>
                     <BsPlusSquareFill className='bg-white text-emerald-500 text-2xl' />
-                </button>
-            </div>
+                </button> */}
+                {/* </div> */}
 
-            <div className='mb-3 mt-2'>
-                {/* create add list modal */}
-                {createProduct ? (
-                    <form
-                        className='flex items-center gap-2 mt-2'
-                    // onSubmit={handleBrandCreate}
-                    >
-                        <Input
-                            name='name'
-                            placeholder='Bus Name'
-                            defaultSize
-                        // error={state.error}
-                        />
+                <ul className='overflow-hidden scrollbar-none'>
+                    {productState.loading ? (
+                        <h1>Loading...</h1>
+                    ) : (
+                        <>
+                            {!productState.productList.length ? (
+                                <h1>Product List Empty</h1>
+                            ) : (
+                                productState.productList.map((prod) => (
+                                    <li
+                                        className={`flex items-stretch gap-2 select-none ${updatedProductID === prod.id ? 'border-none' : 'border-b'
+                                            }`}
+                                        key={prod.id}
+                                    >
+                                        <div className='flex-1'>
+                                            <p className={`bg-transparent text-gray-900 text-md rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full px-3 py-5 outline-none`}>
+                                                {
+                                                    (updatedProductID === prod.id && makeCoachName(prod.id, brandName)) || makeCoachName(prod.id, brandName) || ''}
+                                            </p>
+                                            {updatedProductID === prod.id && productState.error ? (
+                                                <Error error={productState.error} />
+                                            ) : null}
+                                        </div>
 
-                        <CommonInput
-                            change={() => {
-                                console.log('changes')
-                            }}
-                            value=''
-                        />
-
-                        <MiniButton
-                            text='Add'
-                            type='submit'
-                        // isError={!!state.error?.length}
-                        />
-                        <BgNoneButton
-                            red
-                            text='Cancel'
-                            handler={() => {
-                                setCreateProduct(false);
-                                // setState((prev) => ({
-                                //     ...prev,
-                                //     error: '',
-                                // }));
-                            }}
-                        // isError={!!state.error?.length}
-                        />
-                    </form>
-                ) : null}
-            </div>
-
-            <ul className='overflow-hidden scrollbar-none'>
-                {productState.loading ? (
-                    <h1>Loading...</h1>
-                ) : (
-                    <>
-                        {!productState.productList.length ? (
-                            <h1>Product List Empty</h1>
-                        ) : (
-                            productState.productList.map((prod) => (
-                                <li
-                                    className={`flex items-stretch gap-2 cursor-pointer ${updatedBrandId === prod.id ? 'border-none' : 'border-b'
-                                        }`}
-                                    key={prod.id}
-                                >
-                                    <div className='flex-1'>
-                                        <input
-                                            onClick={handleCreateProduct}
-                                            type='text'
-                                            defaultValue={
-                                                (updatedBrandId === prod.id && productState.prodName) || ''}
-                                            // value={updatedBrandId === brand.id && brandName || ""}
-                                            onChange={handleChange}
-                                            className={`bg-transparent text-gray-900 text-md rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full px-3 py-5 outline-none ${updatedBrandId === prod.id ? 'border' : 'border-none'
-                                                }`}
-                                            disabled={updatedBrandId !== prod.id}
-                                        />
-                                        {updatedBrandId === prod.id && productState.error ? (
-                                            <Error error={productState.error} />
-                                        ) : null}
-                                    </div>
-
-                                    {updatedBrandId !== prod.id ? (
                                         <div className='flex gap-2'>
                                             <button
                                                 type='button'
@@ -198,22 +189,13 @@ export default function BrandWiseProduct() {
                                                 <FiEdit className='text-xl text-emerald-600' />
                                             </button>
                                         </div>
-                                    ) : (
-                                        <div className='flex justify-center items-center gap-2 mb-6'>
-                                            <MiniButton text='Update' handler={handleUpdate} />
-                                            <BgNoneButton
-                                                red
-                                                text='Cancel'
-                                                handler={() => setUpdatedBrandId(null)}
-                                            />
-                                        </div>
-                                    )}
-                                </li>
-                            ))
-                        )}
-                    </>
-                )}
-            </ul>
-        </div>
+                                    </li>
+                                ))
+                            )}
+                        </>
+                    )}
+                </ul>
+            </div>
+        </>
     )
 }
