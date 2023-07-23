@@ -1,9 +1,9 @@
 import axios from "axios";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { useLocation, useParams } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
-import Error from "../../../../components/Error";
 import FromModal from "../../../../components/ModalViews/FromModal/FromModal";
 import useFetchLocations from "../../../../hooks/useFetchLocations";
 import { InputSelectChangeType } from "../../../../types/custom";
@@ -11,18 +11,6 @@ import { IdNameBrandLocationFromType } from "../../../../types/state.types";
 import api from "../../../../utils/axios";
 import { makeCoachName } from "../../../../utils/coachName";
 import { FromStateType } from "../Create";
-
-// {
-//     "id": "478386bf-4079-496d-a346-b4d674e85611",
-//     "location": {
-//       "id": "29e0fa71-4add-4153-99e4-184a13c56f78",
-//       "name": "dhaka"
-//     },
-//     "journey_date": "2023-07-20T18:00:00.000Z",
-//     "type": "AC"
-//   }
-
-
 interface ProductType {
     id: string;
     location: IdNameBrandLocationFromType,
@@ -42,8 +30,8 @@ export default function BrandWiseProduct() {
     const brandName = location.state?.brandName;
     const [editProductModal, setEditProductModal] = useState(false);
     const [updatedProductID, setUpdatedProductID] = useState<string | null>(null);
+    const { locations } = useFetchLocations();
     const [froms, setFroms] = useState<FromStateType[]>([]);
-    const [locations] = useFetchLocations();
     const [productState, setProductState] = useState<ProductStateType>({
         error: "",
         loading: false,
@@ -128,30 +116,61 @@ export default function BrandWiseProduct() {
             {!editProductModal ? null : (
                 <FromModal
                     froms={froms}
-                    createFromLocations={createFromLocations}
                     locations={locations.list}
+                    createFromLocations={createFromLocations}
                     showModal={editProductModal}
                     setShowModal={setEditProductModal}
+                    setFroms={setFroms}
                     deleteFromLocations={deleteFromLocations}
                     handleChange={handleFromSelectChange}
                 />
             )}
             <div className='max-w-2xl mx-5 md:mx-auto'>
-                {/* <div className='flex items-center justify-between w-full mt-5'> */}
                 <span className='text-2xl text-emerald-500 font-bold'>Product List</span>
-                {/* 
-                <BgNoneButton
-                    text='Add From Locations'
-                    handler={createFromLocations}
-                    classNames='border border-emerald-600 px-5 text-emerald-600 mb-2'
-                /> */}
 
-                {/* <button type='button' onClick={() => setCreateProduct(true)}>
-                    <BsPlusSquareFill className='bg-white text-emerald-500 text-2xl' />
-                </button> */}
-                {/* </div> */}
+                <table className='text-center w-full border-collapse border border-gray-100'>
+                    <thead className='w-full'>
+                        <tr className=' bg-emerald-500 text-white flex items-center'>
+                            <th className='py-1.5 flex-1 flex-shrink-0'>Coach No</th>
+                            <th className='py-1.5 flex-1 flex-shrink-0'>To</th>
+                            <th className='py-1.5 flex-1 flex-shrink-0'>Journey Date</th>
+                            <th className='py-1.5 flex-1 flex-shrink-0'>Coach Type</th>
+                            <th className='py-1.5 flex-1 flex-shrink-0'></th>
+                        </tr>
+                    </thead>
+                    <tbody className='w-full'>
+                        {productState.productList.map((prod) => (
+                            <tr className='flex items-center border' key={prod.id}>
+                                <td className='py-3 px-2 flex-1 flex-shrink-0'>{makeCoachName(prod.id, brandName)}</td>
+                                <td className='py-3 px-2 flex-1 flex-shrink-0'>
+                                    {prod.location.name}
+                                </td>
+                                <td className='py-3 px-2 flex-1 flex-shrink-0'>
+                                    {dayjs(prod.journey_date).format('DD-MM-YYYY')}
+                                </td>
+                                <td className='py-3 px-2 flex-1 flex-shrink-0 capitalize'>{prod.type}</td>
+                                <td className='py-3 px-2 flex-1 flex-shrink-0'>
+                                    <div className='flex gap-5 justify-end'>
+                                        <button
+                                            type='button'
+                                            onClick={() => handleDelete(prod.id)}
+                                        >
+                                            <FiTrash2 className='text-2xl text-red-500' />
+                                        </button>
+                                        <button
+                                            type='button'
+                                            onClick={() => handleEdit(prod.id)}
+                                        >
+                                            <FiEdit className='text-xl text-emerald-600' />
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
 
-                <ul className='overflow-hidden scrollbar-none'>
+                {/* <ul className='overflow-hidden scrollbar-none'>
                     {productState.loading ? (
                         <h1>Loading...</h1>
                     ) : (
@@ -167,8 +186,9 @@ export default function BrandWiseProduct() {
                                     >
                                         <div className='flex-1'>
                                             <p className={`bg-transparent text-gray-900 text-md rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full px-3 py-5 outline-none`}>
-                                                {
-                                                    (updatedProductID === prod.id && makeCoachName(prod.id, brandName)) || makeCoachName(prod.id, brandName) || ''}
+                                                <span>{
+                                                    (updatedProductID === prod.id && makeCoachName(prod.id, brandName)) || makeCoachName(prod.id, brandName) || ''}</span>
+                                                <span>{prod.location.name}</span>
                                             </p>
                                             {updatedProductID === prod.id && productState.error ? (
                                                 <Error error={productState.error} />
@@ -194,7 +214,7 @@ export default function BrandWiseProduct() {
                             )}
                         </>
                     )}
-                </ul>
+                </ul> */}
             </div>
         </>
     )
