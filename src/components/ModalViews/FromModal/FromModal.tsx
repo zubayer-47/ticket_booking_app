@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { FiTrash2 } from 'react-icons/fi';
 import { InputSelectChangeType } from '../../../types/custom';
 import { IdNameBrandLocationFromType } from '../../../types/state.types';
@@ -23,16 +24,27 @@ export default function FromModal({ froms, locations, showModal, setShowModal, d
         (l) => !froms.map((f) => f.location).includes(l.id)
     );
 
+    const handleCreateFroms = async () => {
+        try {
+            console.log(froms)
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                const message = error.response?.data?.message;
+                return;
+            }
+        }
+    }
+
     return (
         <ModalBox onClose={() => setShowModal(false)}>
             <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-gray-50 outline-none focus:outline-none overflow-hidden">
-                <div className="relative p-6 h-full lg:h-full overflow-auto ">
+                <div className="relative p-6 max-h-[600px] overflow-auto ">
                     <BgNoneButton
                         text='Add From Locations'
                         handler={createFromLocations}
                         classNames='border border-emerald-600 px-5 text-emerald-600 mb-2'
                     />
-                    <div className='flex flex-col'>
+                    <form className='flex flex-col'>
                         {froms.map((from) => {
                             // console.log('from.location :', from.location);
                             return (
@@ -48,6 +60,7 @@ export default function FromModal({ froms, locations, showModal, setShowModal, d
                                         value={from.location}
                                         classNames='flex-1'
                                         selectClasses='bg-white'
+                                        required
                                     />
 
                                     <CommonInput
@@ -61,6 +74,7 @@ export default function FromModal({ froms, locations, showModal, setShowModal, d
                                         value={from.price}
                                         placeholder='Ticket Price'
                                         classNames='flex-1'
+                                        required
                                     />
 
                                     <div className='flex items-stretch gap-1 mt-2'>
@@ -75,11 +89,11 @@ export default function FromModal({ froms, locations, showModal, setShowModal, d
                                 </div>
                             );
                         })}
-                    </div>
+                        <SubmitButton
+                            text='Create Froms'
+                        />
+                    </form>
 
-                    <SubmitButton
-                        text='Create From'
-                    />
                 </div>
             </div>
         </ModalBox>

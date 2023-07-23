@@ -66,6 +66,7 @@ const CommonInput: React.FC<Props> = ({
 					id={name}
 					placeholder={placeholder}
 					disabled={isLoading}
+					required={required}
 				/>
 			) : type === 'password' ? (
 				<div className="relative">

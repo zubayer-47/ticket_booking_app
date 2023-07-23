@@ -55,6 +55,7 @@ const CommonSelect: React.FC<Props> = ({
 				onChange={change}
 				value={value || ''}
 				disabled={isLoading}
+				required={required}
 			>
 				<option value=''>{defSelectName}</option>
 				{options &&
