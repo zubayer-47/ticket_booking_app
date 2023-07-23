@@ -8,7 +8,7 @@ export default function Counter() {
 
     return (
         <CenterLayout>
-            <p className="bg-red-300">{params?.brandID || 'ss'}</p>
+            <p className="bg-green-300">{params?.brandID || 'ss'}</p>
         </CenterLayout>
     )
 }
