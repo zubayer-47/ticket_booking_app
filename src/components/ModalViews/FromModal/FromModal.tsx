@@ -1,6 +1,5 @@
-import axios from 'axios';
 import { FiTrash2 } from 'react-icons/fi';
-import { InputSelectChangeType } from '../../../types/custom';
+import { FormType, InputSelectChangeType } from '../../../types/custom';
 import { IdNameBrandLocationFromType } from '../../../types/state.types';
 import { FromStateType } from '../../../views/admin/product/Create';
 import { BgNoneButton, SubmitButton } from '../../Buttons/Button';
@@ -16,27 +15,37 @@ type FromModalProps = {
     deleteFromLocations(prodID: string): void
     handleChange(e: InputSelectChangeType, fromID: string): void;
     createFromLocations(): void;
+    setFroms(froms: FromStateType[]): void;
 }
 
-export default function FromModal({ froms, locations, showModal, setShowModal, deleteFromLocations, handleChange, createFromLocations }: FromModalProps) {
+export default function FromModal({ froms, locations, setShowModal, deleteFromLocations, handleChange, createFromLocations, setFroms }: FromModalProps) {
 
-    const filteredList = locations.filter(
-        (l) => !froms.map((f) => f.location).includes(l.id)
-    );
+    // const filteredList = locations.list.filter(
+    //     (l) => !froms.map((f) => f.location).includes(l.id)
+    // );
 
-    const handleCreateFroms = async () => {
-        try {
-            console.log(froms)
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const message = error.response?.data?.message;
-                return;
-            }
-        }
+    // const handleCreateFroms = async () => {
+    //     try {
+    //         console.log(froms)
+    //     } catch (error) {
+    //         if (axios.isAxiosError(error)) {
+    //             const message = error.response?.data?.message;
+    //             return;
+    //         }
+    //     }
+    // }
+
+    const onSubmit = (e: FormType) => {
+        e.preventDefault();
+
+
     }
 
     return (
-        <ModalBox onClose={() => setShowModal(false)}>
+        <ModalBox onClose={() => {
+            setShowModal(false)
+            setFroms([])
+        }}>
             <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-gray-50 outline-none focus:outline-none overflow-hidden">
                 <div className="relative p-6 max-h-[600px] overflow-auto ">
                     <BgNoneButton
@@ -44,7 +53,7 @@ export default function FromModal({ froms, locations, showModal, setShowModal, d
                         handler={createFromLocations}
                         classNames='border border-emerald-600 px-5 text-emerald-600 mb-2'
                     />
-                    <form className='flex flex-col'>
+                    <form className='flex flex-col' onSubmit={onSubmit}>
                         {froms.map((from) => {
                             // console.log('from.location :', from.location);
                             return (
