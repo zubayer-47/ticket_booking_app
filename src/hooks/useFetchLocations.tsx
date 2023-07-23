@@ -57,5 +57,5 @@ export default function useFetchLocations() {
         return () => controller.abort();
     }, []);
 
-    return [locations];
+    return { locations };
 }
