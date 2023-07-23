@@ -10,7 +10,6 @@ import Dashboard from './views/admin/Dashboard';
 import AllBrands from './views/admin/brand/AllBrands';
 import Product from './views/admin/product';
 import BrandWiseProduct from './views/admin/product/BrandWiseProduct';
-import Counter from './views/admin/product/Counter';
 import Create from './views/admin/product/Create';
 import SignIn from './views/auth/SignIn';
 import SignUp from './views/auth/SignUp';
@@ -49,10 +48,10 @@ export default function App() {
 					<Route element={<AdminProtected />}>
 						<Route index path='dashboard' element={<Dashboard />} />
 						<Route path='brands' element={<AllBrands />} />
-						<Route path='brands/:id' element={<BrandWiseProduct />} />
+						<Route path='brands/:brandID' element={<BrandWiseProduct />} />
 						<Route path='product' element={<Product />}>
-							<Route path='create' element={<Create />} />
-							<Route path=':brandID' element={<Counter />} />
+							<Route index element={<Create />} />
+							{/* <Route path=':brandID' element={<Counter />} /> */}
 						</Route>
 					</Route>
 					<Route path='*' element={<NotFound />} />
