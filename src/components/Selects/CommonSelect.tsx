@@ -13,7 +13,8 @@ type Props = {
 	required?: boolean;
 	error?: string;
 	classNames?: string;
-	selectClasses?: string
+	selectClasses?: string;
+	valueInName?: boolean;
 };
 
 const CommonSelect: React.FC<Props> = ({
@@ -27,11 +28,9 @@ const CommonSelect: React.FC<Props> = ({
 	classNames,
 	error,
 	isLoading,
-	selectClasses
+	selectClasses,
+	valueInName
 }) => {
-
-	console.log(value, 'from commonselect')
-
 	return (
 		<div className={`mb-3 ${classNames || ''}`}>
 			{label && (
@@ -60,7 +59,7 @@ const CommonSelect: React.FC<Props> = ({
 				<option value=''>{defSelectName}</option>
 				{options &&
 					options.map((opt) => (
-						<option key={opt.id} value={opt.id}>
+						<option key={opt.id} value={valueInName ? opt.name : opt.id}>
 							{opt.name}
 						</option>
 					))}
