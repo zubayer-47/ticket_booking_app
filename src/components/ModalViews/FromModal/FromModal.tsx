@@ -1,14 +1,87 @@
-import { useState } from 'react';
+import { FiTrash2 } from 'react-icons/fi';
+import { InputSelectChangeType } from '../../../types/custom';
+import { IdNameBrandLocationFromType } from '../../../types/state.types';
+import { FromStateType } from '../../../views/admin/product/Create';
+import { BgNoneButton, SubmitButton } from '../../Buttons/Button';
+import CommonInput from '../../Inputs/CommonInput';
+import CommonSelect from '../../Selects/CommonSelect';
 import ModalBox from '../ModalBox';
 
-export default function FromModal() {
-    const [close, setClose] = useState(true);
+type FromModalProps = {
+    froms: FromStateType[],
+    locations: IdNameBrandLocationFromType[],
+    showModal: boolean;
+    setShowModal: (isShow: boolean) => void;
+    deleteFromLocations(prodID: string): void
+    handleChange(e: InputSelectChangeType, fromID: string): void;
+    createFromLocations(): void;
+}
 
-    const onClose = () => setClose(prev => !prev);
+export default function FromModal({ froms, locations, showModal, setShowModal, deleteFromLocations, handleChange, createFromLocations }: FromModalProps) {
+
+    const filteredList = locations.filter(
+        (l) => !froms.map((f) => f.location).includes(l.id)
+    );
 
     return (
-        <ModalBox onClose={onClose}>
+        <ModalBox onClose={() => setShowModal(false)}>
+            <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-gray-50 outline-none focus:outline-none overflow-hidden">
+                <div className="relative p-6 h-full lg:h-full overflow-auto ">
+                    <BgNoneButton
+                        text='Add From Locations'
+                        handler={createFromLocations}
+                        classNames='border border-emerald-600 px-5 text-emerald-600 mb-2'
+                    />
+                    <div className='flex flex-col'>
+                        {froms.map((from) => {
+                            // console.log('from.location :', from.location);
+                            return (
+                                <div key={from.id} className='flex items-center gap-2'>
+                                    <CommonSelect
+                                        defSelectName='Choose Location'
+                                        label='From Locations'
+                                        name='from-loc'
+                                        options={locations}
+                                        change={(e) => {
+                                            handleChange(e, from.id);
+                                        }}
+                                        value={from.location}
+                                        classNames='flex-1'
+                                        selectClasses='bg-white'
+                                    />
 
+                                    <CommonInput
+                                        label='Ticket Price'
+                                        type='number'
+                                        name='price'
+                                        minMax={[0, 2000]}
+                                        change={(e) => {
+                                            handleChange(e, from.id);
+                                        }}
+                                        value={from.price}
+                                        placeholder='Ticket Price'
+                                        classNames='flex-1'
+                                    />
+
+                                    <div className='flex items-stretch gap-1 mt-2'>
+                                        <button
+                                            onClick={() => deleteFromLocations(from.id)}
+                                            type='button'
+                                            className='p-2 rounded-md bg-red-500/25'
+                                        >
+                                            <FiTrash2 className='h-5 w-5 text-red-400' />
+                                        </button>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    <SubmitButton
+                        text='Create From'
+                    />
+                </div>
+            </div>
         </ModalBox>
     )
 }
