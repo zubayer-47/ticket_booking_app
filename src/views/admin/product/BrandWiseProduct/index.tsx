@@ -10,7 +10,7 @@ import { InputSelectChangeType } from "../../../../types/custom";
 import { IdNameBrandLocationFromType } from "../../../../types/state.types";
 import api from "../../../../utils/axios";
 import { makeCoachName } from "../../../../utils/coachName";
-import { FromStateType } from "../Create";
+import { FromStateType } from "../index";
 interface ProductType {
     id: string;
     location: IdNameBrandLocationFromType,
@@ -29,7 +29,7 @@ export default function BrandWiseProduct() {
     const location = useLocation();
     const brandName = location.state?.brandName;
     const [editProductModal, setEditProductModal] = useState(false);
-    const [updatedProductID, setUpdatedProductID] = useState<string | null>(null);
+    // const [updatedProductID, setUpdatedProductID] = useState<string | null>(null);
     const { locations } = useFetchLocations();
     const [froms, setFroms] = useState<FromStateType[]>([]);
     const [productState, setProductState] = useState<ProductStateType>({
@@ -60,8 +60,8 @@ export default function BrandWiseProduct() {
                 }))
             } catch (error) {
                 if (axios.isAxiosError(error)) {
-                    const message = error.response?.data?.message;
-                    return;
+                    // const message = error.response?.data?.message;
+                    // return;
                 }
             }
         }
@@ -71,20 +71,13 @@ export default function BrandWiseProduct() {
         return () => controller.abort();
     }, [brandID, productState.productList.length])
 
-    const handleCreateProduct = () => {
-        console.log('create product')
-    }
-
     const handleDelete = async (brandId: string) => {
-        console.log('delete prod')
+        console.log(brandId)
     };
 
     const handleEdit = async (prodID: string) => {
+        console.log(prodID);
         setEditProductModal(true)
-        setUpdatedProductID(prodID)
-    };
-    const handleUpdate = async () => {
-        console.log('update prod')
     };
 
     const createFromLocations = () => {
