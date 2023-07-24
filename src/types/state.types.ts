@@ -13,10 +13,10 @@ export type IdNameBrandLocationFromType = {
   name: string;
 };
 
-export type LocationType = {
+export interface LocationType {
   id: string;
   name: string;
-};
+}
 
 export type ToType = {
   fromID: string;
