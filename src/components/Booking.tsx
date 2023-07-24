@@ -4,33 +4,20 @@ import { FormEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Context } from '../contexts/Context';
 import {
-	BusType,
-	IdNameBrandLocationFromType,
-	LocationType,
-	ToType,
+	LocationType
 } from '../types/state.types';
 
 import { IoTicketOutline } from 'react-icons/io5';
+import useFilterDuplicateByObjName from '../hooks/useFilterDuplicateByObjName';
 import api from '../utils/axios';
 import { SubmitButton } from './Buttons/Button';
+import Error from './Error';
 import { DateInput } from './Inputs/Inputs';
 import Label from './Inputs/Label';
 import CommonSelect from './Selects/CommonSelect';
 
-interface ToListType {
-	list: ToType[];
-	loading: boolean;
-	error: string;
-}
-interface FromListType {
-	list: IdNameBrandLocationFromType[];
-	loading: boolean;
-	error: string;
-}
-interface BusesType {
-	list: BusType[];
-	loading: boolean;
-	error: string;
+export interface LocationsType extends LocationType {
+	fromID: string
 }
 
 export type BusObjType = {
@@ -38,7 +25,7 @@ export type BusObjType = {
 	locations: LocationType[];
 	to: {
 		loading: boolean;
-		locations: LocationType[];
+		locations: LocationsType[];
 	};
 	on: {
 		from: string | null;
@@ -60,23 +47,10 @@ export default function Booking() {
 		},
 	});
 
+	const { locations } = useFilterDuplicateByObjName(busFormObj.to.locations);
+
 	const [error, setError] = useState<string | null>(null);
 
-	const [toList, setToList] = useState<ToListType>({
-		error: '',
-		loading: false,
-		list: [],
-	});
-	const [fromList, setFromList] = useState<FromListType>({
-		error: '',
-		loading: true,
-		list: [],
-	});
-	const [buses, setBuses] = useState<BusesType>({
-		error: '',
-		loading: false,
-		list: [],
-	});
 	const { dispatch } = useContext(Context);
 	const navigate = useNavigate();
 
@@ -85,12 +59,6 @@ export default function Booking() {
 		const controller = new AbortController();
 
 		(async () => {
-			// setFromList((prev) => ({
-			// 	...prev,
-			// 	loading: true,
-			// }));
-			// dispatch({ type: "LOADING", payload: true })
-
 			try {
 				const res = await api.get(`/search/fromLocation`, {
 					signal: controller.signal,
@@ -101,34 +69,15 @@ export default function Booking() {
 					loading: false,
 					locations: res.data?.location || [],
 				}));
-
-				// setFromList((prev) => ({
-				// 	...prev,
-				// 	list: res.data?.location,
-				// 	// loading: false,
-				// }));
 			} catch (error) {
 				if (axios.isAxiosError(error)) {
 					const message = error.response?.data?.message;
 
-					// setFromList((prev) => ({
-					// 	...prev,
-					// 	error: message,
-					// }));
 					setError(message);
 					return;
 				}
-				// setFromList((prev) => ({
-				// 	...prev,
-				// 	error: 'Something Went Wrong! Please Try Again.',
-				// }));
 				setError('Something Went Wrong! Please Try Again.');
 			}
-			// dispatch({ type: "LOADING", payload: false })
-			// setFromList((prev) => ({
-			// 	...prev,
-			// 	loading: false,
-			// }));
 		})();
 
 		return () => controller.abort();
@@ -149,11 +98,6 @@ export default function Booking() {
 				...prev,
 				to: { locations: res?.data || [], loading: false },
 			}));
-
-			// setToList((prev) => ({
-			// 	...prev,
-			// 	list: res.data,
-			// }));
 		} catch (error) {
 			setBusFormObj((prev) => ({
 				...prev,
@@ -163,18 +107,10 @@ export default function Booking() {
 			if (axios.isAxiosError(error)) {
 				const message = error.response?.data?.message;
 
-				// setToList((prev) => ({
-				// 	...prev,
-				// 	error: message,
-				// }));
 				setError(message);
 				return;
 			}
 
-			// setToList((prev) => ({
-			// 	...prev,
-			// 	error: 'Something Went Wrong! Please Try Again.',
-			// }));
 			setError('Something Went Wrong! Please Try Again.');
 		}
 	};
@@ -184,10 +120,6 @@ export default function Booking() {
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		setBuses((prev) => ({
-			...prev,
-			loading: true,
-		}));
 		const formData = new FormData(e.currentTarget);
 
 		const body = {
@@ -213,35 +145,14 @@ export default function Booking() {
 				},
 			});
 
-			setBuses((prev) => ({
-				...prev,
-				list: res.data,
-			}));
-
-			navigate('/ticket', { state: res.data })
+			navigate('/ticket', { state: { prodList: res.data, from: busFormObj.on.from } })
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
-				const message = error.response?.data?.message;
-
-				setBuses((prev) => ({
-					...prev,
-					error: message,
-				}));
-				return;
+				// const message = error.response?.data?.message;
+				// return;
 			}
-
-			setBuses((prev) => ({
-				...prev,
-				error: 'Something Went Wrong! Please Try Again.',
-			}));
 		}
-
-		setBuses((prev) => ({
-			...prev,
-			loading: false,
-		}));
 	};
-
 
 	useEffect(() => {
 		const filteredToLocations = busFormObj.to.locations.filter((value) => value.id !== busFormObj.on.from);
@@ -254,7 +165,8 @@ export default function Booking() {
 			}
 		}))
 
-	}, [busFormObj.to.locations.length])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [busFormObj.to.locations.length]);
 
 	return (
 		<div>
@@ -262,6 +174,7 @@ export default function Booking() {
 				<IoTicketOutline className='w-6 h-6 text-emerald-500' />
 				<h2 className='text-2xl font-medium text-emerald-500'>Buy Ticket</h2>
 			</div>
+			{error ? (<Error classNames='text-xl text-center block mb-5 font-bold' error={error} />) : null}
 			<div className='grid grid-cols-12 gap-5'>
 				<form
 					className='space-y-3 bg-gray-200/70 p-3 rounded-lg col-span-12 lg:col-span-6'
@@ -283,7 +196,7 @@ export default function Booking() {
 							defSelectName='------'
 							label='Going To'
 							name='to'
-							options={busFormObj.to.locations}
+							options={locations}
 							change={(e) => handleInput(e.target.value)}
 							value={busFormObj.on?.to + ''}
 							required
