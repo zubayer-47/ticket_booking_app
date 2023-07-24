@@ -1,7 +1,7 @@
 import { FiTrash2 } from 'react-icons/fi';
 import { FormType, InputSelectChangeType } from '../../../types/custom';
 import { IdNameBrandLocationFromType } from '../../../types/state.types';
-import { FromStateType } from '../../../views/admin/product/Create';
+import { FromStateType } from '../../../views/admin/product';
 import { BgNoneButton, SubmitButton } from '../../Buttons/Button';
 import CommonInput from '../../Inputs/CommonInput';
 import CommonSelect from '../../Selects/CommonSelect';
