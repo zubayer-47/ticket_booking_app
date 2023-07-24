@@ -23,7 +23,6 @@ type LoginCredential = {
 }
 
 export default function SignIn() {
-	const [error, setError] = useState('');
 	const [loginCredentials, setLoginCredentials] = useState<LoginCredential>({ email: "", password: "", loading: false, error: { email: "", password: "", common: "" } })
 	const navigate = useNavigate();
 	const { dispatch, state } = useContext(Context);
