@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FiLayout } from 'react-icons/fi';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { BusType } from '../types/state.types';
 import { makeCoachName } from '../utils/coachName';
 import TicketModal from './ModalViews/TicketModal';
@@ -9,10 +9,25 @@ export default function BusList() {
 	const [showModal, setShowModal] = useState(false);
 	const [prodID, setProdID] = useState('');
 	const location = useLocation();
-	const prodList: BusType[] = location.state;
-	const navigate = useNavigate();
+	const { prodList, from }: { prodList: BusType[], from: string } = location.state;
 
-	console.log(prodList)
+	const sanitizeProductList = prodList.filter(prod => {
+		if (prod.From.length > 0) {
+			const index = prod.From.findIndex(f => f.location.id === from);
+
+			if (index !== -1) {
+				const deletedProdFrom = prod.From.splice(index, 1);
+
+				console.log(deletedProdFrom)
+
+				prod.From.splice(0, 0, deletedProdFrom[0]);
+
+				return prod.From;
+			}
+		}
+
+		return prod;
+	})
 
 	const handleView = (prodID: string) => {
 		setShowModal(true);
@@ -38,7 +53,7 @@ export default function BusList() {
 						</tr>
 					</thead>
 					<tbody className='w-full'>
-						{prodList.map((prod) => (
+						{sanitizeProductList.map((prod) => (
 							<tr className='flex items-center border' key={prod.id}>
 								<td className='py-1 px-2 flex-1 flex-shrink-0'>{prod.brand.name}</td>
 								<td className='py-1 px-2 flex-1 flex-shrink-0'>{makeCoachName(prod.id, prod.brand.name)}</td>
