@@ -1,5 +1,5 @@
 /* eslint-disable no-extra-boolean-cast */
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { InputType } from '../../types/custom';
@@ -154,10 +154,31 @@ export function PasswordInput({
 
 export function DateInput() {
 	const [value, setValue] = useState('');
+	const inputRef = useRef<HTMLInputElement>(null);
+
+	// function padTo2Digits(num: number) {
+	// 	return num.toString().padStart(2, '0');
+	// }
+
+	// function formatDate(date = new Date()) {
+	// 	return [
+	// 		date.getFullYear(),
+	// 		padTo2Digits(date.getMonth() + 1),
+	// 		padTo2Digits(date.getDate()),
+	// 	].join('-');
+	// }
+
+	// useEffect(() => {
+	// 	if (Object.prototype.hasOwnProperty.call(inputRef.current, 'value')) {
+	// 		console.log('ss')
+	// 		inputRef.current?.valueAsDate = new Date();
+	// 	}
+	// }, [])
 
 	return (
 		<input
 			type='date'
+			ref={inputRef}
 			className='w-full tracking-widest border outline-none rounded-md p-2.5'
 			name='date'
 			id='date'
