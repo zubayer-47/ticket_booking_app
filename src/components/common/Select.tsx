@@ -1,7 +1,5 @@
 import { ReactNode, useState } from 'react';
-import { SelectHandler } from '../../types/custom';
 import { IdNameBrandLocationFromType, ToType } from '../../types/state.types';
-import Error from '../Error';
 import Label from '../Inputs/Label';
 
 type SelectProps = {
