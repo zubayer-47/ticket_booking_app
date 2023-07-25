@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Input, { PasswordInput } from "../../components/Inputs/Inputs";
 import PageLayout from "../../components/Layouts/PageLayout";
-import { Gender } from "../../components/Selects/Selects";
+import { Gender } from "../../components/ModalViews/Gender";
 import { FormType } from "../../types/custom";
 
 export default function Profile() {
