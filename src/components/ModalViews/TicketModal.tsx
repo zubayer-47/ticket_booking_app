@@ -19,16 +19,16 @@ function TicketModal({ showModal, setShowModal, prodID }: TicketModalProps) {
                 <ModalBox onClose={() => setShowModal(false)}>
                     <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-gray-50 outline-none focus:outline-none">
                         {/*body*/}
-                        <div className="relative p-6 grid lg:grid lg:grid-cols-12 gap-5 h-[550px] lg:h-full overflow-auto">
+                        <div className="relative p-6 grid lg:grid lg:grid-cols-12 gap-5 h-[550px] overflow-auto lg:h-full">
 
-                            <div className="lg:col-span-4 w-[400px] lg:w-full mx-auto">
+                            <div className="lg:col-span-4 w-full sm:w-[400px] lg:w-full mx-auto">
                                 <div className="bg-gray-200 rounded-md p-2">
                                     <BusSeats />
                                 </div>
                             </div>
 
                             {/* seat and personal information */}
-                            <div className="lg:col-span-8 p-1 rounded-md">
+                            <div className="lg:col-span-8 p-1 rounded-md lg:h-[550px] lg:overflow-auto ">
                                 <SeatInfo />
                                 <PersonalInfo />
                             </div>
