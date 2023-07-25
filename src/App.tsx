@@ -1,10 +1,9 @@
 import { Outlet, Route, Routes } from 'react-router-dom';
-import BusList from './components/BusList';
+import Booking from './components/Booking';
 import { MainLayout } from './components/Layouts/Layout';
 import Navbar from './components/Navbar';
 import AdminProtected from './components/protected/AdminProtected';
 import Protected from './components/protected/Protected';
-import Home from './views/Home';
 import NotFound from './views/NotFound';
 import Dashboard from './views/admin/Dashboard';
 import AllBrands from './views/admin/brand/AllBrands';
@@ -30,9 +29,7 @@ export default function App() {
 			<div className='w-full mt-10' />
 			<Routes>
 				<Route path='/' element={<Outlet />}>
-					<Route path='/' element={<Home />}>
-						<Route path='ticket' element={<BusList />} />
-					</Route>
+					<Route index element={<Booking />} />
 
 					<Route path='sign-in' element={<SignIn />} />
 					<Route path='sign-up' element={<SignUp />} />
