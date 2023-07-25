@@ -1,7 +1,6 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { FormEvent, useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Context } from '../contexts/Context';
 import {
 	LocationType
@@ -10,10 +9,13 @@ import {
 import { IoTicketOutline } from 'react-icons/io5';
 import useFilterDuplicateByObjName from '../hooks/useFilterDuplicateByObjName';
 import api from '../utils/axios';
+import BusList from './BusList';
 import { SubmitButton } from './Buttons/Button';
 import Error from './Error';
 import { DateInput } from './Inputs/Inputs';
 import Label from './Inputs/Label';
+import CenterLayout from './Layouts/CenterLayout';
+import PageLayout from './Layouts/PageLayout';
 import CommonSelect from './Selects/CommonSelect';
 
 export interface LocationsType extends LocationType {
@@ -42,7 +44,7 @@ export default function Booking() {
 			locations: [],
 		},
 		on: {
-			from: '',
+			from: null,
 			to: null,
 		},
 	});
@@ -50,9 +52,7 @@ export default function Booking() {
 	const { locations } = useFilterDuplicateByObjName(busFormObj.to.locations);
 
 	const [error, setError] = useState<string | null>(null);
-
-	const { dispatch } = useContext(Context);
-	const navigate = useNavigate();
+	const { dispatch, state } = useContext(Context);
 
 	// fetching from list inside useEffect
 	useEffect(() => {
@@ -81,7 +81,7 @@ export default function Booking() {
 		})();
 
 		return () => controller.abort();
-	}, [dispatch]);
+	}, []);
 
 	// fetching destination (to)
 	const getToBasedOnFrom = async (id: string) => {
@@ -120,6 +120,7 @@ export default function Booking() {
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		console.log('getting');
 		const formData = new FormData(e.currentTarget);
 
 		const body = {
@@ -145,8 +146,20 @@ export default function Booking() {
 				},
 			});
 
-			navigate('/ticket', { state: { prodList: res.data, from: busFormObj.on.from } })
+			setBusFormObj(prev => ({
+				...prev,
+				prods: {
+					status: 1,
+					list: res.data,
+					fromID: busFormObj.on.from,
+				}
+			}))
+
+			dispatch({ type: "ADD_PRODS", payload: { list: res.data, fromID: busFormObj.on.from } })
+			dispatch({ type: "ADD_PRODS_STATUS", payload: 1 })
 		} catch (error) {
+			dispatch({ type: "ADD_PRODS_STATUS", payload: null })
+
 			if (axios.isAxiosError(error)) {
 				// const message = error.response?.data?.message;
 				// return;
@@ -169,69 +182,79 @@ export default function Booking() {
 	}, [busFormObj.to.locations.length]);
 
 	return (
-		<div>
-			<div className='flex items-center gap-2 mb-3'>
-				<IoTicketOutline className='w-6 h-6 text-emerald-500' />
-				<h2 className='text-2xl font-medium text-emerald-500'>Buy Ticket</h2>
-			</div>
-			{error ? (<Error classNames='text-xl text-center block mb-5 font-bold' error={error} />) : null}
-			<div className='grid grid-cols-12 gap-5'>
-				<form
-					className='space-y-3 bg-gray-200/70 p-3 rounded-lg col-span-12 lg:col-span-6'
-					onSubmit={handleSubmit}
-				>
-					<div>
-						<CommonSelect
-							defSelectName='Choose Leaving From'
-							label='Leaving From'
-							name='from-loc'
-							options={busFormObj.locations}
-							change={(e) => getToBasedOnFrom(e.target.value)}
-							value={busFormObj.on?.from + ''}
-							required
-							selectClasses='bg-white'
-						/>
-
-						<CommonSelect
-							defSelectName='------'
-							label='Going To'
-							name='to'
-							options={locations}
-							change={(e) => handleInput(e.target.value)}
-							value={busFormObj.on?.to + ''}
-							required
-							selectClasses='bg-white'
-						/>
-
-						{/* <Select name='to' label='Going To' state={toList} /> */}
-					</div>
-					<div className='flex justify-center items-center gap-2'>
-						<div>
-							<Label text='Journey Date' id='date' isRequired />
-							<DateInput />
-						</div>
-						<select
-							className='w-full bg-white p-3 rounded-md outline-none border-2 mt-5'
-							name='type'
-						>
-							<option>----</option>
-							<option value='AC'>AC</option>
-							<option value='non_AC'>NON-AC</option>
-						</select>
-					</div>
-
-					<div className='flex justify-end'>
-						<SubmitButton text='Search Bus' />
-					</div>
-				</form>
-
-				<div className='hidden md:col-span-6 lg:flex items-center'>
-					<img
-						className=''
-						src='https://static.busbd.com.bd/busbdmedia/for%20salide.1500371408'
-					/>
+		<PageLayout>
+			<CenterLayout noWidth>
+				<div className='flex items-center gap-2 mb-3'>
+					<IoTicketOutline className='w-6 h-6 text-emerald-500' />
+					<h2 className='text-2xl font-medium text-emerald-500'>Buy Ticket</h2>
 				</div>
-			</div>
-		</div>
+				{error ? (<Error classNames='text-xl text-center block mb-5 font-bold' error={error} />) : null}
+				<div className='grid grid-cols-12 gap-5'>
+					<form
+						className='space-y-3 bg-gray-200/70 p-3 rounded-lg col-span-12 lg:col-span-6'
+						onSubmit={handleSubmit}
+					>
+						<div>
+							<CommonSelect
+								defSelectName='Choose Leaving From'
+								label='Leaving From'
+								name='from-loc'
+								options={busFormObj.locations}
+								change={(e) => getToBasedOnFrom(e.target.value)}
+								value={busFormObj.on?.from + ''}
+								required
+								selectClasses='bg-white'
+							/>
+
+							<CommonSelect
+								defSelectName='------'
+								label='Going To'
+								name='to'
+								options={locations}
+								change={(e) => handleInput(e.target.value)}
+								value={busFormObj.on?.to + ''}
+								required
+								selectClasses='bg-white'
+							/>
+
+							{/* <Select name='to' label='Going To' state={toList} /> */}
+						</div>
+						<div className='flex justify-center items-center gap-2'>
+							<div>
+								<Label text='Journey Date' id='date' isRequired />
+								<DateInput />
+							</div>
+							<select
+								className='w-full bg-white p-3 rounded-md outline-none border-2 mt-5'
+								name='type'
+							>
+								<option>----</option>
+								<option value='AC'>AC</option>
+								<option value='non_AC'>NON-AC</option>
+							</select>
+						</div>
+
+						<div className='flex justify-end'>
+							<SubmitButton text='Search Bus' />
+						</div>
+					</form>
+
+					<div className='hidden md:col-span-6 lg:flex items-center'>
+						<img
+							className=''
+							src='https://static.busbd.com.bd/busbdmedia/for%20salide.1500371408'
+						/>
+					</div>
+				</div>
+			</CenterLayout>
+
+			{state.searchProds.status === null ? null : (
+				<BusList
+					from={state.searchProds.fromID}
+					prodList={state.searchProds.list}
+				/>
+			)}
+
+		</PageLayout>
 	);
 }
