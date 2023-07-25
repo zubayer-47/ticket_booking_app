@@ -1,7 +1,9 @@
+import axios from "axios";
+import { memo, useEffect } from "react";
+import api from "../../utils/axios";
 import BusSeats from "./BusSeats";
 import ModalBox from "./ModalBox";
 import PersonalInfo from "./PersonalInfo";
-import SeatInfo from "./SeatInfo";
 
 type TicketModalProps = {
     showModal: boolean;
@@ -9,9 +11,26 @@ type TicketModalProps = {
     prodID: string
 }
 
-function TicketModal({ showModal, setShowModal, prodID }: TicketModalProps) {
+const TicketModal = memo(function TicketModal({ showModal, setShowModal, prodID }: TicketModalProps) {
+    useEffect(() => {
+        const controller = new AbortController();
 
-    console.log(prodID, showModal)
+        (async () => {
+            try {
+                const res = await api.get(`/ticket/${prodID}`, { signal: controller.signal });
+
+                console.log(res);
+            } catch (error) {
+                if (axios.isAxiosError(error)) {
+                    // const message = error.response?.data?.message;
+
+                    // return;
+                }
+            }
+        })();
+
+        return () => controller.abort();
+    }, [prodID]);
 
     return (
         <>
@@ -29,7 +48,6 @@ function TicketModal({ showModal, setShowModal, prodID }: TicketModalProps) {
 
                             {/* seat and personal information */}
                             <div className="lg:col-span-8 p-1 rounded-md lg:h-[550px] lg:overflow-auto ">
-                                <SeatInfo />
                                 <PersonalInfo />
                             </div>
                         </div>
@@ -48,6 +66,6 @@ function TicketModal({ showModal, setShowModal, prodID }: TicketModalProps) {
             )}
         </>
     );
-}
+})
 
 export default TicketModal;
