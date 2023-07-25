@@ -62,8 +62,8 @@ export default function PersonalInfo() {
     return (
         <>
             <form className="mt-3 lg:mt-5 border p-2 rounded-md" onSubmit={handleSubmit}>
-                <p className="text-lg">Personal Information:</p>
-                <div className="flex justify-between items-center gap-2">
+                <p className="text-lg font-bold">Personal Information:</p>
+                <div className="flex flex-col justify-between items-center gap-2">
                     <CommonInput
                         name='name'
                         placeholder='your name'
