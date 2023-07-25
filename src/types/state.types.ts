@@ -45,24 +45,56 @@ export type BusType = {
   From: BusFromType[];
 };
 
+export interface PassengerDetailsType {
+  name: string;
+  gender: string;
+  email: string;
+  age: number;
+  mobile: number;
+  boarding_point: string;
+  dropping_point: string;
+  isAgree: boolean;
+}
+
 export type ActionType =
   // user
   | { type: "ADD_USER"; payload: UserType }
   | { type: "REMOVE_USER" }
   | { type: "LOADING"; payload: boolean }
-  // brand
-  | { type: "ADD_BRAND"; payload: IdNameBrandLocationFromType[] }
-  | { type: "REMOVE_BRAND" }
-  // brandId
-  | { type: "ADD_BRAND_ID"; payload: string }
-  | { type: "REMOVE_BRAND_ID" }
-  // location
-  | { type: "ADD_LOCATION"; payload: IdNameBrandLocationFromType[] }
-  | { type: "REMOVE_LOCATION" };
+  // searchProds
+  | { type: "ADD_PRODS"; payload: { list: BusType[]; fromID: string | null } }
+  | { type: "REMOVE_PRODS" }
+  | { type: "ADD_PRODS_STATUS"; payload: number | null }
+  | {
+      type: "ADD_PASSENGER_INFO";
+      payload: {
+        name:
+          | "name"
+          | "gender"
+          | "email"
+          | "age"
+          | "mobile"
+          | "boarding_point"
+          | "dropping_point"
+          | "isAgree";
+        value: string | number | boolean;
+      };
+    }
+  | { type: "REMOVE_PASSENGER_INFO" }
+  | { type: "PASSENGER_LOADING"; payload: boolean };
 
 // initialStateType
 export type InitialStateType = {
   user: UserType;
+  searchProds: {
+    list: BusType[];
+    status: null | number;
+    fromID: string | null;
+  };
+  passengerPersonalInfo: {
+    info: PassengerDetailsType;
+    loading: boolean;
+  };
   authenticated: boolean;
   isLoading: boolean;
 };
