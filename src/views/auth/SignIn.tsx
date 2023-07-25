@@ -78,6 +78,12 @@ export default function SignIn() {
 
 			localStorage.setItem('_token', response.data?.token);
 
+			if (from === '/') {
+				navigate(from);
+				console.log(from);
+				return;
+			}
+
 			if (response.data?.role === 'user') {
 				navigate('/profile', { replace: true });
 				return;
