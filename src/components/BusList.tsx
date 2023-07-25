@@ -1,15 +1,19 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { FiLayout } from 'react-icons/fi';
-import { useLocation } from 'react-router-dom';
 import { BusType } from '../types/state.types';
 import { makeCoachName } from '../utils/coachName';
 import TicketModal from './ModalViews/TicketModal';
 
-export default function BusList() {
+interface BusListProps {
+	prodList: BusType[];
+	from: string | null;
+}
+
+const BusList = memo(function BusList({ from, prodList }: BusListProps) {
 	const [showModal, setShowModal] = useState(false);
 	const [prodID, setProdID] = useState('');
-	const location = useLocation();
-	const { prodList, from }: { prodList: BusType[], from: string } = location.state;
+
+	console.log(prodList)
 
 	const sanitizeProductList = prodList.filter(prod => {
 		if (prod.From.length > 0) {
@@ -18,10 +22,7 @@ export default function BusList() {
 			if (index !== -1) {
 				const deletedProdFrom = prod.From.splice(index, 1);
 
-				console.log(deletedProdFrom)
-
 				prod.From.splice(0, 0, deletedProdFrom[0]);
-
 				return prod.From;
 			}
 		}
@@ -53,7 +54,7 @@ export default function BusList() {
 						</tr>
 					</thead>
 					<tbody className='w-full'>
-						{sanitizeProductList.map((prod) => (
+						{!sanitizeProductList.length ? (<tr><td>No Bus Exist on That day</td></tr>) : sanitizeProductList.map((prod) => (
 							<tr className='flex items-center border' key={prod.id}>
 								<td className='py-1 px-2 flex-1 flex-shrink-0'>{prod.brand.name}</td>
 								<td className='py-1 px-2 flex-1 flex-shrink-0'>{makeCoachName(prod.id, prod.brand.name)}</td>
@@ -80,8 +81,12 @@ export default function BusList() {
 					</tbody>
 				</table>
 
-				<TicketModal showModal={showModal} setShowModal={setShowModal} prodID={prodID} />
+				{!showModal ? null : (
+					<TicketModal showModal={showModal} setShowModal={setShowModal} prodID={prodID} />
+				)}
 			</div>
 		</div>
 	);
-}
+})
+
+export default BusList
