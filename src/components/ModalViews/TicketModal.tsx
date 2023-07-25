@@ -9,9 +9,9 @@ type TicketModalProps = {
     prodID: string
 }
 
-export default function TicketModal({ showModal, setShowModal, prodID }: TicketModalProps) {
+function TicketModal({ showModal, setShowModal, prodID }: TicketModalProps) {
 
-    console.log(prodID)
+    console.log(prodID, showModal)
 
     return (
         <>
@@ -49,3 +49,5 @@ export default function TicketModal({ showModal, setShowModal, prodID }: TicketM
         </>
     );
 }
+
+export default TicketModal;
