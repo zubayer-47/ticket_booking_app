@@ -33,8 +33,8 @@ export default function BusSeats() {
         </div>
 
         {/* seats */}
-        <div className="grid grid-cols-bus_seats gap-2 mt-5">
-            {seats.map((v) => (<div className="flex justify-between items-center gap-12" key={v}>
+        <div className="grid grid-cols-bus_seats gap-2 mt-5 w-full overflow-auto">
+            {seats.map((v) => (<div className="flex justify-between items-center gap-5 lg:gap-12" key={v}>
                 <div className="flex gap-2">
                     <button className="bg-gray-100 text-gray-700 border border-gray-500 px-4 py-1 rounded-sm">A1</button>
                     <button className="bg-gray-100 text-gray-700 border border-gray-500 px-4 py-1 rounded-sm">A2</button>
