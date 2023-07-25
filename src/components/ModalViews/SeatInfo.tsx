@@ -11,7 +11,7 @@ export default function SeatInfo() {
     return (
         <>
             <table className="w-full border-collapse text-center">
-                <caption className="text-left text-lg">Seat Information:</caption>
+                <caption className="text-left text-lg font-bold">Seat Information:</caption>
                 <thead className="bg-emerald-500 text-gray-50">
                     <tr>
                         <th className="border border-slate-300 lg:p-1">Seat No</th>
