@@ -4,6 +4,7 @@ import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { InputType } from '../../types/custom';
 import { InputError } from '../Error';
+import { PassengerDetailsType } from '../ModalViews/PersonalInfo';
 import Label from './Label';
 
 type InputProps = {
@@ -70,22 +71,21 @@ type CheckBoxProps = {
 	to: string;
 	linkText: string;
 	text: string;
+	isAgree: boolean;
+	setAgree: React.Dispatch<React.SetStateAction<PassengerDetailsType>>
 };
 
-export function CheckBox({ name, to, text, linkText }: CheckBoxProps) {
-	const [checked, setChecked] = useState(false);
-
-	const handleChange = () => {
-		setChecked((prev) => !prev);
-	};
-
+export function CheckBox({ name, to, text, linkText, isAgree, setAgree }: CheckBoxProps) {
 	return (
 		<div className='flex justify-center items-center gap-1'>
 			<input
 				type='checkbox'
 				name={name}
-				checked={checked}
-				onChange={handleChange}
+				checked={isAgree}
+				onChange={() => setAgree(prev => ({
+					...prev,
+					isAgree: !prev.isAgree
+				}))}
 				required
 			/>
 			<span className='text-xs'>
