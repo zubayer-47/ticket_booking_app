@@ -62,7 +62,6 @@ export default function BrandWiseProduct() {
 
                 setProductState(prev => ({
                     ...prev,
-                    loading: false,
                     productList: res.data
                 }))
             } catch (error) {
@@ -71,12 +70,25 @@ export default function BrandWiseProduct() {
                     // return;
                 }
             }
+
+            setProductState(prev => ({
+                ...prev,
+                loading: false,
+            }))
         }
 
-        fetchProducts()
+        setProductState(prev => ({
+            ...prev,
+            loading: true
+        }))
+        fetchProducts();
 
         return () => controller.abort();
-    }, [brandID, productState.productList.length])
+    }, [brandID, productState.productList.length]);
+
+    useEffect(() => {
+        console.log(productState.loading, 'loading test')
+    }, [productState.loading])
 
     const handleDelete = async (brandId: string) => {
         console.log(brandId)
@@ -141,7 +153,7 @@ export default function BrandWiseProduct() {
                         </tr>
                     </thead>
                     <tbody className='w-full'>
-                        {productState.productList.map((prod) => (
+                        {productState.loading ? (<tr><td>Loading...</td></tr>) : !productState.productList.length ? (<tr><td>Coach List Empty</td></tr>) : productState.productList.map((prod) => (
                             <tr className='flex items-center border' key={prod.id}>
                                 <td className='py-3 px-2 flex-1 flex-shrink-0'>{makeCoachName(prod.id, brandName)}</td>
                                 <td className='py-3 px-2 flex-1 flex-shrink-0'>
