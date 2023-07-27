@@ -10,7 +10,7 @@ const initialState: InitialStateType = {
 		email: '',
 		role: '',
 		token: '',
-		ticket: '',
+		ticket: [{ id: "", seatName: "" }],
 	},
 	searchProds: {
 		fromID: null,
