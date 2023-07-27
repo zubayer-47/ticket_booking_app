@@ -1,11 +1,16 @@
 import { Dispatch } from "react";
 
+export type TicketType = {
+  id: string;
+  seatName: string;
+};
+
 export type UserType = {
   email: string;
   name: string;
   role: string;
   token: string;
-  ticket: string;
+  ticket: TicketType[];
 };
 
 export type IdNameBrandLocationFromType = {
