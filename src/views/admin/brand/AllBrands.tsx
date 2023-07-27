@@ -11,12 +11,15 @@ import { FormType, InputType } from '../../../types/custom';
 import { IdNameBrandLocationFromType } from '../../../types/state.types';
 import api from '../../../utils/axios';
 
+interface StateType { error: string; loading: boolean, createBrandName: string }
+
 export default function AllBrands() {
 	const [brands, setBrands] = useState<IdNameBrandLocationFromType[]>([]);
 	const [brandName, setBrandName] = useState('');
 	const [create, setCreate] = useState(false);
 	const [updatedBrandId, setUpdatedBrandId] = useState<string | null>(null);
-	const [state, setState] = useState<{ error: string; loading: boolean }>({
+	const [state, setState] = useState<StateType>({
+		createBrandName: '',
 		error: '',
 		loading: false,
 	});
@@ -39,7 +42,8 @@ export default function AllBrands() {
 					}));
 					return;
 				}
-				setState(() => ({
+				setState((prev) => ({
+					...prev,
 					loading: false,
 					error: 'Something Went Wrong! Please Try Again.',
 				}));
@@ -96,23 +100,20 @@ export default function AllBrands() {
 	const handleBrandCreate = async (e: FormType) => {
 		e.preventDefault();
 		// send request for creating brand
-
-		const formData = new FormData(e.currentTarget);
-
-		const body = {
-			name: formData.get('name'),
-		};
-
-		if (!body.name) {
-			alert('write your brand name please');
-			return;
-		}
+		setState((prev) => ({
+			...prev,
+			error: '',
+		}));
 
 		try {
 			const response = await api.post('/brand', {
-				name: body.name,
+				name: state.createBrandName
 			});
 
+			setState(prev => ({
+				...prev,
+				createBrandName: ""
+			}))
 			setCreate(false);
 			setBrands((prev) => [
 				{ id: response.data?.id, name: response.data?.name },
@@ -139,6 +140,9 @@ export default function AllBrands() {
 		try {
 			await api.delete(`/brand/${brandId}`);
 
+			const updatedBrands = brands.filter(brand => brand.id !== brandId);
+
+			setBrands(updatedBrands);
 			setUpdatedBrandId(null);
 		} catch (error) {
 			if (axios.isAxiosError(error)) {
@@ -182,15 +186,24 @@ export default function AllBrands() {
 							placeholder='Bus Name'
 							type='text'
 							change={e => {
-								console.log();
+								setState(prev => ({
+									...prev,
+									createBrandName: e.target.value
+								}))
 							}}
-							value={''}
+							value={state.createBrandName}
 							required
 							classNames='w-full'
+							error={state.error}
 						/>
 
 						<div className='flex my-3 gap-3'>
 							<MiniButton
+								props={{
+									onKeyDown: (e) => {
+										console.log(e.key);
+									}
+								}}
 								text='Add'
 								type='submit'
 								isError={!!state.error?.length}
