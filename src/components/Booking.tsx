@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { FormEvent, useContext, useEffect, useState } from 'react';
 import { Context } from '../contexts/Context';
 import {
-	LocationType
+	IdNameBrandLocationFromType
 } from '../types/state.types';
 
 import { IoTicketOutline } from 'react-icons/io5';
@@ -18,13 +18,13 @@ import CenterLayout from './Layouts/CenterLayout';
 import PageLayout from './Layouts/PageLayout';
 import CommonSelect from './Selects/CommonSelect';
 
-export interface LocationsType extends LocationType {
+export interface LocationsType extends IdNameBrandLocationFromType {
 	fromID: string
 }
 
 export type BusObjType = {
 	loading: boolean;
-	locations: LocationType[];
+	locations: IdNameBrandLocationFromType[];
 	to: {
 		loading: boolean;
 		locations: LocationsType[];
@@ -249,10 +249,7 @@ export default function Booking() {
 			</CenterLayout>
 
 			{state.searchProds.status === null ? null : (
-				<BusList
-					from={state.searchProds.fromID}
-					prodList={state.searchProds.list}
-				/>
+				<BusList />
 			)}
 
 		</PageLayout>
