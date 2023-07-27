@@ -41,15 +41,17 @@ type MiniButtonProps = {
     type?: "button" | "submit" | "reset";
     classNames?: string;
     bgNon?: boolean;
-    isError?: boolean
+    isError?: boolean;
+    props?: React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
 }
 
-export function MiniButton({ text, handler, red, type = 'button', classNames = "", isError }: MiniButtonProps) {
+export function MiniButton({ text, handler, red, type = 'button', classNames = "", isError, ...props }: MiniButtonProps) {
 
     return <button
         onClick={handler}
         type={type}
         className={`px-1 py-0.5 rounded-md ${red ? 'bg-red-400 text-white hover:bg-red-500' : "bg-emerald-400 text-white hover:bg-emerald-500"} ${classNames} ${isError ? "mb-6" : "mb-0"}`}
+        {...props}
     >{text}</button>
 }
 
