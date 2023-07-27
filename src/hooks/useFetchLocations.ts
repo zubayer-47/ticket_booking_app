@@ -26,7 +26,9 @@ export default function useFetchLocations() {
         loading: true,
       }));
       try {
-        const res = await api.get("/location", { signal: controller.signal });
+        const res = await api.get("/location", {
+          signal: controller.signal,
+        });
 
         setLocations((prev) => ({
           ...prev,
