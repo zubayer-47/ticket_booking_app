@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { BgNoneButton, MiniButton } from '../../../components/Buttons/Button';
 import Error from '../../../components/Error';
 import SectionTitle from '../../../components/Headers/SectionTitle';
-import Input from '../../../components/Inputs/Inputs';
+import CommonInput from '../../../components/Inputs/CommonInput';
 import { FormType, InputType } from '../../../types/custom';
 import { IdNameBrandLocationFromType } from '../../../types/state.types';
 import api from '../../../utils/axios';
@@ -172,40 +172,48 @@ export default function AllBrands() {
 
 			<div className='mb-3 mt-2'>
 				{/* create add list modal */}
-				{create ? (
+				{!create ? null : (
 					<form
-						className='flex items-center gap-2 mt-2'
+						className='flex items-stretch w-full gap-2 mt-2'
 						onSubmit={handleBrandCreate}
 					>
-						<Input
+						<CommonInput
 							name='name'
 							placeholder='Bus Name'
-							defaultSize
-							error={state.error}
+							type='text'
+							change={e => {
+								console.log();
+							}}
+							value={''}
+							required
+							classNames='w-full'
 						/>
 
-						<MiniButton
-							text='Add'
-							type='submit'
-							isError={!!state.error?.length}
-						/>
-						<BgNoneButton
-							red
-							text='Cancel'
-							handler={() => {
-								setCreate(false);
-								setState((prev) => ({
-									...prev,
-									error: '',
-								}));
-							}}
-							isError={!!state.error?.length}
-						/>
+						<div className='flex my-3 gap-3'>
+							<MiniButton
+								text='Add'
+								type='submit'
+								isError={!!state.error?.length}
+								classNames='px-4'
+							/>
+							<BgNoneButton
+								red
+								text='Cancel'
+								handler={() => {
+									setCreate(false);
+									setState((prev) => ({
+										...prev,
+										error: '',
+									}));
+								}}
+								isError={!!state.error?.length}
+							/>
+						</div>
 					</form>
-				) : null}
+				)}
 			</div>
 
-			<ul className='overflow-hidden scrollbar-none'>
+			<ul className='overflow-hidden scrollbar-none space-y-2'>
 				{state.loading ? (
 					<h1>Loading...</h1>
 				) : (
@@ -215,7 +223,7 @@ export default function AllBrands() {
 						) : (
 							brands.map((brand) => (
 								<li
-									className={`flex items-stretch gap-2 cursor-pointer ${updatedBrandId === brand.id ? 'border-none' : 'border-b'
+									className={`flex items-stretch gap-5 cursor-pointer ${updatedBrandId === brand.id ? 'border-none' : 'border-b'
 										}`}
 									key={brand.id}
 								>
@@ -230,7 +238,7 @@ export default function AllBrands() {
 											}
 											// value={updatedBrandId === brand.id && brandName || ""}
 											onChange={handleChange}
-											className={`bg-transparent text-gray-900 text-md rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full px-3 py-5 outline-none ${updatedBrandId === brand.id ? 'border' : 'border-none'
+											className={`bg-transparent text-gray-900 text-md rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full px-3.5 py-3 outline-none ${updatedBrandId === brand.id ? 'border' : 'border-none'
 												}`}
 											disabled={updatedBrandId !== brand.id}
 										/>
@@ -255,8 +263,8 @@ export default function AllBrands() {
 											</button>
 										</div>
 									) : (
-										<div className='flex justify-center items-center gap-2 mb-6'>
-											<MiniButton text='Update' handler={handleUpdate} />
+										<div className='flex gap-2 my-1'>
+											<MiniButton classNames='px-3' text='Update' handler={handleUpdate} />
 											<BgNoneButton
 												red
 												text='Cancel'
