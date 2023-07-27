@@ -1,21 +1,21 @@
 import { FiTrash2 } from 'react-icons/fi';
 import { FormType, InputSelectChangeType } from '../../../types/custom';
 import { IdNameBrandLocationFromType } from '../../../types/state.types';
-import { FromStateType } from '../../../views/admin/product';
+import { FromStateTypes } from '../../../views/admin/product/BrandWiseProduct';
 import { BgNoneButton, SubmitButton } from '../../Buttons/Button';
 import CommonInput from '../../Inputs/CommonInput';
 import CommonSelect from '../../Selects/CommonSelect';
 import ModalBox from '../ModalBox';
 
 type FromModalProps = {
-    froms: FromStateType[],
+    froms: FromStateTypes[],
     locations: IdNameBrandLocationFromType[],
     showModal: boolean;
     setShowModal: (isShow: boolean) => void;
     deleteFromLocations(prodID: string): void
     handleChange(e: InputSelectChangeType, fromID: string): void;
     createFromLocations(): void;
-    setFroms(froms: FromStateType[]): void;
+    setFroms(froms: FromStateTypes[]): void;
 }
 
 export default function FromModal({ froms, locations, setShowModal, deleteFromLocations, handleChange, createFromLocations, setFroms }: FromModalProps) {
@@ -35,10 +35,10 @@ export default function FromModal({ froms, locations, setShowModal, deleteFromLo
     //     }
     // }
 
+
     const onSubmit = (e: FormType) => {
         e.preventDefault();
-
-
+        console.log(froms, 'FromModal')
     }
 
     return (
@@ -66,7 +66,7 @@ export default function FromModal({ froms, locations, setShowModal, deleteFromLo
                                         change={(e) => {
                                             handleChange(e, from.id);
                                         }}
-                                        value={from.location}
+                                        value={from.locationID}
                                         classNames='flex-1'
                                         selectClasses='bg-white'
                                         required
@@ -80,7 +80,7 @@ export default function FromModal({ froms, locations, setShowModal, deleteFromLo
                                         change={(e) => {
                                             handleChange(e, from.id);
                                         }}
-                                        value={from.price}
+                                        value={from.ticketPrice}
                                         placeholder='Ticket Price'
                                         classNames='flex-1'
                                         required

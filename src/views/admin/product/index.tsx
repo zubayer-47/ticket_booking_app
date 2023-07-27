@@ -12,16 +12,16 @@ import CommonSelect from '../../../components/Selects/CommonSelect';
 import { IdNameBrandLocationFromType, LocationType } from '../../../types/state.types';
 import api from '../../../utils/axios';
 
-export interface LocationsType {
-    error: string;
-    loading: boolean;
-    list: IdNameBrandLocationFromType[];
-}
 
 export interface FromStateType {
     id: string;
     location: string;
     price: number;
+}
+export interface LocationsType {
+    error: string;
+    loading: boolean;
+    list: IdNameBrandLocationFromType[];
 }
 
 export type BusObjType = {

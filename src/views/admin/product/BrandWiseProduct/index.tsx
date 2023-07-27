@@ -10,7 +10,6 @@ import { InputSelectChangeType } from "../../../../types/custom";
 import { IdNameBrandLocationFromType } from "../../../../types/state.types";
 import api from "../../../../utils/axios";
 import { makeCoachName } from "../../../../utils/coachName";
-import { FromStateType } from "../index";
 interface ProductType {
     id: string;
     location: IdNameBrandLocationFromType,
@@ -24,14 +23,22 @@ interface ProductStateType {
     error: string;
 }
 
+export interface FromStateTypes {
+    id: string;
+    productID: string;
+    ticketPrice: number;
+    locationID: string;
+}
+
 export default function BrandWiseProduct() {
     const { brandID } = useParams();
     const location = useLocation();
     const brandName = location.state?.brandName;
+    const [productID, setProductID] = useState('');
     const [editProductModal, setEditProductModal] = useState(false);
     // const [updatedProductID, setUpdatedProductID] = useState<string | null>(null);
     const { locations } = useFetchLocations();
-    const [froms, setFroms] = useState<FromStateType[]>([]);
+    const [froms, setFroms] = useState<FromStateTypes[]>([]);
     const [productState, setProductState] = useState<ProductStateType>({
         error: "",
         loading: false,
@@ -76,27 +83,29 @@ export default function BrandWiseProduct() {
     };
 
     const handleEdit = async (prodID: string) => {
-        console.log(prodID);
+
+        setProductID(prodID);
+
         setEditProductModal(true)
     };
 
     const createFromLocations = () => {
         // set froms
         const id = uuidv4();
-        setFroms((prev) => [...prev, { id, location: '', price: 0 }]);
+        setFroms((prev) => [...prev, { id, locationID: '', ticketPrice: 0, productID: '' }]);
     };
 
     const handleFromSelectChange = (e: InputSelectChangeType, fromID: string) => {
         setFroms(prev => {
             const clone = [...prev];
-            const data = clone.findIndex(d => d.id === fromID);
+            const fromIndex = clone.findIndex(d => d.id === fromID);
 
-            if (e.target.name === 'from-loc') {
-                clone[data].location = e.target.value
-            }
+            if (e.target.name === 'from-loc')
+                clone[fromIndex].locationID = e.target.value
+            else
+                clone[fromIndex].ticketPrice = +e.target.value;
 
-            clone[data].price = +e.target.value;
-
+            clone[fromIndex].productID = productID;
             return clone;
         })
     }
