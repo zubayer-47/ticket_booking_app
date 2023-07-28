@@ -37,11 +37,11 @@ export default function BrandWiseProduct() {
     const [productID, setProductID] = useState('');
     const [editProductModal, setEditProductModal] = useState(false);
     // const [updatedProductID, setUpdatedProductID] = useState<string | null>(null);
-    const { locations } = useFetchLocations();
+    const { locationsState } = useFetchLocations();
     const [froms, setFroms] = useState<FromStateTypes[]>([]);
     const [productState, setProductState] = useState<ProductStateType>({
         error: "",
-        loading: false,
+        loading: true,
         productList: [
             {
                 id: "",
@@ -66,29 +66,31 @@ export default function BrandWiseProduct() {
                 }))
             } catch (error) {
                 if (axios.isAxiosError(error)) {
-                    // const message = error.response?.data?.message;
-                    // return;
-                }
-            }
+                    const message = error.response?.data?.message || error.response?.data;
 
-            setProductState(prev => ({
-                ...prev,
-                loading: false,
-            }))
+                    setProductState(prev => ({
+                        ...prev,
+                        error: message
+                    }))
+                    return;
+                }
+
+                setProductState(prev => ({
+                    ...prev,
+                    error: 'Something Went Wrong! Refresh Please'
+                }))
+            } finally {
+                setProductState(prev => ({
+                    ...prev,
+                    loading: false,
+                }))
+            }
         }
 
-        setProductState(prev => ({
-            ...prev,
-            loading: true
-        }))
         fetchProducts();
 
         return () => controller.abort();
     }, [brandID, productState.productList.length]);
-
-    useEffect(() => {
-        console.log(productState.loading, 'loading test')
-    }, [productState.loading])
 
     const handleDelete = async (brandId: string) => {
         console.log(brandId)
@@ -125,12 +127,52 @@ export default function BrandWiseProduct() {
     const deleteFromLocations = (id: string) =>
         setFroms((prev) => prev.filter((v) => v.id !== id));
 
+    function renderTr() {
+        if (productState.loading) {
+            return <tr><td> Loading... </td></tr>
+        } else if (productState.error) {
+            console.log(productState.error, 'from error')
+            return <tr><td> {productState.error} </td></tr>
+        } else if (!productState.productList.length) return <tr><td> No Coach Found! </td></tr>
+
+        console.log(productState.error, 'from sss')
+
+        return productState.productList.map((prod) => (
+            <tr className='flex items-center border' key={prod.id}>
+                <td className='py-3 px-2 flex-1 flex-shrink-0'>{makeCoachName(prod.id, brandName)}</td>
+                <td className='py-3 px-2 flex-1 flex-shrink-0'>
+                    {prod.location.name}
+                </td>
+                <td className='py-3 px-2 flex-1 flex-shrink-0'>
+                    {dayjs(prod.journey_date).format('DD-MM-YYYY')}
+                </td>
+                <td className='py-3 px-2 flex-1 flex-shrink-0 capitalize'>{prod.type}</td>
+                <td className='py-3 px-2 flex-1 flex-shrink-0'>
+                    <div className='flex gap-5 justify-end'>
+                        <button
+                            type='button'
+                            onClick={() => handleDelete(prod.id)}
+                        >
+                            <FiTrash2 className='text-2xl text-red-500' />
+                        </button>
+                        <button
+                            type='button'
+                            onClick={() => handleEdit(prod.id)}
+                        >
+                            <FiEdit className='text-xl text-emerald-600' />
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        ))
+    }
+
     return (
         <>
             {!editProductModal ? null : (
                 <FromModal
                     froms={froms}
-                    locations={locations.list}
+                    locations={locationsState.list}
                     createFromLocations={createFromLocations}
                     showModal={editProductModal}
                     setShowModal={setEditProductModal}
@@ -153,34 +195,7 @@ export default function BrandWiseProduct() {
                         </tr>
                     </thead>
                     <tbody className='w-full'>
-                        {productState.loading ? (<tr><td>Loading...</td></tr>) : !productState.productList.length ? (<tr><td>Coach List Empty</td></tr>) : productState.productList.map((prod) => (
-                            <tr className='flex items-center border' key={prod.id}>
-                                <td className='py-3 px-2 flex-1 flex-shrink-0'>{makeCoachName(prod.id, brandName)}</td>
-                                <td className='py-3 px-2 flex-1 flex-shrink-0'>
-                                    {prod.location.name}
-                                </td>
-                                <td className='py-3 px-2 flex-1 flex-shrink-0'>
-                                    {dayjs(prod.journey_date).format('DD-MM-YYYY')}
-                                </td>
-                                <td className='py-3 px-2 flex-1 flex-shrink-0 capitalize'>{prod.type}</td>
-                                <td className='py-3 px-2 flex-1 flex-shrink-0'>
-                                    <div className='flex gap-5 justify-end'>
-                                        <button
-                                            type='button'
-                                            onClick={() => handleDelete(prod.id)}
-                                        >
-                                            <FiTrash2 className='text-2xl text-red-500' />
-                                        </button>
-                                        <button
-                                            type='button'
-                                            onClick={() => handleEdit(prod.id)}
-                                        >
-                                            <FiEdit className='text-xl text-emerald-600' />
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
+                        {renderTr()}
                     </tbody>
                 </table>
 
