@@ -4,26 +4,31 @@ import { FiLifeBuoy } from 'react-icons/fi';
 import { v4 } from 'uuid';
 import { TicketType } from '../../types/state.types';
 import api from '../../utils/axios';
-import filterTwoArr from '../../utils/filterTwoArr';
+import filterTwoDArr from '../../utils/filterTwoDArr';
 
-const seat3: TicketType[][] = [
-    [{ id: "1", seatName: "A-1" }, { id: "2", seatName: "A-2" }, { id: "3", seatName: "A-3" }, { id: "4", seatName: "A-4" }],
-    [{ id: "1", seatName: "B-1" }, { id: "2", seatName: "B-2" }, { id: "3", seatName: "B-3" }, { id: "4", seatName: "B-4" }],
-    [{ id: "1", seatName: "C-1" }, { id: "2", seatName: "C-2" }, { id: "3", seatName: "C-3" }, { id: "4", seatName: "C-4" }],
-    [{ id: "1", seatName: "D-1" }, { id: "2", seatName: "D-2" }, { id: "3", seatName: "D-3" }, { id: "4", seatName: "D-4" }],
-    [{ id: "1", seatName: "E-1" }, { id: "2", seatName: "E-2" }, { id: "3", seatName: "E-3" }, { id: "4", seatName: "E-4" }],
-    [{ id: "1", seatName: "F-1" }, { id: "2", seatName: "F-2" }, { id: "3", seatName: "F-3" }, { id: "4", seatName: "F-4" }],
-    [{ id: "1", seatName: "G-1" }, { id: "2", seatName: "G-2" }, { id: "3", seatName: "G-3" }, { id: "4", seatName: "G-4" }],
-    [{ id: "1", seatName: "H-1" }, { id: "2", seatName: "H-2" }, { id: "3", seatName: "H-3" }, { id: "4", seatName: "H-4" }],
-    [{ id: "1", seatName: "I-1" }, { id: "2", seatName: "I-2" }, { id: "3", seatName: "I-3" }, { id: "4", seatName: "I-4" }],
+const demoSeats: TicketType[][] = [
+    [{ id: "1", seatName: "A1" }, { id: "2", seatName: "A2" }, { id: "3", seatName: "A3" }, { id: "4", seatName: "A4" }],
+    [{ id: "1", seatName: "B1" }, { id: "2", seatName: "B2" }, { id: "3", seatName: "B3" }, { id: "4", seatName: "B4" }],
+    [{ id: "1", seatName: "C1" }, { id: "2", seatName: "C2" }, { id: "3", seatName: "C3" }, { id: "4", seatName: "C4" }],
+    [{ id: "1", seatName: "D1" }, { id: "2", seatName: "D2" }, { id: "3", seatName: "D3" }, { id: "4", seatName: "D4" }],
+    [{ id: "1", seatName: "E1" }, { id: "2", seatName: "E2" }, { id: "3", seatName: "E3" }, { id: "4", seatName: "E4" }],
+    [{ id: "1", seatName: "F1" }, { id: "2", seatName: "F2" }, { id: "3", seatName: "F3" }, { id: "4", seatName: "F4" }],
+    [{ id: "1", seatName: "G1" }, { id: "2", seatName: "G2" }, { id: "3", seatName: "G3" }, { id: "4", seatName: "G4" }],
+    [{ id: "1", seatName: "H1" }, { id: "2", seatName: "H2" }, { id: "3", seatName: "H3" }, { id: "4", seatName: "H4" }],
+    [{ id: "1", seatName: "I1" }, { id: "2", seatName: "I2" }, { id: "3", seatName: "I3" }, { id: "4", seatName: "I4" }],
 ]
 
+interface TicketStateType {
+    // tickets: TicketType[],
+    bookedTickets: TicketType[],
+}
+
 export default function BusSeats({ prodID }: { prodID: string }) {
-    const [_, setSeats] = useState<TicketType[]>([])
+
+    const [ticketState, setTicketState] = useState<TicketStateType>({ bookedTickets: [] });
     // const { seats: filteredSeats } = useFilterDuplicateSeats(seats);
 
-    const demo = filterTwoArr()
-    console.log(demo)
+    const filteredSeats = filterTwoDArr(demoSeats, ticketState.bookedTickets)
 
     useEffect(() => {
         const controller = new AbortController();
@@ -31,7 +36,10 @@ export default function BusSeats({ prodID }: { prodID: string }) {
             try {
                 const res = await api.get(`/ticket/${prodID}`, { signal: controller.signal });
 
-                setSeats(res.data);
+                setTicketState(prev => ({
+                    ...prev,
+                    bookedTickets: res.data
+                }));
             } catch (error) {
                 if (axios.isAxiosError(error)) {
                     // const message = error.response?.data?.message || error.response?.data;
@@ -73,15 +81,15 @@ export default function BusSeats({ prodID }: { prodID: string }) {
 
         {/* seats */}
         <div className="grid grid-cols-bus_seats gap-2 mt-5 w-full overflow-auto">
-            {seat3.map((seatArr) => (
+            {filteredSeats.map((seatArr) => (
                 <div className="flex justify-between items-center gap-5 lg:gap-12" key={v4()}>
                     <div className="flex gap-2">
-                        <button className="bg-gray-100 text-gray-700 border border-gray-500 px-4 py-1 rounded-sm">{seatArr[0].seatName}</button>
-                        <button className="bg-gray-100 text-gray-700 border border-gray-500 px-4 py-1 rounded-sm">{seatArr[1].seatName}</button>
+                        <button className={`bg-gray-100 text-gray-700 border border-gray-500 px-4 py-1 rounded-sm ${!!seatArr[0].selected && "bg-gray-600 text-white"}`}>{seatArr[0].seatName}</button>
+                        <button className={`bg-gray-100 text-gray-700 border border-gray-500 px-4 py-1 rounded-sm ${!!seatArr[1].selected && "bg-gray-600 text-white"}`}>{seatArr[1].seatName}</button>
                     </div>
                     <div className="flex gap-2">
-                        <button className="bg-gray-100 text-gray-700 border border-gray-500 px-4 py-1 rounded-sm">{seatArr[2].seatName}</button>
-                        <button className="bg-gray-100 text-gray-700 border border-gray-500 px-4 py-1 rounded-sm">{seatArr[3].seatName}</button>
+                        <button className={`bg-gray-100 text-gray-700 border border-gray-500 px-4 py-1 rounded-sm ${!!seatArr[2].selected && "bg-gray-600 text-white"}`}>{seatArr[2].seatName}</button>
+                        <button className={`bg-gray-100 text-gray-700 border border-gray-500 px-4 py-1 rounded-sm ${!!seatArr[3].selected && "bg-gray-600 text-white"}`}>{seatArr[3].seatName}</button>
                     </div>
                 </div>
             ))}
