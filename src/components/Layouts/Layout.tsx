@@ -19,12 +19,8 @@ const Layout: React.FC<PropType> = ({ children }) => {
 
 export default Layout;
 
-export const MainLayout: React.FC<PropType> = ({ children }) => {
-    const { state } = useContext(Context);
-
-    return (
-        <div className={`${state.isLoading ? 'pt-0' : 'pt-20'}`}>
-            {children}
-        </div>
-    );
-};
+export const MainLayout: React.FC<PropType> = ({ children }) => (
+    <div className={`pt-20`}>
+        {children}
+    </div>
+);
