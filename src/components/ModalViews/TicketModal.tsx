@@ -1,4 +1,5 @@
-import { memo } from "react";
+import { memo, useState } from "react";
+import { TicketType } from "../../types/state.types";
 import BusSeats from "./BusSeats";
 import ModalBox from "./ModalBox";
 import PersonalInfo from "./PersonalInfo";
@@ -9,7 +10,12 @@ type TicketModalProps = {
     prodID: string
 }
 
+interface ModalStateType {
+    tickets: TicketType[],
+}
+
 const TicketModal = memo(function TicketModal({ showModal, setShowModal, prodID }: TicketModalProps) {
+    const [modalState, setModalState] = useState<ModalStateType>();
     return (
         <>
             {!showModal ? null : (
