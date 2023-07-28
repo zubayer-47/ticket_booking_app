@@ -1,17 +1,15 @@
-import { memo, useContext, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { FiLayout } from 'react-icons/fi';
 import { Context } from '../contexts/Context';
 import { makeCoachName } from '../utils/coachName';
 import TicketModal from './ModalViews/TicketModal';
 
-const BusList = memo(function BusList() {
+function BusList() {
 	const [showModal, setShowModal] = useState(false);
 	const [prodID, setProdID] = useState('');
 	const { state } = useContext(Context)
 
-	console.log(state.searchProds.list)
-
-	const sanitizeProductList = state.searchProds.list.filter(prod => {
+	const sanitizeProductList = useMemo(() => state.searchProds.list.filter(prod => {
 		if (prod.From.length > 0) {
 			const index = prod.From.findIndex(f => f.location.id === state.searchProds.fromID);
 
@@ -24,7 +22,7 @@ const BusList = memo(function BusList() {
 
 			return prod
 		}
-	})
+	}), [state.searchProds.fromID, state.searchProds.list])
 
 	const handleView = (prodID: string) => {
 		setShowModal(true);
@@ -83,6 +81,6 @@ const BusList = memo(function BusList() {
 			</div>
 		</div>
 	);
-})
+}
 
 export default BusList
