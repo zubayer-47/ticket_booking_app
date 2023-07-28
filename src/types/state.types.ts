@@ -3,6 +3,7 @@ import { Dispatch } from "react";
 export type TicketType = {
   id: string;
   seatName: string;
+  selected?: boolean;
 };
 
 export type UserType = {
