@@ -7,7 +7,7 @@ import {
 } from '../types/state.types';
 
 import { IoTicketOutline } from 'react-icons/io5';
-import useFilterDuplicateByObjName from '../hooks/useFilterDuplicateByObjName';
+import useFilterDuplicateByObjName from '../hooks/useFilterDuplicateLocationsByObjName';
 import api from '../utils/axios';
 import BusList from './BusList';
 import { SubmitButton } from './Buttons/Button';
@@ -59,6 +59,7 @@ export default function Booking() {
 		const controller = new AbortController();
 
 		(async () => {
+			dispatch({ type: "LOADING", payload: true })
 			try {
 				const res = await api.get(`/search/fromLocation`, {
 					signal: controller.signal,
@@ -77,11 +78,13 @@ export default function Booking() {
 					return;
 				}
 				setError('Something Went Wrong! Please Try Again.');
+			} finally {
+				dispatch({ type: "LOADING", payload: false })
 			}
 		})();
 
 		return () => controller.abort();
-	}, []);
+	}, [dispatch]);
 
 	// fetching destination (to)
 	const getToBasedOnFrom = async (id: string) => {
@@ -248,10 +251,9 @@ export default function Booking() {
 				</div>
 			</CenterLayout>
 
-			{state.searchProds.status === null ? null : (
+			{!state.searchProds.status ? null : (
 				<BusList />
 			)}
-
 		</PageLayout>
 	);
 }
