@@ -1,8 +1,38 @@
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { FiLifeBuoy } from 'react-icons/fi';
+import useFilterDuplicateSeats from '../../hooks/useFilterDuplicateSeats';
+import { TicketType } from '../../types/state.types';
+import api from '../../utils/axios';
+import filterTwoArr from '../../utils/filterTwoArr';
 
-const seats = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+const seat2 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-export default function BusSeats() {
+export default function BusSeats({ prodID }: { prodID: string }) {
+    const [seats, setSeats] = useState<TicketType[]>([])
+    const { seats: filteredSeats } = useFilterDuplicateSeats(seats);
+
+    const demo = filterTwoArr()
+    console.log(demo)
+
+    useEffect(() => {
+        const controller = new AbortController();
+        (async () => {
+            try {
+                const res = await api.get(`/ticket/${prodID}`, { signal: controller.signal });
+
+                setSeats(res.data);
+            } catch (error) {
+                if (axios.isAxiosError(error)) {
+                    // const message = error.response?.data?.message || error.response?.data;
+                    // return;
+                }
+            }
+        })();
+
+        return () => controller.abort()
+    }, [prodID]);
+
     return (<div className='p-2'>
         <table className="border border-collapse w-full">
             <thead>
@@ -34,7 +64,7 @@ export default function BusSeats() {
 
         {/* seats */}
         <div className="grid grid-cols-bus_seats gap-2 mt-5 w-full overflow-auto">
-            {seats.map((v) => (<div className="flex justify-between items-center gap-5 lg:gap-12" key={v}>
+            {seat2.map((v) => (<div className="flex justify-between items-center gap-5 lg:gap-12" key={v}>
                 <div className="flex gap-2">
                     <button className="bg-gray-100 text-gray-700 border border-gray-500 px-4 py-1 rounded-sm">A1</button>
                     <button className="bg-gray-100 text-gray-700 border border-gray-500 px-4 py-1 rounded-sm">A2</button>
