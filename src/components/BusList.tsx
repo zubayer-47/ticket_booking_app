@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { FiLayout } from 'react-icons/fi';
 import { Context } from '../contexts/Context';
 import { makeCoachName } from '../utils/coachName';
@@ -23,6 +23,10 @@ function BusList() {
 			return prod
 		}
 	}), [state.searchProds.fromID, state.searchProds.list])
+
+	useEffect(() => {
+		setShowModal(true);
+	}, [])
 
 	const handleView = (prodID: string) => {
 		setShowModal(true);
