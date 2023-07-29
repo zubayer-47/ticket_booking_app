@@ -1,5 +1,3 @@
-import { useContext } from "react";
-import { Context } from "../../contexts/Context";
 import CommonSelect from "../Selects/CommonSelect";
 
 const genderList = [
@@ -10,18 +8,17 @@ const genderList = [
 
 interface GenderProps {
     value: string;
+    onChange: (name: string, value: string | boolean) => void
 }
 
-export function Gender({ value }: GenderProps) {
-    const { dispatch } = useContext(Context)
-
+export function Gender({ value, onChange }: GenderProps) {
     return (
         <CommonSelect
             defSelectName="Select Gender"
             label="Gender"
             name="gender"
             options={genderList}
-            change={e => dispatch({ type: "ADD_PASSENGER_INFO", payload: { name: "gender", value: e.target.value } })}
+            change={e => onChange(e.target.name, e.target.value)}
             value={value}
             valueInName
             required
