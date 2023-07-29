@@ -11,18 +11,13 @@ type TicketModalProps = {
     price: string | number
 
 }
-
-export interface TicketStateType {
-    // tickets: TicketType[],
+export interface ModalStateType {
     bookTickets: TicketType[],
     seatNames: string[];
 }
-export interface ModalStateType extends TicketStateType {
-    tickets: TicketType[],
-}
 
 const TicketModal = memo(function TicketModal({ showModal, setShowModal, prodID, price }: TicketModalProps) {
-    const [modalState, setModalState] = useState<ModalStateType>({ bookTickets: [], seatNames: [], tickets: [] });
+    const [modalState, setModalState] = useState<ModalStateType>({ bookTickets: [], seatNames: [] });
     return (
         <>
             {!showModal ? null : (
