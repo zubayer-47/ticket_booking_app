@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect } from 'react';
+import { memo, useCallback, useEffect } from 'react';
 import { FiLifeBuoy } from 'react-icons/fi';
 import { v4 } from 'uuid';
 import { TicketType } from '../../types/state.types';
@@ -25,29 +25,32 @@ type BusSeatsProps = {
     setState: React.Dispatch<React.SetStateAction<ModalStateType>>
 }
 
-export default function BusSeats({ prodID, state, setState }: BusSeatsProps) {
-    const filteredSeats = filterTwoDArr(demoSeats, state.bookTickets)
+const BusSeats = memo(function BusSeats({ prodID, state, setState }: BusSeatsProps) {
+    const filteredSeats = filterTwoDArr(demoSeats, state.bookTickets);
+
+    const fetchProductWiseTicket = useCallback(async (controller: AbortController) => {
+        try {
+            const res = await api.get(`/ticket/${prodID}`, { signal: controller.signal });
+
+            setState(prev => ({
+                ...prev,
+                bookTickets: res.data
+            }))
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                // const message = error.response?.data?.message || error.response?.data;
+                // return;
+            }
+        }
+    }, [prodID, setState])
 
     useEffect(() => {
         const controller = new AbortController();
-        (async () => {
-            try {
-                const res = await api.get(`/ticket/${prodID}`, { signal: controller.signal });
 
-                setState(prev => ({
-                    ...prev,
-                    bookTickets: res.data
-                }))
-            } catch (error) {
-                if (axios.isAxiosError(error)) {
-                    // const message = error.response?.data?.message || error.response?.data;
-                    // return;
-                }
-            }
-        })();
+        fetchProductWiseTicket(controller);
 
         return () => controller.abort()
-    }, [prodID, setState]);
+    }, [fetchProductWiseTicket]);
 
     const handleCheck = (name: string) => {
         setState(prev => {
@@ -141,3 +144,6 @@ export default function BusSeats({ prodID, state, setState }: BusSeatsProps) {
     </div>
     )
 }
+)
+
+export default BusSeats;
