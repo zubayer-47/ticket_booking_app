@@ -32,6 +32,7 @@ export type BusObjType = {
 	on: {
 		from: string | null;
 		to: string | null;
+		type: string | null;
 	};
 };
 
@@ -46,6 +47,7 @@ export default function Booking() {
 		on: {
 			from: null,
 			to: null,
+			type: null
 		},
 	});
 
@@ -118,8 +120,8 @@ export default function Booking() {
 		}
 	};
 
-	const handleInput = (id: string) =>
-		setBusFormObj((prev) => ({ ...prev, on: { ...prev.on, to: id } }));
+	const handleInput = (id: string, name: string) =>
+		setBusFormObj((prev) => ({ ...prev, on: { ...prev.on, [name]: id } }));
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -214,27 +216,34 @@ export default function Booking() {
 								label='Going To'
 								name='to'
 								options={locations}
-								change={(e) => handleInput(e.target.value)}
+								change={(e) => handleInput(e.target.value, e.target.name)}
 								value={busFormObj.on?.to + ''}
 								required
 								selectClasses='bg-white'
 							/>
 
+
 							{/* <Select name='to' label='Going To' state={toList} /> */}
 						</div>
-						<div className='flex justify-center items-center gap-2'>
-							<div>
+						<div className='flex justify-between gap-2'>
+							<div className='w-full space-y-1'>
 								<Label text='Journey Date' id='date' isRequired />
 								<DateInput />
 							</div>
-							<select
-								className='w-full bg-white p-3 rounded-md outline-none border-2 mt-5'
-								name='type'
-							>
-								<option>----</option>
-								<option value='AC'>AC</option>
-								<option value='non_AC'>NON-AC</option>
-							</select>
+
+							<div className='mt-0.5 w-full'>
+								<CommonSelect
+									defSelectName='------'
+									label='Type'
+									name='type'
+									options={[{ id: "AC", name: "AC" }, { id: "non_AC", name: "NON-AC" }]}
+									change={(e) => handleInput(e.target.value, e.target.name)}
+									value={busFormObj.on?.type + ''}
+									required
+									selectClasses='bg-white'
+									classNames='w-full'
+								/>
+							</div>
 						</div>
 
 						<div className='flex justify-end'>
