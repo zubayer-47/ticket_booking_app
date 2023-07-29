@@ -8,14 +8,21 @@ type TicketModalProps = {
     showModal: boolean;
     setShowModal: (isShow: boolean) => void;
     prodID: string
+    price: string | number
+
 }
 
-interface ModalStateType {
+export interface TicketStateType {
+    // tickets: TicketType[],
+    bookTickets: TicketType[],
+    seatNames: string[];
+}
+export interface ModalStateType extends TicketStateType {
     tickets: TicketType[],
 }
 
-const TicketModal = memo(function TicketModal({ showModal, setShowModal, prodID }: TicketModalProps) {
-    const [modalState, setModalState] = useState<ModalStateType>();
+const TicketModal = memo(function TicketModal({ showModal, setShowModal, prodID, price }: TicketModalProps) {
+    const [modalState, setModalState] = useState<ModalStateType>({ bookTickets: [], seatNames: [], tickets: [] });
     return (
         <>
             {!showModal ? null : (
@@ -26,13 +33,13 @@ const TicketModal = memo(function TicketModal({ showModal, setShowModal, prodID 
 
                             <div className="lg:col-span-4 w-full sm:w-[400px] lg:w-full mx-auto">
                                 <div className="bg-gray-200 rounded-md p-2">
-                                    <BusSeats prodID={prodID} />
+                                    <BusSeats setState={setModalState} state={modalState} prodID={prodID} />
                                 </div>
                             </div>
 
                             {/* seat and personal information */}
                             <div className="lg:col-span-8 p-1 rounded-md lg:h-[550px] lg:overflow-auto ">
-                                <PersonalInfo />
+                                <PersonalInfo price={price} seatNames={modalState.seatNames} />
                             </div>
                         </div>
                         {/*footer*/}
