@@ -46,17 +46,6 @@ export type BusType = {
   From: BusFromType[];
 };
 
-export interface PassengerDetailsType {
-  name: string;
-  gender: string;
-  email: string;
-  age: number;
-  mobile: number;
-  boarding_point: string;
-  dropping_point: string;
-  isAgree: boolean;
-}
-
 export type ActionType =
   // user
   | { type: "ADD_USER"; payload: UserType }
@@ -65,24 +54,7 @@ export type ActionType =
   // searchProds
   | { type: "ADD_PRODS"; payload: { list: BusType[]; fromID: string | null } }
   | { type: "REMOVE_PRODS" }
-  | { type: "ADD_PRODS_STATUS"; payload: number | null }
-  | {
-      type: "ADD_PASSENGER_INFO";
-      payload: {
-        name:
-          | "name"
-          | "gender"
-          | "email"
-          | "age"
-          | "mobile"
-          | "boarding_point"
-          | "dropping_point"
-          | "isAgree";
-        value: string | number | boolean;
-      };
-    }
-  | { type: "REMOVE_PASSENGER_INFO" }
-  | { type: "PASSENGER_LOADING"; payload: boolean };
+  | { type: "ADD_PRODS_STATUS"; payload: number | null };
 
 // initialStateType
 export type InitialStateType = {
@@ -91,10 +63,6 @@ export type InitialStateType = {
     list: BusType[];
     status: null | number;
     fromID: string | null;
-  };
-  passengerPersonalInfo: {
-    info: PassengerDetailsType;
-    loading: boolean;
   };
   authenticated: boolean;
   isLoading: boolean;
