@@ -1,34 +1,32 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { FiLifeBuoy } from 'react-icons/fi';
 import { v4 } from 'uuid';
 import { TicketType } from '../../types/state.types';
 import api from '../../utils/axios';
 import filterTwoDArr from '../../utils/filterTwoDArr';
+import { ModalStateType, TicketStateType } from './TicketModal';
 
 const demoSeats: TicketType[][] = [
-    [{ id: "1", seatName: "A1" }, { id: "2", seatName: "A2" }, { id: "3", seatName: "A3" }, { id: "4", seatName: "A4" }],
-    [{ id: "1", seatName: "B1" }, { id: "2", seatName: "B2" }, { id: "3", seatName: "B3" }, { id: "4", seatName: "B4" }],
-    [{ id: "1", seatName: "C1" }, { id: "2", seatName: "C2" }, { id: "3", seatName: "C3" }, { id: "4", seatName: "C4" }],
-    [{ id: "1", seatName: "D1" }, { id: "2", seatName: "D2" }, { id: "3", seatName: "D3" }, { id: "4", seatName: "D4" }],
-    [{ id: "1", seatName: "E1" }, { id: "2", seatName: "E2" }, { id: "3", seatName: "E3" }, { id: "4", seatName: "E4" }],
-    [{ id: "1", seatName: "F1" }, { id: "2", seatName: "F2" }, { id: "3", seatName: "F3" }, { id: "4", seatName: "F4" }],
-    [{ id: "1", seatName: "G1" }, { id: "2", seatName: "G2" }, { id: "3", seatName: "G3" }, { id: "4", seatName: "G4" }],
-    [{ id: "1", seatName: "H1" }, { id: "2", seatName: "H2" }, { id: "3", seatName: "H3" }, { id: "4", seatName: "H4" }],
-    [{ id: "1", seatName: "I1" }, { id: "2", seatName: "I2" }, { id: "3", seatName: "I3" }, { id: "4", seatName: "I4" }],
+    [{ id: v4(), seatName: "A1" }, { id: v4(), seatName: "A2" }, { id: v4(), seatName: "A3" }, { id: v4(), seatName: "A4" }],
+    [{ id: v4(), seatName: "B1" }, { id: v4(), seatName: "B2" }, { id: v4(), seatName: "B3" }, { id: v4(), seatName: "B4" }],
+    [{ id: v4(), seatName: "C1" }, { id: v4(), seatName: "C2" }, { id: v4(), seatName: "C3" }, { id: v4(), seatName: "C4" }],
+    [{ id: v4(), seatName: "D1" }, { id: v4(), seatName: "D2" }, { id: v4(), seatName: "D3" }, { id: v4(), seatName: "D4" }],
+    [{ id: v4(), seatName: "E1" }, { id: v4(), seatName: "E2" }, { id: v4(), seatName: "E3" }, { id: v4(), seatName: "E4" }],
+    [{ id: v4(), seatName: "F1" }, { id: v4(), seatName: "F2" }, { id: v4(), seatName: "F3" }, { id: v4(), seatName: "F4" }],
+    [{ id: v4(), seatName: "G1" }, { id: v4(), seatName: "G2" }, { id: v4(), seatName: "G3" }, { id: v4(), seatName: "G4" }],
+    [{ id: v4(), seatName: "H1" }, { id: v4(), seatName: "H2" }, { id: v4(), seatName: "H3" }, { id: v4(), seatName: "H4" }],
+    [{ id: v4(), seatName: "I1" }, { id: v4(), seatName: "I2" }, { id: v4(), seatName: "I3" }, { id: v4(), seatName: "I4" }],
 ]
 
-interface TicketStateType {
-    // tickets: TicketType[],
-    bookedTickets: TicketType[],
+type BusSeatsProps = {
+    prodID: string;
+    state: TicketStateType,
+    setState: React.Dispatch<React.SetStateAction<ModalStateType>>
 }
 
-export default function BusSeats({ prodID }: { prodID: string }) {
-
-    const [ticketState, setTicketState] = useState<TicketStateType>({ bookedTickets: [] });
-    // const { seats: filteredSeats } = useFilterDuplicateSeats(seats);
-
-    const filteredSeats = filterTwoDArr(demoSeats, ticketState.bookedTickets)
+export default function BusSeats({ prodID, state, setState }: BusSeatsProps) {
+    const filteredSeats = filterTwoDArr(demoSeats, state.bookTickets)
 
     useEffect(() => {
         const controller = new AbortController();
@@ -36,10 +34,10 @@ export default function BusSeats({ prodID }: { prodID: string }) {
             try {
                 const res = await api.get(`/ticket/${prodID}`, { signal: controller.signal });
 
-                setTicketState(prev => ({
+                setState(prev => ({
                     ...prev,
-                    bookedTickets: res.data
-                }));
+                    bookTickets: res.data
+                }))
             } catch (error) {
                 if (axios.isAxiosError(error)) {
                     // const message = error.response?.data?.message || error.response?.data;
@@ -49,7 +47,24 @@ export default function BusSeats({ prodID }: { prodID: string }) {
         })();
 
         return () => controller.abort()
-    }, [prodID]);
+    }, [prodID, setState]);
+
+    const handleCheck = (name: string) => {
+        setState(prev => {
+            if (prev.seatNames.includes(name)) return {
+                ...prev,
+                seatNames: prev.seatNames.filter(seatName => seatName !== name)
+            }
+
+            return {
+                ...prev,
+                seatNames: [...prev.seatNames, name]
+            }
+        });
+    }
+
+    console.log(state.seatNames, "72")
+
     return (<div className='p-2'>
         <table className="border border-collapse w-full">
             <thead>
@@ -84,12 +99,40 @@ export default function BusSeats({ prodID }: { prodID: string }) {
             {filteredSeats.map((seatArr) => (
                 <div className="flex justify-between items-center gap-5 lg:gap-12" key={v4()}>
                     <div className="flex gap-2">
-                        <button className={`bg-gray-100 text-gray-700 border border-gray-500 px-4 py-1 rounded-sm ${!!seatArr[0].selected && "bg-gray-600 text-white"}`}>{seatArr[0].seatName}</button>
-                        <button className={`bg-gray-100 text-gray-700 border border-gray-500 px-4 py-1 rounded-sm ${!!seatArr[1].selected && "bg-gray-600 text-white"}`}>{seatArr[1].seatName}</button>
+                        <button
+                            onClick={() => handleCheck(seatArr[0].seatName)}
+                            className={`border border-gray-500 px-4 py-1 rounded-sm 
+                                    ${!!seatArr[0].selected && "bg-gray-600 text-white"} 
+                                    ${state.seatNames.includes(seatArr[0].seatName) ? "bg-gray-600 text-white" : "bg-gray-100 text-gray-700"}`}
+                        >
+                            {seatArr[0].seatName}
+                        </button>
+                        <button
+                            onClick={() => handleCheck(seatArr[1].seatName)}
+                            className={`border border-gray-500 px-4 py-1 rounded-sm 
+                            ${!!seatArr[1].selected && "bg-gray-600 text-white"} 
+                            ${state.seatNames.includes(seatArr[1].seatName) ? "bg-gray-600 text-white" : "bg-gray-100 text-gray-700"}`}
+                        >
+                            {seatArr[1].seatName}
+                        </button>
                     </div>
                     <div className="flex gap-2">
-                        <button className={`bg-gray-100 text-gray-700 border border-gray-500 px-4 py-1 rounded-sm ${!!seatArr[2].selected && "bg-gray-600 text-white"}`}>{seatArr[2].seatName}</button>
-                        <button className={`bg-gray-100 text-gray-700 border border-gray-500 px-4 py-1 rounded-sm ${!!seatArr[3].selected && "bg-gray-600 text-white"}`}>{seatArr[3].seatName}</button>
+                        <button
+                            onClick={() => handleCheck(seatArr[2].seatName)}
+                            className={`border border-gray-500 px-4 py-1 rounded-sm 
+                                    ${!!seatArr[2].selected && "bg-gray-600 text-white"} 
+                                    ${state.seatNames.includes(seatArr[2].seatName) ? "bg-gray-600 text-white" : "bg-gray-100 text-gray-700"}`}
+                        >
+                            {seatArr[2].seatName}
+                        </button>
+                        <button
+                            onClick={() => handleCheck(seatArr[3].seatName)}
+                            className={`border border-gray-500 px-4 py-1 rounded-sm 
+                                    ${!!seatArr[3].selected && "bg-gray-600 text-white"} 
+                                    ${state.seatNames.includes(seatArr[3].seatName) ? "bg-gray-600 text-white" : "bg-gray-100 text-gray-700"}`}
+                        >
+                            {seatArr[3].seatName}
+                        </button>
                     </div>
                 </div>
             ))}
