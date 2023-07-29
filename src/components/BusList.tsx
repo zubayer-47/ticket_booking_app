@@ -76,7 +76,7 @@ function BusList() {
 				</table>
 
 				{!showModal ? null : (
-					<TicketModal showModal={showModal} setShowModal={setShowModal} prodID={prodID} />
+					<TicketModal showModal={showModal} setShowModal={setShowModal} prodID={prodID} price={sanitizeProductList[0].From[0].ticket_price} />
 				)}
 			</div>
 		</div>
