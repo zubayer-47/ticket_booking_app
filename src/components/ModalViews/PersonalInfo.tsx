@@ -18,7 +18,12 @@ const dropping_point_list = [
     { id: 2, name: "Chittagong Road" },
 ]
 
-export default function PersonalInfo() {
+type PersonalInfoProps = {
+    seatNames: string[]
+    price: string | number
+}
+
+export default function PersonalInfo({ seatNames, price }: PersonalInfoProps) {
     const { state: { passengerPersonalInfo, authenticated }, dispatch } = useContext(Context);
     const navigate = useNavigate();
     const location = useLocation();
@@ -34,7 +39,7 @@ export default function PersonalInfo() {
 
     return (
         <>
-            <SeatInfo />
+            <SeatInfo seatNames={seatNames} price={price} />
 
             <form className="mt-3 lg:mt-5 border p-2 rounded-md" onSubmit={handleSubmit}>
                 <p className="text-lg font-bold">Personal Information:</p>
