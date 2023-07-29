@@ -1,4 +1,5 @@
 import { CiSquareRemove } from 'react-icons/ci';
+import { v4 } from 'uuid';
 
 const ticketList = [
     { id: 1, seat: 'D3', fare: 700, cancel: false },
@@ -7,7 +8,12 @@ const ticketList = [
     { id: 4, seat: 'A3', fare: 700, cancel: false },
 ]
 
-export default function SeatInfo() {
+type SeatInfoProps = {
+    seatNames: string[];
+    price: string | number
+}
+
+export default function SeatInfo({ seatNames, price }: SeatInfoProps) {
     return (
         <>
             <table className="w-full border-collapse text-center">
@@ -21,10 +27,10 @@ export default function SeatInfo() {
                 </thead>
 
                 <tbody className="overflow-auto">
-                    {ticketList.map((ticket) => (
-                        <tr key={ticket.id} className="">
-                            <td className="border border-slate-300">{ticket.seat}</td>
-                            <td className="border border-slate-300">{ticket.fare}</td>
+                    {seatNames.map((ticket) => (
+                        <tr key={v4()} className="">
+                            <td className="border border-slate-300">{ticket}</td>
+                            <td className="border border-slate-300">{price}</td>
                             <td className="text-red-500 border border-slate-300"><button><CiSquareRemove className="h-7 w-7" /></button></td>
                         </tr>
                     ))}
