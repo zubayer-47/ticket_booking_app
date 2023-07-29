@@ -7,6 +7,7 @@ import CommonInput from '../Inputs/CommonInput';
 import CommonSelect from '../Selects/CommonSelect';
 import { Gender } from './Gender';
 import SeatInfo from './SeatInfo';
+import { ModalStateType } from './TicketModal';
 
 const boarding_point_list = [
     { id: 1, name: "Sylhet Kadamtoli Bus Stand (5:00PM)" },
@@ -19,17 +20,20 @@ const dropping_point_list = [
 ]
 
 type PersonalInfoProps = {
-    seatNames: string[]
+    state: ModalStateType
     price: string | number
+    setState: React.Dispatch<React.SetStateAction<ModalStateType>>
 }
 
-export default function PersonalInfo({ seatNames, price }: PersonalInfoProps) {
+export default function PersonalInfo({ state, price, setState }: PersonalInfoProps) {
     const { state: { passengerPersonalInfo, authenticated }, dispatch } = useContext(Context);
     const navigate = useNavigate();
     const location = useLocation();
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        console.log({ state })
 
         if (!authenticated) {
             navigate('/sign-in', { state: { from: location } });
@@ -39,7 +43,7 @@ export default function PersonalInfo({ seatNames, price }: PersonalInfoProps) {
 
     return (
         <>
-            <SeatInfo seatNames={seatNames} price={price} />
+            <SeatInfo setState={setState} seatNames={state.seatNames} price={price} />
 
             <form className="mt-3 lg:mt-5 border p-2 rounded-md" onSubmit={handleSubmit}>
                 <p className="text-lg font-bold">Personal Information:</p>
@@ -89,7 +93,7 @@ export default function PersonalInfo({ seatNames, price }: PersonalInfoProps) {
                         required
                         value={passengerPersonalInfo.info.mobile}
                         change={e => dispatch({ type: "ADD_PASSENGER_INFO", payload: { name: "mobile", value: +e.target.value } })}
-                        type='number'
+                        type='mobile'
                         inputClasses='border'
                     />
                 </div>
