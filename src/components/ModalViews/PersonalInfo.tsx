@@ -1,6 +1,6 @@
 
 
-import { FormEvent, useContext } from 'react';
+import { FormEvent, useContext, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Context } from '../../contexts/Context';
 import CommonInput from '../Inputs/CommonInput';
@@ -24,21 +24,45 @@ type PersonalInfoProps = {
     price: string | number
     setState: React.Dispatch<React.SetStateAction<ModalStateType>>
 }
+interface PassengerPersonalInfoState {
+    info: {
+        name: string;
+        gender: string;
+        email: string;
+        age: number;
+        mobile: number;
+        boarding_point: string;
+        dropping_point: string;
+        agree: boolean;
+    },
+    isLoading: boolean
+}
 
 export default function PersonalInfo({ state, price, setState }: PersonalInfoProps) {
-    const { state: { passengerPersonalInfo, authenticated }, dispatch } = useContext(Context);
+    const { state: { authenticated } } = useContext(Context);
+    const [passengerPersonalInfo, setPassengerPersonalInfo] = useState<PassengerPersonalInfoState>({ info: { age: 0, boarding_point: "", dropping_point: "", email: "", gender: "", agree: false, mobile: 0, name: "" }, isLoading: false });
     const navigate = useNavigate();
     const location = useLocation();
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        console.log({ state })
+        console.log({ state, passengerPersonalInfo })
 
         if (!authenticated) {
             navigate('/sign-in', { state: { from: location } });
             return;
         }
+    }
+
+    const onChange = (name: string, value: string | boolean) => {
+        setPassengerPersonalInfo(prev => ({
+            ...prev,
+            info: {
+                ...prev.info,
+                [name]: value
+            }
+        }))
     }
 
     return (
@@ -54,13 +78,14 @@ export default function PersonalInfo({ state, price, setState }: PersonalInfoPro
                         label='Name'
                         required
                         value={passengerPersonalInfo.info.name}
-                        change={e => dispatch({ type: "ADD_PASSENGER_INFO", payload: { name: "name", value: e.target.value } })}
+                        change={e => onChange(e.target.name, e.target.value)}
                         type='text'
                         inputClasses='border w-full'
                         classNames='w-full'
                     />
                     <Gender
                         value={passengerPersonalInfo.info.gender}
+                        onChange={onChange}
                     />
                 </div>
 
@@ -70,7 +95,7 @@ export default function PersonalInfo({ state, price, setState }: PersonalInfoPro
                     label='Email'
                     required
                     value={passengerPersonalInfo.info.email}
-                    change={e => dispatch({ type: "ADD_PASSENGER_INFO", payload: { name: "email", value: e.target.value } })}
+                    change={e => onChange(e.target.name, e.target.value)}
                     type='email'
                     inputClasses='border'
                 />
@@ -82,7 +107,7 @@ export default function PersonalInfo({ state, price, setState }: PersonalInfoPro
                         label='Age'
                         required
                         value={passengerPersonalInfo.info.age}
-                        change={e => dispatch({ type: "ADD_PASSENGER_INFO", payload: { name: "age", value: +e.target.value } })}
+                        change={e => onChange(e.target.name, e.target.value)}
                         type='number'
                         inputClasses='border'
                     />
@@ -92,7 +117,7 @@ export default function PersonalInfo({ state, price, setState }: PersonalInfoPro
                         label='Mobile'
                         required
                         value={passengerPersonalInfo.info.mobile}
-                        change={e => dispatch({ type: "ADD_PASSENGER_INFO", payload: { name: "mobile", value: +e.target.value } })}
+                        change={e => onChange(e.target.name, e.target.value)}
                         type='mobile'
                         inputClasses='border'
                     />
@@ -104,7 +129,7 @@ export default function PersonalInfo({ state, price, setState }: PersonalInfoPro
                         label="Boarding Point"
                         name="boarding_point"
                         options={boarding_point_list}
-                        change={(e) => dispatch({ type: "ADD_PASSENGER_INFO", payload: { name: "boarding_point", value: e.target.value } })}
+                        change={e => onChange(e.target.name, e.target.value)}
                         value={passengerPersonalInfo.info.boarding_point}
                         valueInName
                         required
@@ -117,7 +142,7 @@ export default function PersonalInfo({ state, price, setState }: PersonalInfoPro
                         label="Dropping Point"
                         name="dropping_point"
                         options={dropping_point_list}
-                        change={(e) => dispatch({ type: "ADD_PASSENGER_INFO", payload: { name: "dropping_point", value: e.target.value } })}
+                        change={e => onChange(e.target.name, e.target.value)}
                         value={passengerPersonalInfo.info.dropping_point}
                         valueInName
                         required
@@ -132,10 +157,10 @@ export default function PersonalInfo({ state, price, setState }: PersonalInfoPro
                         <input
                             type='checkbox'
                             name='agree'
-                            checked={passengerPersonalInfo.info.isAgree}
-                            onChange={() => {
+                            checked={passengerPersonalInfo.info.agree}
+                            onChange={(e) => {
                                 const isAgree = false
-                                dispatch({ type: "ADD_PASSENGER_INFO", payload: { name: "isAgree", value: !isAgree } })
+                                onChange(e.target.name, !isAgree)
                             }}
                             required
                         />
