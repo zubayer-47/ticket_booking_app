@@ -9,9 +9,4 @@ export const enum Action {
   "ADD_PRODS",
   "REMOVE_PRODS",
   "ADD_PRODS_STATUS",
-
-  // passenger personal information
-  "ADD_PASSENGER_INFO",
-  "REMOVE_PASSENGER_INFO",
-  "PASSENGER_LOADING",
 }
