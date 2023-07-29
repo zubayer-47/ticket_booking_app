@@ -39,7 +39,7 @@ const TicketModal = memo(function TicketModal({ showModal, setShowModal, prodID,
 
                             {/* seat and personal information */}
                             <div className="lg:col-span-8 p-1 rounded-md lg:h-[550px] lg:overflow-auto ">
-                                <PersonalInfo price={price} seatNames={modalState.seatNames} />
+                                <PersonalInfo price={price} state={modalState} setState={setModalState} />
                             </div>
                         </div>
                         {/*footer*/}
