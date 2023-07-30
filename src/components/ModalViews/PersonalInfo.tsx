@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Context } from '../../contexts/Context';
 import CommonInput from '../Inputs/CommonInput';
 import CommonSelect from '../Selects/CommonSelect';
+import CreatePdf from '../pdf/CreatePdf';
 import { Gender } from './Gender';
 import SeatInfo from './SeatInfo';
 import { ModalStateType } from './TicketModal';
@@ -41,18 +42,22 @@ interface PassengerPersonalInfoState {
 export default function PersonalInfo({ state, price, setState }: PersonalInfoProps) {
     const { state: { authenticated } } = useContext(Context);
     const [passengerPersonalInfo, setPassengerPersonalInfo] = useState<PassengerPersonalInfoState>({ info: { age: 0, boarding_point: "", dropping_point: "", email: "", gender: "", agree: false, mobile: 0, name: "" }, isLoading: false });
+    const [isSubmitted, setSubmitted] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        console.log({ state, passengerPersonalInfo })
+        console.log({ state, passengerPersonalInfo });
+
 
         if (!authenticated) {
             navigate('/sign-in', { state: { from: location } });
             return;
         }
+
+        setSubmitted(true)
     }
 
     const onChange = (name: string, value: string | boolean) => {
@@ -180,6 +185,8 @@ export default function PersonalInfo({ state, price, setState }: PersonalInfoPro
                     </button>
                 </div>
             </form>
+
+            {!isSubmitted ? null : <CreatePdf />}
 
         </>
     )
