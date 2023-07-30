@@ -251,12 +251,12 @@ export default function Booking() {
 						</div>
 					</form>
 
-					<div className='hidden md:col-span-6 lg:flex items-center'>
+					{/* <div className='hidden md:col-span-6 lg:flex items-center'>
 						<img
 							className=''
 							src='https://static.busbd.com.bd/busbdmedia/for%20salide.1500371408'
 						/>
-					</div>
+					</div> */}
 				</div>
 			</CenterLayout>
 
