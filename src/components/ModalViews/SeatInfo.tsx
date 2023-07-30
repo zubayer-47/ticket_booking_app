@@ -2,13 +2,6 @@ import { CiSquareRemove } from 'react-icons/ci';
 import { v4 } from 'uuid';
 import { ModalStateType } from './TicketModal';
 
-const ticketList = [
-    { id: 1, seat: 'D3', fare: 700, cancel: false },
-    { id: 2, seat: 'A3', fare: 700, cancel: false },
-    { id: 3, seat: 'A3', fare: 700, cancel: false },
-    { id: 4, seat: 'A3', fare: 700, cancel: false },
-]
-
 type SeatInfoProps = {
     seatNames: string[];
     price: string | number;
@@ -58,7 +51,7 @@ export default function SeatInfo({ seatNames, price, setState, charge }: SeatInf
 
 
             <div className='grid grid-cols-3 items-center text-center border mt-4'>
-                <p className='border-r text-red-600 font-bold text-sm'>Total Seat: <span className='text-black'>{ticketList.length}</span></p>
+                <p className='border-r text-red-600 font-bold text-sm'>Total Seat: <span className='text-black'>{seatNames.length}</span></p>
                 <p className='border-r text-red-600 font-bold text-sm'>
                     Fare: <span className='text-black'>{fare} TK</span> <br />
                     {charge ? (
