@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import { FiLayout } from 'react-icons/fi';
 import { Context } from '../contexts/Context';
 import { makeCoachName } from '../utils/coachName';
@@ -7,8 +7,8 @@ import TicketModal from './ModalViews/TicketModal';
 function BusList() {
 	const [showModal, setShowModal] = useState(false);
 	const [prodID, setProdID] = useState('');
+	const [coachNo, setCoachNo] = useState('');
 	const { state } = useContext(Context)
-
 	const sanitizeProductList = useMemo(() => state.searchProds.list.filter(prod => {
 		if (prod.From.length > 0) {
 			const index = prod.From.findIndex(f => f.location.id === state.searchProds.fromID);
@@ -22,13 +22,25 @@ function BusList() {
 
 			return prod
 		}
-	}), [state.searchProds.fromID, state.searchProds.list])
+	}), [state.searchProds.fromID, state.searchProds.list]);
 
 	const handleView = (prodID: string) => {
 		setShowModal(true);
 
 		setProdID(prodID)
 	};
+
+	const generateCoachNo = useCallback((prodID: string, brandName: string) => {
+		const no = makeCoachName(prodID, brandName);
+
+		if (coachNo === no) {
+
+			return no;
+		}
+
+		setCoachNo(no);
+		return no;
+	}, [coachNo])
 
 	return (
 		<div className='mt-8'>
@@ -51,7 +63,7 @@ function BusList() {
 						{!sanitizeProductList.length ? (<tr><td>No Bus Exist on That day</td></tr>) : sanitizeProductList.map((prod) => (
 							<tr className='flex items-center border' key={prod.id}>
 								<td className='py-1 px-2 flex-1 flex-shrink-0'>{prod.brand.name}</td>
-								<td className='py-1 px-2 flex-1 flex-shrink-0'>{makeCoachName(prod.id, prod.brand.name)}</td>
+								<td className='py-1 px-2 flex-1 flex-shrink-0'>{generateCoachNo(prod.id, prod.brand.name)}</td>
 								<td className='py-1 px-2 flex-1 flex-shrink-0'>
 									{prod.From[0].location?.name}
 								</td>
@@ -76,7 +88,7 @@ function BusList() {
 				</table>
 
 				{!showModal ? null : (
-					<TicketModal showModal={showModal} setShowModal={setShowModal} prodID={prodID} price={sanitizeProductList[0].From[0].ticket_price} />
+					<TicketModal coachNo={coachNo} fromID={state.searchProds.fromID} showModal={showModal} setShowModal={setShowModal} prodID={prodID} price={sanitizeProductList[0].From[0].ticket_price} />
 				)}
 			</div>
 		</div>
