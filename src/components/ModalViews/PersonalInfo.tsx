@@ -1,7 +1,8 @@
 
 
-import { FormEvent, useContext, useState } from 'react';
+import { FormEvent, useContext, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useReactToPrint } from 'react-to-print';
 import { Context } from '../../contexts/Context';
 import CommonInput from '../Inputs/CommonInput';
 import CommonSelect from '../Selects/CommonSelect';
@@ -40,6 +41,12 @@ interface PassengerPersonalInfoState {
 }
 
 export default function PersonalInfo({ state, price, setState }: PersonalInfoProps) {
+    const divRef = useRef<HTMLDivElement>(null)
+    const handlePrint = useReactToPrint({
+        content: () => divRef.current,
+        documentTitle: 'Ticket.pdf'
+    })
+
     const { state: { authenticated } } = useContext(Context);
     const [passengerPersonalInfo, setPassengerPersonalInfo] = useState<PassengerPersonalInfoState>({ info: { age: 0, boarding_point: "", dropping_point: "", email: "", gender: "", agree: false, mobile: 0, name: "" }, isLoading: false });
     const [isSubmitted, setSubmitted] = useState(false);
@@ -50,7 +57,6 @@ export default function PersonalInfo({ state, price, setState }: PersonalInfoPro
         e.preventDefault();
 
         console.log({ state, passengerPersonalInfo });
-
 
         if (!authenticated) {
             navigate('/sign-in', { state: { from: location } });
@@ -179,6 +185,7 @@ export default function PersonalInfo({ state, price, setState }: PersonalInfoPro
 
                     <button
                         type="submit"
+                        onClick={handlePrint}
                         className="bg-emerald-500 w-[100px] text-white mt-2 active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                     >
                         Confirm
@@ -186,7 +193,7 @@ export default function PersonalInfo({ state, price, setState }: PersonalInfoPro
                 </div>
             </form>
 
-            {!isSubmitted ? null : <CreatePdf />}
+            <CreatePdf ref={divRef} />
 
         </>
     )
