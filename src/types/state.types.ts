@@ -61,7 +61,7 @@ export type InitialStateType = {
   user: UserType;
   searchProds: {
     list: BusType[];
-    status: null | number;
+    status: number | null;
     fromID: string | null;
   };
   authenticated: boolean;
