@@ -7,17 +7,19 @@ import PersonalInfo from "./PersonalInfo";
 type TicketModalProps = {
     showModal: boolean;
     setShowModal: (isShow: boolean) => void;
-    prodID: string
-    price: string | number
-
+    prodID: string;
+    price: string | number;
+    fromID: string | null;
+    coachNo: string;
 }
 export interface ModalStateType {
-    bookTickets: TicketType[],
-    seatNames: string[];
+    bookedTickets: TicketType[],
+    bookingSeats: string[];
 }
 
-const TicketModal = memo(function TicketModal({ showModal, setShowModal, prodID, price }: TicketModalProps) {
-    const [modalState, setModalState] = useState<ModalStateType>({ bookTickets: [], seatNames: [] });
+const TicketModal = memo(function TicketModal({ showModal, setShowModal, prodID, price, fromID, coachNo }: TicketModalProps) {
+    const [modalState, setModalState] = useState<ModalStateType>({ bookedTickets: [], bookingSeats: [] });
+
     return (
         <>
             {!showModal ? null : (
@@ -34,7 +36,7 @@ const TicketModal = memo(function TicketModal({ showModal, setShowModal, prodID,
 
                             {/* seat and personal information */}
                             <div className="lg:col-span-8 p-1 rounded-md lg:h-[550px] lg:overflow-auto ">
-                                <PersonalInfo price={price} state={modalState} setState={setModalState} />
+                                <PersonalInfo coachNo={coachNo} fromID={fromID} price={price} state={modalState} setState={setModalState} />
                             </div>
                         </div>
                         {/*footer*/}
