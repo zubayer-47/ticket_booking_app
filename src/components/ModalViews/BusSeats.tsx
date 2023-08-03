@@ -5,7 +5,7 @@ import { v4 } from 'uuid';
 import { TicketType } from '../../types/state.types';
 import api from '../../utils/axios';
 import filterTwoDArr from '../../utils/filterTwoDArr';
-import { ModalStateType, TicketStateType } from './TicketModal';
+import { ModalStateType } from './TicketModal';
 
 const demoSeats: TicketType[][] = [
     [{ id: v4(), seatName: "A1" }, { id: v4(), seatName: "A2" }, { id: v4(), seatName: "A3" }, { id: v4(), seatName: "A4" }],
@@ -21,7 +21,7 @@ const demoSeats: TicketType[][] = [
 
 type BusSeatsProps = {
     prodID: string;
-    state: TicketStateType,
+    state: ModalStateType,
     setState: React.Dispatch<React.SetStateAction<ModalStateType>>
 }
 

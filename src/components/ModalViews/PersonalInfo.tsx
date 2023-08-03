@@ -15,16 +15,6 @@ import { Gender } from './Gender';
 import SeatInfo from './SeatInfo';
 import { ModalStateType } from './TicketModal';
 
-const boarding_point_list = [
-    { id: 1, name: "Sylhet Kadamtoli Bus Stand (5:00PM)" },
-    { id: 2, name: "Humayun Cottor (5:00PM)" },
-]
-
-const dropping_point_list = [
-    { id: 1, name: "Saydabad" },
-    { id: 2, name: "Chittagong Road" },
-]
-
 type PersonalInfoProps = {
     state: ModalStateType;
     price: string | number;
@@ -57,7 +47,7 @@ const PersonalInfo = memo(function PersonalInfo({ state, price, fromID, coachNo,
 
     const { state: { authenticated } } = useContext(Context);
     const [passengerPersonalInfo, setPassengerPersonalInfo] = useState<PassengerPersonalInfoState>({ info: { age: 0, boarding_point: "", dropping_point: "", email: "", gender: "", agree: false, mobile: 0, name: "" }, isLoading: false });
-    const [isSubmitted, setSubmitted] = useState(false);
+    const [_, setSubmitted] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -74,7 +64,7 @@ const PersonalInfo = memo(function PersonalInfo({ state, price, fromID, coachNo,
                 }))
             } catch (error) {
                 if (axios.isAxiosError(error)) {
-                    const message = error.response?.data?.message;
+                    // const message = error.response?.data?.message;
 
                     // setToLocations((prev) => ({
                     //   ...prev,
@@ -105,7 +95,7 @@ const PersonalInfo = memo(function PersonalInfo({ state, price, fromID, coachNo,
                 }))
             } catch (error) {
                 if (axios.isAxiosError(error)) {
-                    const message = error.response?.data?.message;
+                    // const message = error.response?.data?.message;
 
                     // setToLocations((prev) => ({
                     //   ...prev,
