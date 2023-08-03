@@ -26,7 +26,7 @@ type BusSeatsProps = {
 }
 
 const BusSeats = memo(function BusSeats({ prodID, state, setState }: BusSeatsProps) {
-    const filteredSeats = filterTwoDArr(demoSeats, state.bookTickets);
+    const filteredSeats = filterTwoDArr(demoSeats, state.bookedTickets);
 
     const fetchProductWiseTicket = useCallback(async (controller: AbortController) => {
         try {
@@ -34,7 +34,7 @@ const BusSeats = memo(function BusSeats({ prodID, state, setState }: BusSeatsPro
 
             setState(prev => ({
                 ...prev,
-                bookTickets: res.data
+                bookedTickets: res.data
             }))
         } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -54,19 +54,19 @@ const BusSeats = memo(function BusSeats({ prodID, state, setState }: BusSeatsPro
 
     const handleCheck = (name: string) => {
         setState(prev => {
-            if (prev.seatNames.includes(name)) return {
+            if (prev.bookingSeats.includes(name)) return {
                 ...prev,
-                seatNames: prev.seatNames.filter(seatName => seatName !== name)
+                bookingSeats: prev.bookingSeats.filter(seatName => seatName !== name)
             }
 
             return {
                 ...prev,
-                seatNames: [...prev.seatNames, name]
+                bookingSeats: [...prev.bookingSeats, name]
             }
         });
     }
 
-    console.log(state.seatNames, "72")
+    console.log(state.bookingSeats, "72")
 
     return (<div className='p-2'>
         <table className="border border-collapse w-full">
@@ -106,7 +106,7 @@ const BusSeats = memo(function BusSeats({ prodID, state, setState }: BusSeatsPro
                             onClick={() => handleCheck(seatArr[0].seatName)}
                             className={`border border-gray-500 px-4 py-1 rounded-sm 
                                     ${!!seatArr[0].selected && "bg-gray-600 text-white"} 
-                                    ${state.seatNames.includes(seatArr[0].seatName) ? "bg-gray-600 text-white" : "bg-gray-100 text-gray-700"}`}
+                                    ${state.bookingSeats.includes(seatArr[0].seatName) ? "bg-gray-600 text-white" : "bg-gray-100 text-gray-700"}`}
                         >
                             {seatArr[0].seatName}
                         </button>
@@ -114,7 +114,7 @@ const BusSeats = memo(function BusSeats({ prodID, state, setState }: BusSeatsPro
                             onClick={() => handleCheck(seatArr[1].seatName)}
                             className={`border border-gray-500 px-4 py-1 rounded-sm 
                             ${!!seatArr[1].selected && "bg-gray-600 text-white"} 
-                            ${state.seatNames.includes(seatArr[1].seatName) ? "bg-gray-600 text-white" : "bg-gray-100 text-gray-700"}`}
+                            ${state.bookingSeats.includes(seatArr[1].seatName) ? "bg-gray-600 text-white" : "bg-gray-100 text-gray-700"}`}
                         >
                             {seatArr[1].seatName}
                         </button>
@@ -124,7 +124,7 @@ const BusSeats = memo(function BusSeats({ prodID, state, setState }: BusSeatsPro
                             onClick={() => handleCheck(seatArr[2].seatName)}
                             className={`border border-gray-500 px-4 py-1 rounded-sm 
                                     ${!!seatArr[2].selected && "bg-gray-600 text-white"} 
-                                    ${state.seatNames.includes(seatArr[2].seatName) ? "bg-gray-600 text-white" : "bg-gray-100 text-gray-700"}`}
+                                    ${state.bookingSeats.includes(seatArr[2].seatName) ? "bg-gray-600 text-white" : "bg-gray-100 text-gray-700"}`}
                         >
                             {seatArr[2].seatName}
                         </button>
@@ -132,7 +132,7 @@ const BusSeats = memo(function BusSeats({ prodID, state, setState }: BusSeatsPro
                             onClick={() => handleCheck(seatArr[3].seatName)}
                             className={`border border-gray-500 px-4 py-1 rounded-sm 
                                     ${!!seatArr[3].selected && "bg-gray-600 text-white"} 
-                                    ${state.seatNames.includes(seatArr[3].seatName) ? "bg-gray-600 text-white" : "bg-gray-100 text-gray-700"}`}
+                                    ${state.bookingSeats.includes(seatArr[3].seatName) ? "bg-gray-600 text-white" : "bg-gray-100 text-gray-700"}`}
                         >
                             {seatArr[3].seatName}
                         </button>
