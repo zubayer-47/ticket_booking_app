@@ -1,12 +1,27 @@
-import { ReactNode, forwardRef } from "react";
+import { forwardRef } from "react";
+import { v4 as uuidv4 } from 'uuid';
+import { ModalStateType } from "../ModalViews/TicketModal";
 
 interface Props {
-    children?: ReactNode;
+    state: ModalStateType;
+    passengerInfo: {
+        name: string;
+        gender: string;
+        email: string;
+        age: number;
+        mobile: number;
+        boarding_point: string;
+        dropping_point: string;
+        agree: boolean;
+    },
+    coachNo: string;
 }
 
 export type DivRef = HTMLDivElement;
 
-const CreatePdf = forwardRef<DivRef, Props>((props, ref) => {
+const CreatePdf = forwardRef<DivRef, Props>(({ state, passengerInfo, coachNo }, ref) => {
+
+    const generateSeats = state.bookingSeats.sort().join(', ')
 
     return (
         <div ref={ref} className="grid grid-cols-12 gap-1 max-w-5xl mx-auto my-10 p-5">
@@ -15,13 +30,13 @@ const CreatePdf = forwardRef<DivRef, Props>((props, ref) => {
 
                 <div className="space-y-1">
                     <h1 className="font-bold">Dhaka To Barisal</h1>
-                    <p className="tracking-wide"><span className="font-bold tracking-normal">Passenger Name: </span> A B M ZUBAYER</p>
-                    <p className="tracking-wide"><span className="font-bold tracking-normal">Mobile: </span>01609053512</p>
-                    <p className="tracking-wide"><span className="font-bold tracking-normal">Ticket No: </span>01609053512</p>
-                    <p className="tracking-wide"><span className="font-bold tracking-normal">Coach No: </span>01609053512</p>
+                    <p className="tracking-wide"><span className="font-bold tracking-normal">Passenger Name: </span> {passengerInfo.name}</p>
+                    <p className="tracking-wide"><span className="font-bold tracking-normal">Mobile: </span>{passengerInfo.mobile}</p>
+                    <p className="tracking-wide"><span className="font-bold tracking-normal">Ticket No: </span>{uuidv4()}</p>
+                    <p className="tracking-wide"><span className="font-bold tracking-normal">Coach No: </span>{coachNo}</p>
                     <div className="grid grid-cols-2">
-                        <p className="tracking-wide"><span className="font-bold tracking-normal">Boarding: </span>Saydabad</p>
-                        <p className="tracking-wide"><span className="font-bold tracking-normal">Dropping: </span>Isladi</p>
+                        <p className="tracking-wide"><span className="font-bold tracking-normal">Boarding: </span>{passengerInfo.boarding_point}</p>
+                        <p className="tracking-wide"><span className="font-bold tracking-normal">Dropping: </span>{passengerInfo.dropping_point}</p>
                     </div>
                     <div className="grid grid-cols-2">
                         <p className="tracking-wide"><span className="font-bold tracking-normal">Purchase Date: </span>20/11/23</p>
@@ -32,8 +47,8 @@ const CreatePdf = forwardRef<DivRef, Props>((props, ref) => {
                         <p className="tracking-wide"><span className="font-bold tracking-normal">Journey Time: </span>12:30PM</p>
                     </div>
                     <div className="grid grid-cols-2">
-                        <p className="tracking-wide"><span className="font-bold tracking-normal">Seat No: </span>A3, B4, C4</p>
-                        <p className="tracking-wide"><span className="font-bold tracking-normal">Total Seats: </span>3</p>
+                        <p className="tracking-wide break-words"><span className="font-bold tracking-normal">Seat No: </span>{generateSeats}</p>
+                        <p className="tracking-wide"><span className="font-bold tracking-normal">Total Seats: </span>{state.bookingSeats.length}</p>
                     </div>
                     <p className="tracking-wide"><span className="font-bold tracking-normal">Beat Fare(tk): </span>600</p>
                     <p className="tracking-wide"><span className="font-bold tracking-normal">Total Fare(tk): </span>600</p>
@@ -64,8 +79,8 @@ const CreatePdf = forwardRef<DivRef, Props>((props, ref) => {
                         <p className="tracking-wide"><span className="font-bold tracking-normal">Journey Time: </span>12:30PM</p>
                     </div>
                     <div className="grid grid-cols-2">
-                        <p className="tracking-wide"><span className="font-bold tracking-normal">Seat No: </span>A3, B4, C4</p>
-                        <p className="tracking-wide"><span className="font-bold tracking-normal">Total Seats: </span>3</p>
+                        <p className="tracking-wide break-words"><span className="font-bold tracking-normal">Seat No: </span>{generateSeats}</p>
+                        <p className="tracking-wide"><span className="font-bold tracking-normal">Total Seats: </span>{state.bookingSeats.length}</p>
                     </div>
                     <p className="tracking-wide"><span className="font-bold tracking-normal">Beat Fare(tk): </span>600</p>
                     <p className="tracking-wide"><span className="font-bold tracking-normal">Total Fare(tk): </span>600</p>
