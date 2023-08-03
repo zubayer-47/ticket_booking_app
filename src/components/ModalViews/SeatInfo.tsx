@@ -3,21 +3,21 @@ import { v4 } from 'uuid';
 import { ModalStateType } from './TicketModal';
 
 type SeatInfoProps = {
-    seatNames: string[];
+    bookingSeats: string[];
     price: string | number;
     setState: React.Dispatch<React.SetStateAction<ModalStateType>>;
     charge?: number;
 }
 
-export default function SeatInfo({ seatNames, price, setState, charge }: SeatInfoProps) {
+export default function SeatInfo({ bookingSeats, price, setState, charge }: SeatInfoProps) {
     const handleDelete = (name: string) => {
         setState(prev => ({
             ...prev,
-            seatNames: prev.seatNames.filter(seatName => seatName !== name)
+            bookingSeats: prev.bookingSeats.filter(seatName => seatName !== name)
         }))
     }
 
-    const fare = seatNames.length * +price;
+    const fare = bookingSeats.length * +price;
     const charge_fare = charge ? charge : 0
     const net_fare = fare + charge_fare;
 
@@ -35,7 +35,7 @@ export default function SeatInfo({ seatNames, price, setState, charge }: SeatInf
                     </thead>
 
                     <tbody>
-                        {seatNames.map((seatName) => (
+                        {bookingSeats.map((seatName) => (
                             <tr key={v4()}>
                                 <td className="border border-slate-300">{seatName}</td>
                                 <td className="border border-slate-300">{price}</td>
@@ -51,7 +51,7 @@ export default function SeatInfo({ seatNames, price, setState, charge }: SeatInf
 
 
             <div className='grid grid-cols-3 items-center text-center border mt-4'>
-                <p className='border-r text-red-600 font-bold text-sm'>Total Seat: <span className='text-black'>{seatNames.length}</span></p>
+                <p className='border-r text-red-600 font-bold text-sm'>Total Seat: <span className='text-black'>{bookingSeats.length}</span></p>
                 <p className='border-r text-red-600 font-bold text-sm'>
                     Fare: <span className='text-black'>{fare} TK</span> <br />
                     {charge ? (
