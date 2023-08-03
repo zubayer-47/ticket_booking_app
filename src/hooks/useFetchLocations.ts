@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { IdNameBrandLocationFromType } from "../types/state.types";
 import api from "../utils/axios";
 
-export interface LocationsType {
+interface LocationsType {
   error: string;
   loading: boolean;
   list: IdNameBrandLocationFromType[];
