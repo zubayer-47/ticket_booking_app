@@ -17,19 +17,6 @@ const initialState: InitialStateType = {
 		list: [],
 		status: null
 	},
-	passengerPersonalInfo: {
-		info: {
-			name: "",
-			gender: "",
-			email: "",
-			age: 0,
-			boarding_point: "",
-			dropping_point: "",
-			mobile: 0,
-			isAgree: false,
-		},
-		loading: false
-	},
 	authenticated: false,
 	isLoading: true,
 };
@@ -80,42 +67,6 @@ function reducer(
 				searchProds: {
 					...state.searchProds,
 					status: action.payload,
-				}
-			}
-		case "ADD_PASSENGER_INFO":
-			return {
-				...state,
-				passengerPersonalInfo: {
-					...state.passengerPersonalInfo,
-					info: {
-						...state.passengerPersonalInfo.info,
-						[action.payload.name]: action.payload.value
-					}
-				}
-			}
-		case "REMOVE_PASSENGER_INFO":
-			return {
-				...state,
-				passengerPersonalInfo: {
-					...state.passengerPersonalInfo,
-					info: {
-						name: "",
-						gender: "",
-						email: "",
-						age: 0,
-						boarding_point: "",
-						dropping_point: "",
-						mobile: 0,
-						isAgree: false,
-					}
-				}
-			}
-		case "PASSENGER_LOADING":
-			return {
-				...state,
-				passengerPersonalInfo: {
-					...state.passengerPersonalInfo,
-					loading: action.payload
 				}
 			}
 		default:
